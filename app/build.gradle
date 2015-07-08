@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        releaseConfig {
+            if(rootProject.file('keystore.properties').exists()) {
+                def props = new Properties()
+                props.load(new FileInputStream(rootProject.file('keystore.properties')))
+
+                storeFile = file(props['storeFile'])
+                storePassword = props['storePassword']
+                keyAlias = props['keyAlias']
+                keyPassword = props['keyPassword']
+            }
+
+        }
+    }
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+    defaultConfig {
+        applicationId "com.jugarte.gourmet"
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':gourmet')
+    //compile project(':wear-http')
+    compile 'com.kogitune:wear-http:0.0.5'
+    debugWearApp project(path:':wear', configuration: 'debug')
+    releaseWearApp project(path:':wear', configuration: 'release')
+}
+
+def getVersionName() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionName'
+}
+
+def getVersionCode() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionCode'.toInteger()
+}

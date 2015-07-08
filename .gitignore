@@ -1,0 +1,36 @@
+# Specific files to exclude
+
+# Any keystores
+*.keystore
+*.jks
+
+# Local configuration files (sdk path, etc)
+gradle.properties
+local.properties
+keystore.properties
+
+/.idea/workspace.xml
+/.idea/libraries
+
+### Windows
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+### OSX
+.DS_Store
+
+### IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/*
+
+### Gradle
+.gradle/
+build/

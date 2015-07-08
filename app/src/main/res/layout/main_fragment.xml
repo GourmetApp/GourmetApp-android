@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+
+    <RelativeLayout
+        android:id="@+id/all_container"
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:background="@color/primary">
+
+        <RelativeLayout
+            android:id="@+id/balance_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/main_current_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/current_text"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/main_current_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/main_current_text"
+                android:layout_alignBaseline="@id/main_current_text"
+                android:textColor="@color/white"
+                android:textSize="34sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/main_card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"/>
+
+            <Button
+                android:id="@+id/main_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/transparent"
+                android:textColor="@color/white"
+                android:text="@string/logout_button" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/main_operations_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/all_container" />
+
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading_view" />
+
+
+</RelativeLayout>

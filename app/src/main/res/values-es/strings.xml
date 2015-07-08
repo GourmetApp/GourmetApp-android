@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Gourmet App</string>
+
+    <string name="login_button">LOGIN</string>
+    <string name="login_hint_card_number">Número de tarjeta</string>
+    <string name="login_hint_password">Contraseña</string>
+    <string name="login_remember_password">Recordar contraseña</string>
+
+    <string name="logout_button">LOGOUT</string>
+    <string name="current_text">Saldo actual:</string>
+</resources>
