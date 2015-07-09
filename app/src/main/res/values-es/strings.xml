@@ -9,4 +9,7 @@
 
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Saldo actual:</string>
+    <string name="error_sesion_expired">La sesión ha expirado</string>
+    <string name="error_check_connetion">Comprueba tu conexión a internet</string>
+
 </resources>

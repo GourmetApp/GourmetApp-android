@@ -54,23 +54,25 @@ public class MainFragment extends BaseFragment {
     private void drawLayout(Object result) {
         if (result != null) {
             Gourmet gourmet = (Gourmet) result;
-            mCurrentBalance.setText(gourmet.currentBalance + "€");
-            String cardNumber = TextFormatUtils.formatCreditCardNumber(CredentialsLogin.getUserCredential());
-            if (cardNumber != null) {
-                mCardNumberTextView.setText(cardNumber);
-            }
-
-            OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
-            mOperationsList.setAdapter(adapter);
-
-            mLogoutButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MainFragment.this.logout();
+            if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
+                mCurrentBalance.setText(gourmet.currentBalance + "€");
+                String cardNumber = TextFormatUtils.formatCreditCardNumber(CredentialsLogin.getUserCredential());
+                if (cardNumber != null) {
+                    mCardNumberTextView.setText(cardNumber);
                 }
-            });
+
+                OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
+                mOperationsList.setAdapter(adapter);
+            } else {
+                Toast.makeText(this.getActivity(), gourmet.errorMessage, Toast.LENGTH_SHORT).show();
+                ;
+                CredentialsLogin.removeCredentials();
+                MainActivity activity = (MainActivity) this.getActivity();
+                activity.navigateToLogin();
+            }
         } else {
-            // TODO: Show error or show login
+            Toast.makeText(this.getActivity(), R.string.error_check_connetion, Toast.LENGTH_SHORT).show();
+            ;
         }
     }
 
@@ -109,7 +111,13 @@ public class MainFragment extends BaseFragment {
                 Toast.makeText(MainFragment.this.getActivity(),
                         getResources().getString(R.string.copy_to_clipboard),
                         Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainFragment.this.logout();
             }
         });
     }
