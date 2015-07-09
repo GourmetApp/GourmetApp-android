@@ -28,7 +28,8 @@ public class MainFragment extends BaseFragment {
      *	  PROPERTIES	  *
      *					  *
      **********************/
-    private TextView mCurrentBalance= null;
+    private TextView mCurrentBalance = null;
+    private TextView mCurrentText = null;
     private Button mLogoutButton = null;
     private ListView mOperationsList = null;
     private TextView mCardNumberTextView = null;
@@ -55,6 +56,7 @@ public class MainFragment extends BaseFragment {
         if (result != null) {
             Gourmet gourmet = (Gourmet) result;
             if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
+                mCurrentText.setVisibility(View.VISIBLE);
                 mCurrentBalance.setText(gourmet.currentBalance + "€");
                 String cardNumber = TextFormatUtils.formatCreditCardNumber(CredentialsLogin.getUserCredential());
                 if (cardNumber != null) {
@@ -91,6 +93,7 @@ public class MainFragment extends BaseFragment {
     @Override
     protected void fragmentInit() {
         View view = getView();
+        mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
         mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
         mLogoutButton = (Button) view.findViewById(R.id.main_logout);
         mOperationsList = (ListView) view.findViewById(R.id.main_operations_list);
