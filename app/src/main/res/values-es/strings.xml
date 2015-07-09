@@ -5,6 +5,7 @@
     <string name="login_hint_card_number">Número de tarjeta</string>
     <string name="login_hint_password">Contraseña</string>
     <string name="login_remember_password">Recordar contraseña</string>
+    <string name="error_not_user_or_pass">Introduce número de tarjeta y contraseña</string>
 
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Saldo actual:</string>

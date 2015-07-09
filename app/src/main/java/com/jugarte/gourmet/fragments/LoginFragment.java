@@ -49,7 +49,7 @@ public class LoginFragment extends BaseFragment {
         if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
             new LoginTask().execute(user, pass);
         } else {
-            LoginFragment.this.showError("1", "Enter card number and password");
+            LoginFragment.this.showError("1", getResources().getString(R.string.error_not_user_or_pass));
         }
     }
 
