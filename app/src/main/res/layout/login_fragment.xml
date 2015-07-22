@@ -31,6 +31,7 @@
                 android:digits="0123456789 "
                 android:inputType="number"
                 android:maxLength="19"
+                android:fontFamily="sans-serif"
                 android:layout_below="@id/login_logo_image"
                 android:layout_height="wrap_content" />
 
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:singleLine="true"
+                android:fontFamily="sans-serif"
                 android:hint="@string/login_hint_password"
                 android:password="true"
                 android:layout_below="@id/login_user" />
@@ -55,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:textColor="@color/primary_text"
                     android:text="@string/login_remember_password" />
 
                 <Button
@@ -64,6 +67,7 @@
                     android:background="@color/transparent"
                     android:textColor="@color/accent"
                     android:text="@string/login_button"
+                    android:textSize="16sp"
                     android:layout_alignParentRight="true" />
 
             </RelativeLayout>
