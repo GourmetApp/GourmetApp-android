@@ -1,7 +1,0 @@
-task helloNena << {
-    println 'Hello Nena!!'
-}
-
-task distribution << {
-    println "We build the zip with version=$version"
-}
