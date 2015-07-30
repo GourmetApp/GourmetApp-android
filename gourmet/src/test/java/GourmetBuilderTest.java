@@ -1,5 +1,4 @@
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 
 import org.junit.Test;
@@ -24,6 +23,7 @@ public class GourmetBuilderTest extends BaseTest {
 
         assertEquals(gourmet.currentBalance, "34,56");
         assertNotNull(gourmet.operations);
+        assertTrue(gourmet.operations.size() == 9);
         assertEquals(gourmet.operations.get(0).name, "BURGER KING QUEVEDO");
         assertEquals(gourmet.operations.get(0).price, "7,45");
         assertEquals(gourmet.operations.get(0).date, "05/07/2015");
@@ -32,7 +32,7 @@ public class GourmetBuilderTest extends BaseTest {
         assertEquals(gourmet.operations.get(1).name, "COECOE HOSTELEROS");
 
         assertEquals(gourmet.operations.get(3).name, "DI BOCCA RESTAURACIO");
-        assertEquals(gourmet.operations.get(0).price, "11,95");
+        assertEquals(gourmet.operations.get(3).price, "11,95");
 
         assertEquals(gourmet.operations.get(8).name, "BURGER KING QUEVEDO");
         assertEquals(gourmet.operations.get(8).price, "1,49");
@@ -68,6 +68,55 @@ public class GourmetBuilderTest extends BaseTest {
 
         assertNull(gourmet.currentBalance);
         assertNull(gourmet.operations);
+    }
+
+    @Test
+    public void testResponseEmptyAndNull() throws Exception {
+        String data = "";
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
+        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+
+        assertEquals(gourmet.errorCode, "3");
+        assertEquals(gourmet.errorMessage, "El servidor no responde");
+        assertNull(gourmet.currentBalance);
+        assertNull(gourmet.operations);
+
+        data = null;
+        gourmetBuilder = new GourmetInternalBuilder("");
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
+        gourmet = (Gourmet) gourmetBuilder.build();
+
+        assertEquals(gourmet.errorCode, "3");
+        assertEquals(gourmet.errorMessage, "El servidor no responde");
+        assertNull(gourmet.currentBalance);
+        assertNull(gourmet.operations);
+
+        data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
+        gourmetBuilder = new GourmetInternalBuilder("");
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
+        gourmet = (Gourmet) gourmetBuilder.build();
+
+        assertEquals(gourmet.errorCode, "3");
+        assertEquals(gourmet.errorMessage, "El servidor no responde");
+        assertNull(gourmet.currentBalance);
+        assertNull(gourmet.operations);
+    }
+
+    @Test
+    public void testHelperClass() throws Exception {
+
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+
+        assertEquals(gourmetBuilder.cleanString(" hola "), "hola");
+        assertEquals(gourmetBuilder.cleanString(" hola    "), "hola");
+        assertEquals(gourmetBuilder.cleanString(" hola  \n  \t  "), "hola");
+        assertEquals(gourmetBuilder.cleanString(" hola paco  \n  \t  "), "hola paco");
+
+        assertEquals(gourmetBuilder.removeLastWord("Hola"), "Hol");
+        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
+        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
+
     }
 
 }
