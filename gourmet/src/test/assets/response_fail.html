@@ -1,0 +1,97 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=F7D7CD2469F67518E13E34A1801D604A; Path=/; HttpOnly
+Content-Type: text/html;charset=ISO-8859-1
+Content-Length: 2152
+Date: Fri, 10 Jul 2015 12:06:57 GMT
+
+<html>
+
+   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=2.0;' name='viewport' />
+  <title>Tarjeta Móvil</title>
+ 
+   <script src="javaScript/validaLogin.js"></script>	 
+ <link href="css/tarjeta.css" rel="stylesheet" type="text/css" />
+  
+ <script type="text/javascript">
+detectOrientation();
+window.onorientationchange = detectOrientation;
+function detectOrientation(){
+	if(typeof window.onorientationchange != 'undefined'){
+		if ( orientation == 0 ) {
+			window.scrollTo(0,1);		
+		}
+		else if ( orientation == 90 ) {
+				window.scrollTo(0,1);
+		}
+		else if ( orientation == -90 ) {
+				window.scrollTo(0,1);
+		}
+		else if ( orientation == 180 ) {
+				window.scrollTo(0,1);
+		}
+	}
+}
+</script>
+
+<script language="javascript">
+function detectOrientation(){
+	if(typeof window.onorientationchange != 'undefined'){
+		if ( orientation == 0 ) {
+			window.scrollTo(0,1);
+		}
+		else if ( orientation == 90 ) {
+
+			window.scrollTo(0,1);
+		}
+		else if ( orientation == -90 ) {
+			window.scrollTo(0,1);
+		}
+		else if ( orientation == 180 ) {
+			window.scrollTo(0,1);
+		}
+	}
+}
+window.onorientationchange = detectOrientation;
+</script>
+
+<script language="javascript">
+	function deteccion(){
+  	 window.scrollTo(0,1);
+		 if(navigator.platform == 'iPhone' || navigator.platform == 'iPod'){
+		 		document.getElementById('Pie').style.marginTop="90%";
+		 }else{
+		 		document.getElementById('Pie').style.marginTop="75%";
+		 }
+		
+//			document.getElementById('Pie').style.display="none";
+	}
+//	window.onload = setTimeout("deteccion();",1000);
+
+	function volverLogin(){
+		top.location.replace("login_iphone.jsp");
+	}
+</script>
+</head>
+ <body>
+ <div id="cuerpo">
+   <div id="logo">
+	  <img src="img/logoMovil.jpg">
+     </div>
+
+     <div id="dato1" >
+	 <center>
+			<strong>Usuario o contraseña incorrecta.</strong>
+	  </center>	   
+	    
+     </div>
+
+
+   <div id="Pie" >   
+   		 <div id="Enviar">	
+<input name="botonvolver" type="button" class="boton01"  onClick="volverLogin()" value="Volver"> 
+		 </div>
+   </div>
+ </div>
+ </body>
+</html>
