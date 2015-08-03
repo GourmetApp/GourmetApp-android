@@ -70,7 +70,7 @@ public class GourmetBuilder extends BaseBuilder {
 
 	@Override
 	public void append(String type, Object data) {
-		if(type.equals(GourmetBuilder.DATA_JSON)) {
+		if(type.equals(BaseBuilder.DATA_JSON)) {
 			this._dataJSON = (String) data;
 		}
 	}

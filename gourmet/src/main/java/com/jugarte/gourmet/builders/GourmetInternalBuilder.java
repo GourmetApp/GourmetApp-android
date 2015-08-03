@@ -89,7 +89,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 
 	@Override
 	public void append(String type, Object data) {
-		if(type.equals(GourmetInternalBuilder.DATA_JSON)) {
+		if(type.equals(BaseBuilder.DATA_JSON)) {
 			this._data = (String) data;
 		}
 	}

@@ -3,6 +3,7 @@ package com.jugarte.gourmet.datamanagers;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
+import com.jugarte.gourmet.builders.LastVersionBuilder;
 import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.internal.Constants;
 
@@ -43,7 +44,13 @@ public class DataManager {
 
     public Object getLastPublishVersion() {
         String response = this.launchGetUrl(Constants.getUrlLastPublishVersion());
-        return null;
+        LastVersionBuilder lastVersionBuilder = new LastVersionBuilder(null);
+        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, response);
+        try {
+            return lastVersionBuilder.build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
