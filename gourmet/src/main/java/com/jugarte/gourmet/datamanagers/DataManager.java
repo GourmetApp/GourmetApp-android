@@ -2,6 +2,7 @@ package com.jugarte.gourmet.datamanagers;
 
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.builders.GourmetBuilder;
+import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.internal.Constants;
 
@@ -39,12 +40,26 @@ public class DataManager {
             return null;
         }
     }
+
+    public Gourmet internalLogin(HashMap<String, Object> params) {
+        String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
+
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(null);
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
+        try {
+            return gourmetBuilder.build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Gourmet login(String user, String pass) {
         if (user != null && pass != null) {
             HashMap<String, Object> params = new HashMap<String, Object>();
-            params.put(Constants.SERVICE_PARAM_USER, user);
-            params.put(Constants.SERVICE_PARAM_PASS, pass);
-            return this.login(params);
+            params.put(Constants.SERVICE_PARAM_USER_KEY, user);
+            params.put(Constants.SERVICE_PARAM_PASS_KEY, pass);
+            params.put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);
+            return this.internalLogin(params);
         }
         return null;
     }

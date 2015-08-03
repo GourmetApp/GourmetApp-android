@@ -6,12 +6,15 @@ package com.jugarte.gourmet.internal;
 public class Constants {
 
     /// PARAMS
-    public static String SERVICE_PARAM_USER = "user";
-    public static String SERVICE_PARAM_PASS = "pass";
+    public static String SERVICE_PARAM_USER_KEY = "usuario";
+    public static String SERVICE_PARAM_PASS_KEY = "contrasena";
+    public static String SERVICE_PARAM_TOKEN_KEY = "token";
+    public static String SERVICE_PARAM_TOKEN_RESPONSE = "xAeSYsTQQTCVyPOGWLpR";
 
     public static String getUrlLoginService() {
-        //return "http://jugarte.es/api/gourmet/gourmet.php";
-        return "http://jugarte.es/api/gourmet/login.php";
+        //return "http://jugarte.es/api/gourmet/login.php";
+        return "http://tarjetagourmet.chequegourmet.com/processLogin_iphoneApp.jsp";
+
     }
 
 }
