@@ -66,15 +66,13 @@ public class MainFragment extends BaseFragment {
                 OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
-                Toast.makeText(this.getActivity(), gourmet.errorMessage, Toast.LENGTH_SHORT).show();
-                ;
+                this.showError(gourmet.errorCode, gourmet.errorMessage);
                 CredentialsLogin.removeCredentials();
                 MainActivity activity = (MainActivity) this.getActivity();
                 activity.navigateToLogin();
             }
         } else {
-            Toast.makeText(this.getActivity(), R.string.error_check_connetion, Toast.LENGTH_SHORT).show();
-            ;
+            this.showError("1", getString(R.string.error_check_connetion));
         }
     }
 
