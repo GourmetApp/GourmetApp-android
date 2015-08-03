@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,30 +30,6 @@ import java.util.Map;
  */
 public class DataManager {
 
-    public Gourmet login(HashMap<String, Object> params) {
-        String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
-
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(null);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
-        try {
-            return gourmetBuilder.build();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public Gourmet internalLogin(HashMap<String, Object> params) {
-        String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
-
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(null);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
-        try {
-            return gourmetBuilder.build();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public Gourmet login(String user, String pass) {
         if (user != null && pass != null) {
             HashMap<String, Object> params = new HashMap<String, Object>();
@@ -64,7 +41,38 @@ public class DataManager {
         return null;
     }
 
-    public String launchPostUrl(String url, HashMap<String, Object> bodyParams) {
+    public Object getLastPublishVersion() {
+        String response = this.launchGetUrl(Constants.getUrlLastPublishVersion());
+        return null;
+    }
+
+
+    @Deprecated
+    private Gourmet login(HashMap<String, Object> params) {
+        String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
+
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(null);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
+        try {
+            return gourmetBuilder.build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Gourmet internalLogin(HashMap<String, Object> params) {
+        String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
+
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(null);
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
+        try {
+            return gourmetBuilder.build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private String launchPostUrl(String url, HashMap<String, Object> bodyParams) {
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(url);
 
@@ -84,6 +92,24 @@ public class DataManager {
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             HttpResponse response = httpclient.execute(httppost);
+            return EntityUtils.toString(response.getEntity());
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String launchGetUrl(String url) {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpget = new HttpGet(url);
+
+        try {
+            LogUtils.LOGD("GOURMET", "------------------------------------------------");
+            LogUtils.LOGD("GOURMET", "URL " + url);
+            HttpResponse response = httpclient.execute(httpget);
             return EntityUtils.toString(response.getEntity());
 
         } catch (ClientProtocolException e) {

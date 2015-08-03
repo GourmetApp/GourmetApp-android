@@ -11,6 +11,10 @@ public class Constants {
     public static String SERVICE_PARAM_TOKEN_KEY = "token";
     public static String SERVICE_PARAM_TOKEN_RESPONSE = "xAeSYsTQQTCVyPOGWLpR";
 
+    public static String getUrlLastPublishVersion() {
+        return "https://api.github.com/repos/javierugarte/GourmetApp-android/releases";
+    }
+
     public static String getUrlLoginService() {
         //return "http://jugarte.es/api/gourmet/login.php";
         return "http://tarjetagourmet.chequegourmet.com/processLogin_iphoneApp.jsp";
