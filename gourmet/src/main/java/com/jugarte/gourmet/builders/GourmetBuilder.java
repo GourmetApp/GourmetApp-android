@@ -22,10 +22,6 @@ public class GourmetBuilder extends BaseBuilder {
         return gourmet;
     }
 
-	public GourmetBuilder(String deviceType) {
-		super(deviceType);
-	}
-
 	@Override
 	public Gourmet build() throws Exception {
 		Gourmet gourmet = new Gourmet();

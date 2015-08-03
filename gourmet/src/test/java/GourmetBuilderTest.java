@@ -14,7 +14,7 @@ public class GourmetBuilderTest extends BaseTest {
     public void testResponseOk() throws Exception {
         String data = this.utils.getResourceToString("response_ok.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -44,7 +44,7 @@ public class GourmetBuilderTest extends BaseTest {
     public void testResponseWithoutOperations() throws Exception {
         String data = this.utils.getResourceToString("response_okwithoutops.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -59,7 +59,7 @@ public class GourmetBuilderTest extends BaseTest {
     public void testResponseFail() throws Exception {
         String data = this.utils.getResourceToString("response_fail.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -73,7 +73,7 @@ public class GourmetBuilderTest extends BaseTest {
     @Test
     public void testResponseEmptyAndNull() throws Exception {
         String data = "";
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -83,7 +83,7 @@ public class GourmetBuilderTest extends BaseTest {
         assertNull(gourmet.operations);
 
         data = null;
-        gourmetBuilder = new GourmetInternalBuilder("");
+        gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -93,7 +93,7 @@ public class GourmetBuilderTest extends BaseTest {
         assertNull(gourmet.operations);
 
         data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
-        gourmetBuilder = new GourmetInternalBuilder("");
+        gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
         gourmet = (Gourmet) gourmetBuilder.build();
 
@@ -106,7 +106,7 @@ public class GourmetBuilderTest extends BaseTest {
     @Test
     public void testHelperClass() throws Exception {
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder("");
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
 
         assertEquals(gourmetBuilder.cleanString(" hola "), "hola");
         assertEquals(gourmetBuilder.cleanString(" hola    "), "hola");

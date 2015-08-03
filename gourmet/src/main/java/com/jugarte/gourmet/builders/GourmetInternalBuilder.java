@@ -40,10 +40,6 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		return text;
 	}
 
-	public GourmetInternalBuilder(String deviceType) {
-		super(deviceType);
-	}
-
 	@Override
 	public Gourmet build() throws Exception {
 		if (this._data == null || this._data.length() == 0) {

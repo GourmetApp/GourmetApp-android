@@ -1,6 +1,7 @@
 package com.jugarte.gourmet.datamanagers;
 
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 import com.jugarte.gourmet.builders.LastVersionBuilder;
@@ -42,12 +43,12 @@ public class DataManager {
         return null;
     }
 
-    public Object getLastPublishVersion() {
+    public LastVersion getLastPublishVersion() {
         String response = this.launchGetUrl(Constants.getUrlLastPublishVersion());
-        LastVersionBuilder lastVersionBuilder = new LastVersionBuilder(null);
+        LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
         lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, response);
         try {
-            return lastVersionBuilder.build();
+            return (LastVersion) lastVersionBuilder.build();
         } catch (Exception e) {
             return null;
         }
@@ -58,7 +59,7 @@ public class DataManager {
     private Gourmet login(HashMap<String, Object> params) {
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(null);
+        GourmetBuilder gourmetBuilder = new GourmetBuilder();
         gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
         try {
             return gourmetBuilder.build();
@@ -70,7 +71,7 @@ public class DataManager {
     private Gourmet internalLogin(HashMap<String, Object> params) {
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(null);
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
         try {
             return gourmetBuilder.build();
