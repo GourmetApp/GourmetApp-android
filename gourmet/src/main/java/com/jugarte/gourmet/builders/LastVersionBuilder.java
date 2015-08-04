@@ -22,6 +22,10 @@ public class LastVersionBuilder extends BaseBuilder {
 
     private String _data = "";
 
+    private String getChangelogWithHtmlCode(String text) {
+        return text.replace("\r\n", "<br>");
+    }
+
     @Override
     public Object build() throws Exception {
         if (_data == null || _data.trim().length() == 0) {
@@ -45,7 +49,7 @@ public class LastVersionBuilder extends BaseBuilder {
                 lastVersion.nameTagVersion = releaseObject.getString(TAG_NAME_KEY);
                 lastVersion.nameVersion = releaseObject.getString(NAME_KEY);
                 lastVersion.urlDownload = releaseObject.getString(HTML_URL_KEY);
-                lastVersion.changelog = releaseObject.getString(CHANGELOG_KEY);
+                lastVersion.changelog = getChangelogWithHtmlCode(releaseObject.getString(CHANGELOG_KEY));
 
                 if (releaseObject.getJSONArray(ASSSETS_KEY) != null &&
                         releaseObject.getJSONArray(ASSSETS_KEY).length() > 0) {

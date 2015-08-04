@@ -30,7 +30,7 @@ public class LastVersionBuilderTest extends BaseTest {
         assertEquals(lastVersion.urlDownload, "https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk");
         assertNotNull(lastVersion.changelog);
         // This test not found
-        //assertEquals(lastVersion.changelog, "* Spanish traduction\\r\\n* Exit login when the user has changed the password\\r\\n* Fixed fonts of EditText");
+        assertEquals(lastVersion.changelog, "* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class LastVersionBuilderTest extends BaseTest {
         assertEquals(lastVersion.urlDownload, "https://github.com/javierugarte/GourmetApp-android/releases/tag/v1.0.1");
         assertNotNull(lastVersion.changelog);
         // This test not found
-        //assertEquals(lastVersion.changelog, "* Spanish translation\\r\\n* Exit login when the user has changed the password\\r\\n* Fixed fonts of EditText");
+        assertEquals(lastVersion.changelog, "* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText");
     }
 
     @Test

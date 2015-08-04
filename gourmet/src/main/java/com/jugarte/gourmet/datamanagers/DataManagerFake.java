@@ -1,7 +1,10 @@
 package com.jugarte.gourmet.datamanagers;
 
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.builders.LastVersionBuilder;
+import com.jugarte.gourmet.internal.Constants;
 
 import java.util.HashMap;
 
@@ -25,4 +28,19 @@ public class DataManagerFake {
         }
         return gourmet;
     }
+
+    public LastVersion getLastPublishVersion() {
+        LastVersion lastVersion = new LastVersion();
+
+        lastVersion.idVersion = "1603617";
+        lastVersion.nameTagVersion = "v1.0.2";
+        lastVersion.nameVersion = "Release v1.0.2";
+        lastVersion.idDownload = "753792";
+        lastVersion.nameDownload = "GourmetApp-v1.0.1.apk";
+        lastVersion.urlDownload = "https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk";
+        lastVersion.changelog = "* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText";
+
+        return lastVersion;
+    }
+
 }

@@ -3,4 +3,8 @@
 
     <string name="copy_to_clipboard">Copy to clipboard</string>
 
+    <string name="dialog_download_button">Download</string>
+    <string name="dialog_cancel_button">Cancel</string>
+    <string name="dialog_title_last_version">New version</string>
+
 </resources>
