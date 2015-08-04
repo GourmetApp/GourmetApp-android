@@ -11,5 +11,7 @@ public class LastVersion {
     public String idDownload = null;
     public String nameDownload = null;
     public String urlDownload = null;
+    public String changelog = null;
+
 
 }

@@ -18,6 +18,7 @@ public class LastVersionBuilder extends BaseBuilder {
     private static final String HTML_URL_KEY = "html_url";
     private static final String ASSSETS_KEY = "assets";
     private static final String URL_KEY = "browser_download_url";
+    private static final String CHANGELOG_KEY = "body";
 
     private String _data = "";
 
@@ -44,6 +45,7 @@ public class LastVersionBuilder extends BaseBuilder {
                 lastVersion.nameTagVersion = releaseObject.getString(TAG_NAME_KEY);
                 lastVersion.nameVersion = releaseObject.getString(NAME_KEY);
                 lastVersion.urlDownload = releaseObject.getString(HTML_URL_KEY);
+                lastVersion.changelog = releaseObject.getString(CHANGELOG_KEY);
 
                 if (releaseObject.getJSONArray(ASSSETS_KEY) != null &&
                         releaseObject.getJSONArray(ASSSETS_KEY).length() > 0) {
