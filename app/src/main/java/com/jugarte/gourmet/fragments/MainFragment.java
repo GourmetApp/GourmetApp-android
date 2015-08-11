@@ -1,9 +1,12 @@
 package com.jugarte.gourmet.fragments;
 
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.datamanagers.DataManager;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.utils.ClipboardUtils;
+import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 import com.google.gson.Gson;
 
@@ -96,6 +100,13 @@ public class MainFragment extends BaseFragment {
         mLogoutButton = (Button) view.findViewById(R.id.main_logout);
         mOperationsList = (ListView) view.findViewById(R.id.main_operations_list);
         mCardNumberTextView = (TextView) view.findViewById(R.id.main_card_number);
+
+        // AspectRatio 16:9
+        RelativeLayout container = (RelativeLayout) view.findViewById(R.id.all_container);
+        ViewGroup.LayoutParams lp = container.getLayoutParams();
+        Point displayPoint = DisplayUtils.getScreenSize(getActivity());
+        lp.height = (int) ((float) displayPoint.x) * 9 / 16;
+        container.setLayoutParams(lp);
 
         if (this.getParams() != null && this.getParams().length() > 0) {
             Gson gson = new Gson();
