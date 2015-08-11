@@ -7,6 +7,8 @@ This application shows the balance and last operations of http://www.up-spain.es
 ## Download the last version:
 [<i class="icon-download"></i>Gourmet App 1.1.0](https://github.com/javierugarte/GourmetApp-android/releases/download/v1.1.0/GourmetApp-v1.1.0.apk)
 
+(Android 4.1 or above)
+
 ## Captures
 <img src="http://javierugarte.github.io/GourmetApp-android/captures/login.png" width="250">
 <img src="http://javierugarte.github.io/GourmetApp-android/captures/main.png" width="250">
