@@ -69,7 +69,8 @@
         android:id="@+id/main_operations_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/all_container" />
+        android:layout_below="@id/all_container"
+        android:listSelector="@android:color/transparent" />
 
     <include
         android:id="@+id/loading_view"
