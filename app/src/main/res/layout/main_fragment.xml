@@ -65,12 +65,19 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/main_operations_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/main_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/all_container"
-        android:listSelector="@android:color/transparent" />
+        android:layout_below="@id/all_container">
+
+        <ListView
+            android:id="@+id/main_operations_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/loading_view"

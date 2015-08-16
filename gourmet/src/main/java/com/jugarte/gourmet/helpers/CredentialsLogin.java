@@ -11,6 +11,7 @@ public class CredentialsLogin {
 
     private static String USER_KEY = "user";
     private static String PASS_KEY = "pass";
+    private static String CREDENTIAL_KEY = "credential";
 
     private static Activity mActivity = null;
 
@@ -24,7 +25,7 @@ public class CredentialsLogin {
     }
 
     public static boolean isCredential() {
-        return (getSharedPreferences().getString(PASS_KEY, null) != null);
+        return (getSharedPreferences().getBoolean(CREDENTIAL_KEY, false));
     }
 
     public static String getUserCredential() {
@@ -41,16 +42,18 @@ public class CredentialsLogin {
         editor.commit();
     }
 
-    public static void saveCredentials(String user, String password) {
+    public static void saveCredentials(String user, String password, boolean persistent) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(USER_KEY, user);
         editor.putString(PASS_KEY, password);
+        editor.putBoolean(CREDENTIAL_KEY, persistent);
         editor.commit();
     }
 
     public static void removeCredentials() {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.remove(PASS_KEY);
+        editor.putBoolean(CREDENTIAL_KEY, false);
         editor.commit();
     }
 

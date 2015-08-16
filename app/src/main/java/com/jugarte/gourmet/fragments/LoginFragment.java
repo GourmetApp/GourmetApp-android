@@ -37,9 +37,7 @@ public class LoginFragment extends BaseFragment {
 
     private void saveCredentials(String user, String pass) {
         CredentialsLogin.removeCredentials();
-        if (mPassRemember.isChecked()) {
-            CredentialsLogin.saveCredentials(user, pass);
-        }
+        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked());
     }
 
     private void launchLogin() {

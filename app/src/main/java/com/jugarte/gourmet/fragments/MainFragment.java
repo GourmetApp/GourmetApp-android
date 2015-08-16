@@ -2,6 +2,7 @@ package com.jugarte.gourmet.fragments;
 
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,6 +37,7 @@ public class MainFragment extends BaseFragment {
     private TextView mCurrentText = null;
     private Button mLogoutButton = null;
     private ListView mOperationsList = null;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView mCardNumberTextView = null;
 
     /**********************
@@ -99,6 +101,8 @@ public class MainFragment extends BaseFragment {
         mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
         mLogoutButton = (Button) view.findViewById(R.id.main_logout);
         mOperationsList = (ListView) view.findViewById(R.id.main_operations_list);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
         mCardNumberTextView = (TextView) view.findViewById(R.id.main_card_number);
 
         // AspectRatio 16:9
@@ -112,8 +116,16 @@ public class MainFragment extends BaseFragment {
             Gson gson = new Gson();
             this.drawLayout(gson.fromJson(this.getParams(), Gourmet.class));
         } else {
-             new DataAsyncTask().execute();
+            showLoading(true);
+            new DataAsyncTask().execute();
         }
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new DataAsyncTask().execute();
+            }
+        });
 
         mCardNumberTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +167,6 @@ public class MainFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showLoading(true);
         }
 
         @Override
@@ -168,8 +179,9 @@ public class MainFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(Object result) {
-            showLoading(false);
             MainFragment.this.drawLayout(result);
+            showLoading(false);
+            MainFragment.this.mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
