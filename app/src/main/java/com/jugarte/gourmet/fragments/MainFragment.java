@@ -19,8 +19,11 @@ import com.jugarte.gourmet.datamanagers.DataManager;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
+import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 import com.google.gson.Gson;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.enums.SnackbarType;
 
 
 /**
@@ -45,11 +48,20 @@ public class MainFragment extends BaseFragment {
      *	    INTERNAL	  *
      *					  *
      **********************/
-    private void showError(String errorCode, String errorMessage) {
+    private void showError(String errorCode) {
+        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
         if (errorCode != null && errorMessage != null) {
-            Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")){
+                Snackbar.with(getActivity().getApplicationContext())
+                        .type(SnackbarType.MULTI_LINE)
+                        .text(errorMessage)
+                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+                        .show(getActivity());
+            } else {
+                Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                logout();
+            }
         }
-        this.logout();
     }
 
     private void logout() {
@@ -72,13 +84,10 @@ public class MainFragment extends BaseFragment {
                 OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
-                this.showError(gourmet.errorCode, gourmet.errorMessage);
-                CredentialsLogin.removeCredentials();
-                MainActivity activity = (MainActivity) this.getActivity();
-                activity.navigateToLogin();
+                this.showError(gourmet.errorCode);
             }
         } else {
-            this.showError("1", getString(R.string.error_check_connetion));
+            this.showError("3");
         }
     }
 

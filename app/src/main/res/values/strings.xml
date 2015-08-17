@@ -1,15 +1,4 @@
 <resources>
     <string name="app_name">Gourmet App</string>
 
-    <string name="login_button">LOGIN</string>
-    <string name="login_hint_card_number">Card number</string>
-    <string name="login_hint_password">Password</string>
-    <string name="login_remember_password">Remember pass</string>
-    <string name="error_not_user_or_pass">Enter card number and password</string>
-
-    <string name="logout_button">LOGOUT</string>
-    <string name="current_text">Current balance:</string>
-    <string name="error_sesion_expired">The session has expired</string>
-    <string name="error_check_connetion">Check your connection</string>
-
 </resources>

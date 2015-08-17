@@ -18,6 +18,7 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.datamanagers.DataManager;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.google.gson.Gson;
+import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
 
 /**
@@ -29,9 +30,10 @@ public class LoginFragment extends BaseFragment {
     private EditText mPassEditText = null;
     private CheckBox mPassRemember = null;
 
-    private void showError(String errorCode, String errorMessage) {
-        if (errorCode != null && errorMessage != null) {
-            Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+    private void showError(String errorCode) {
+        if (errorCode != null) {
+            String errorMeesage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
+            Toast.makeText(this.getActivity(), errorMeesage, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -47,7 +49,7 @@ public class LoginFragment extends BaseFragment {
         if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
             new LoginTask().execute(user, pass);
         } else {
-            LoginFragment.this.showError("1", getResources().getString(R.string.error_not_user_or_pass));
+            LoginFragment.this.showError("1");
         }
     }
 
@@ -119,7 +121,7 @@ public class LoginFragment extends BaseFragment {
                     MainActivity activity = (MainActivity) LoginFragment.this.getActivity();
                     activity.navigateToMain(response);
                 } else {
-                    showError(gourmet.errorCode, gourmet.errorMessage);
+                    showError(gourmet.errorCode);
                 }
             }
         }

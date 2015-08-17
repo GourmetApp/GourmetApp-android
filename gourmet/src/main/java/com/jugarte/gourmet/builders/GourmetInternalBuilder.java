@@ -13,13 +13,12 @@ public class GourmetInternalBuilder extends BaseBuilder {
 	private String _data = "";
 
     private Gourmet returnError() {
-        return this.returnError("1", "Error");
+        return this.returnError("1");
     }
 
-    private Gourmet returnError(String errorCode, String errorMessage) {
+    private Gourmet returnError(String errorCode) {
         Gourmet gourmet = new Gourmet();
         gourmet.errorCode = errorCode;
-        gourmet.errorMessage = errorMessage;
 		gourmet.operations = null;
         return gourmet;
     }
@@ -43,21 +42,20 @@ public class GourmetInternalBuilder extends BaseBuilder {
 	@Override
 	public Gourmet build() throws Exception {
 		if (this._data == null || this._data.length() == 0) {
-			return this.returnError("3", "El servidor no responde");
+			return this.returnError("3");
 		}
 		Gourmet gourmet = new Gourmet();
 		gourmet.errorCode = "0";
-		gourmet.errorMessage = "";
 
 		Document doc = Jsoup.parse(this._data);
 
 		if (doc.getElementById("dato1") != null) {
-			return this.returnError("2", "Usuario o contraseña incorrectos");
+			return this.returnError("2");
 		}
 
 		Element currentBalanceElement = doc.getElementById("TotalSaldo");
 		if (currentBalanceElement == null) {
-			return this.returnError("3", "El servidor no responde");
+			return this.returnError("3");
 		}
 		gourmet.currentBalance = this.cleanString(currentBalanceElement.text());
 

@@ -1,8 +1,24 @@
 <resources>
     <string name="app_name">Gourmet lib</string>
 
+    <!-- Login -->
+    <string name="login_button">LOGIN</string>
+    <string name="login_hint_card_number">Card number</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_remember_password">Remember pass</string>
+
+    <!-- Main -->
+    <string name="logout_button">LOGOUT</string>
+    <string name="current_text">Current balance:</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
 
+    <!-- Errors -->
+    <string name="error_session_expired">The session has expired</string>
+    <string name="error_not_user_or_pass_code1">Enter card number and password</string>
+    <string name="error_user_or_password_incorrect_code2">User or password incorrect</string>
+    <string name="error_connection_code3">"Connection error. Please check your internet connection"</string>
+
+    <!-- Dialog -->
     <string name="dialog_download_button">Download</string>
     <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_title_last_version">New version</string>

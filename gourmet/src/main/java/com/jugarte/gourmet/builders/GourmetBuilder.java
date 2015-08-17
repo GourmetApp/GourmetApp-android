@@ -18,7 +18,6 @@ public class GourmetBuilder extends BaseBuilder {
     private Gourmet returnError(String errorCode, String errorMessage) {
         Gourmet gourmet = new Gourmet();
         gourmet.errorCode = errorCode;
-        gourmet.errorMessage = errorMessage;
         return gourmet;
     }
 
@@ -59,7 +58,6 @@ public class GourmetBuilder extends BaseBuilder {
 
         gourmet.currentBalance = data.getString("currentBalance");
         gourmet.errorCode = data.getString("errorCode");
-        gourmet.errorMessage= data.getString("errorMessage");
 
 		return gourmet;
 	}

@@ -10,7 +10,6 @@ public class Gourmet {
     public String currentBalance = null;
 
     public String errorCode = null;
-    public String errorMessage = null;
 
     public ArrayList<Operation> operations = null;
 
