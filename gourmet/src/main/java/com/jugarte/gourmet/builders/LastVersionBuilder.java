@@ -1,6 +1,7 @@
 package com.jugarte.gourmet.builders;
 
 import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.internal.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,7 @@ public class LastVersionBuilder extends BaseBuilder {
                 lastVersion.nameTagVersion = releaseObject.getString(TAG_NAME_KEY);
                 lastVersion.nameVersion = releaseObject.getString(NAME_KEY);
                 lastVersion.urlDownload = releaseObject.getString(HTML_URL_KEY);
+                lastVersion.urlHomePage = Constants.getUrlHomePage();
                 lastVersion.changelog = getChangelogWithHtmlCode(releaseObject.getString(CHANGELOG_KEY));
 
                 if (releaseObject.getJSONArray(ASSSETS_KEY) != null &&

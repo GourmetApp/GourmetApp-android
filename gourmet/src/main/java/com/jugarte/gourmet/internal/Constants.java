@@ -18,7 +18,10 @@ public class Constants {
     public static String getUrlLoginService() {
         //return "http://jugarte.es/api/gourmet/login.php";
         return "http://tarjetagourmet.chequegourmet.com/processLogin_iphoneApp.jsp";
+    }
 
+    public static String getUrlHomePage() {
+        return "http://javierugarte.github.io/GourmetApp-android";
     }
 
 }
