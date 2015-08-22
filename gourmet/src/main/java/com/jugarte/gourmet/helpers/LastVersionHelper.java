@@ -39,7 +39,7 @@ public class LastVersionHelper {
                 .setMessage(Html.fromHtml(lastVersion.changelog))
                 .setPositiveButton(R.string.dialog_download_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        openUrlInBrowser(context, lastVersion.urlDownload);
+                        openUrlInBrowser(context, lastVersion.urlHomePage);
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel_button, new DialogInterface.OnClickListener() {
