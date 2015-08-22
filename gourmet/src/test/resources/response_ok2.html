@@ -1,0 +1,328 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Set-Cookie: JSESSIONID=EC9AA2C330A30B2DFD75134BC48F9A62; Path=/; HttpOnly
+Content-Type: text/html;charset=iso-8859-1
+Transfer-Encoding: chunked
+Date: Sat, 22 Aug 2015 13:22:44 GMT
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=2.0;' name='viewport' />
+
+  <title>Consulta tarjetas</title>
+ <link href="css/tarjeta.css" rel="stylesheet" type="text/css" />
+ <style type="text/css">
+ .saldo {
+	color: #Fa8200;
+}
+ .style3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+}
+.style5 {font-family: Arial, Helvetica, sans-serif; font-size: 14px;font-weight:normal;}
+ </style>
+<script language="javascript">
+ function cierreSesion(){
+	 	top.location.replace("cierreSesion_iphone.jsp");
+ }
+ </script>
+<script language="javascript">
+function detectOrientation(){
+	if(typeof window.onorientationchange != 'undefined'){
+		if ( orientation == 0 ) {
+			window.scrollTo(0,1);
+			if(navigator.platform == 'iPhone' || navigator.platform == 'iPod'){
+	 			document.getElementById('Pie').style.marginTop="90%";
+			}
+		}
+		else if ( orientation == 90 ) {
+			window.scrollTo(0,1);
+			if(navigator.platform == 'iPhone' || navigator.platform == 'iPod'){
+	 			document.getElementById('Pie').style.marginTop="75%";
+			}
+		}
+		else if ( orientation == -90 ) {
+			window.scrollTo(0,1);
+			if(navigator.platform == 'iPhone' || navigator.platform == 'iPod'){
+	 			document.getElementById('Pie').style.marginTop="75%";
+			}
+		}
+		else if ( orientation == 180 ) {
+			window.scrollTo(0,1);
+		}
+	}
+}
+window.onorientationchange = detectOrientation;
+</script>
+
+<script language="javascript">
+	function deteccion(){
+  	 window.scrollTo(0,1);
+		 if(navigator.platform == 'iPhone' || navigator.platform == 'iPod'){
+	 		document.getElementById('Pie').style.marginTop="90%";
+		 }else{
+	 		document.getElementById('Pie').style.marginTop="75%";
+		 }
+		
+//			document.getElementById('Pie').style.display="none";
+	}
+//	window.onload = setTimeout("deteccion();",1000);
+</script>
+
+<script language="javascript">
+
+function trim(v)
+{
+return v.replace(/^\s+/i, '').replace(/\s+$/i, '');
+} 
+
+
+</script>
+</head>
+
+
+ <body>
+
+ <div id="cuerpo" align="center">
+  <div id="Cabecera">
+
+   <div class="style5" id="iniciosesion">Consulta de Saldo Tarjeta</div>
+  </div>
+ 
+ 	 <div id="TotalSaldo">
+			<span class="saldo"><span class="style3">Saldo</span>:</span> <strong>			
+		 	101,89 
+   </strong>   </div>
+   <div id="mostrarMovimientos">
+
+ 	<table id="tablaMovimientos"  border="1"  frame="below" rules="rows" class="textoTabla" align="center">
+			
+			
+		 
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">20/08/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">DI BOCCA RESTAURACIO    M</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">23,90</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			DI BOCCA RESTAURACIO    M		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			1072		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			15:51		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">15/08/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">BK TALAVERA GOLF</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">16,89</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			BK TALAVERA GOLF		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			3675		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			21:16		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">15/08/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">BAR-RESTAURANTE USE</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">40,70</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			BAR-RESTAURANTE USE		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			4379		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			15:38		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">14/08/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">Actualización de saldo</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">180,00</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			Actualización de saldo		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			1035		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			10:35		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			6011		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">20/07/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">BURGER KING QUEVEDO     M</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">6,95</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			BURGER KING QUEVEDO     M		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			5333		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			22:19		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5814		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">18/07/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">EL TXOKO                B</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">38,90</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			EL TXOKO                B		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			7242		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			15:22		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5814		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">15/07/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">FOSTER HOLLYWOOD        O</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">22,90</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			FOSTER HOLLYWOOD        O		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			1676		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			15:44		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">12/07/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">HOTEL RESTAURANTE CA    B</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">41,50</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			HOTEL RESTAURANTE CA    B		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			1993		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			15:44		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">12/07/2015</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">YOOSIN S.L.             A</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">59,50</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			YOOSIN S.L.             A		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			1348		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			00:18		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			ok		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			5812		</td>	
+ 	</tr>
+
+
+		
+		
+	
+		 <tr align="left" name= "direcciones" id="direccionesCG">
+		 <td id="fecha" align="left" valign="top" class="cuerpoTabla" width="25%"><font size="2%">fin</font></td>	
+ 		 <td id="operacion" align="left" valign="top" class="cuerpoTabla" width="60%"><font size="2%">fin</font></td>	
+ 		 <td id="importe" align="right" class="cuerpoTabla" valign="top" width="15%"><font size="2%">fin</font></td>		 
+		 <td id = "tipoPan" width="0%" style="display:none">
+			fin		 </td>	
+		 <td id = "numeroOperacion" style="display:none" width="0%">
+			fin		</td>	
+		<td id = "horaOperacion" style="display:none" width="0%">
+			fin		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			fin		</td>	
+		<td id = "resultadoOperacion" style="display:none" width="0%">
+			fin		</td>	
+ 	</tr>
+
+
+		
+		
+	</table>					 
+   </div>
+   
+  
+   
+
+   <div id="PieSalir" > 
+   
+           <div id="salir" style="display:none">	
+<!--				<input name="botonsalir" type="button" class="boton01"  onClick="cierreSesion()" value="Salir">	 -->
+     </div>
+   </div>
+ </div>
+
+
+ </body>
+</html>

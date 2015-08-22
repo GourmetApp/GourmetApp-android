@@ -24,10 +24,9 @@ public class GourmetInternalBuilder extends BaseBuilder {
     }
 
 	public String removeLastWord(String text) {
-		text = cleanString(text);
-		text = text.substring(0, text.length()-1);
-		text = cleanString(text);
-		return text;
+		String regex = "((\\s\\w)\\b)+$";
+		text = text.replaceAll(regex, "");
+		return cleanString(text);
 	}
 
 	public String cleanString(String text) {
