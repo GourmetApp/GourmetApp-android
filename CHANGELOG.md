@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 1.2.0
+-----------
+* Swipe to refresh
+* Android 4.0.4 support!
+
 Version 1.1.0
 -----------
 * Login doesn't require an external webservice
