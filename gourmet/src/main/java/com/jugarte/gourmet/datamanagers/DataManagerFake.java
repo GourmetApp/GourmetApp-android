@@ -13,17 +13,24 @@ import java.util.HashMap;
  */
 public class DataManagerFake {
 
-    public Gourmet login(HashMap<String, Object> params) {
+    public Gourmet login(String user, String pass) {
         Gourmet gourmet = new Gourmet();
-        gourmet.currentBalance  = "145,45";
+        gourmet.currentBalance  = "83,45";
+        gourmet.cardNumber = "0000004815162342";
+        gourmet.errorCode = "0";
+
+        String [] names = {"Central Perk", "Los Pollos Hermanos", "Moe's Bar", "MacLaren's Pub", "Bada Bing", "Casi K No", "La Almeja Borracha"};
+        String [] prices = {"11,23", "5,8", "13,21", "34,55", "89,14", "23,33", "37,7"};
+        String [] dates  = {"22/09/1994", "20/01/2008", "17/12/1989", "19/09/2005", "10/01/1999", "17/01/1999", "31/01/1999"};
+        String [] hours  = {"22:00", "14:22", "21:56", "03:20", "20:45", "21:30", "22:50"};
 
         Operation operation = null;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < names.length; i++) {
             operation = new Operation();
-            operation.name = "Bar restaurante USE";
-            operation.price = "12";
-            operation.date = "15/05/2015";
-            operation.hour = "20:00";
+            operation.name = names[i];
+            operation.price = prices[i];
+            operation.date = dates[i];
+            operation.hour = hours[i];
             gourmet.operations.add(operation);
         }
         return gourmet;

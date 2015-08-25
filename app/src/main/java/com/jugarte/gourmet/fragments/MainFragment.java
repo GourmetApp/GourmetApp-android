@@ -76,7 +76,7 @@ public class MainFragment extends BaseFragment {
             if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
                 mCurrentText.setVisibility(View.VISIBLE);
                 mCurrentBalance.setText(gourmet.currentBalance + "€");
-                String cardNumber = TextFormatUtils.formatCreditCardNumber(CredentialsLogin.getUserCredential());
+                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.cardNumber);
                 if (cardNumber != null) {
                     mCardNumberTextView.setText(cardNumber);
                 }

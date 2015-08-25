@@ -2,6 +2,7 @@ package com.jugarte.gourmet.builders;
 
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.helpers.CredentialsLogin;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -76,6 +77,8 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		} else {
 			gourmet.operations = null;
 		}
+
+		gourmet.cardNumber = CredentialsLogin.getUserCredential();
 
 		return gourmet;
 	}

@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 public class Gourmet {
 
+    public String cardNumber = null;
     public String currentBalance = null;
+    public ArrayList<Operation> operations = null;
 
     public String errorCode = null;
-
-    public ArrayList<Operation> operations = null;
 
     public Gourmet() {
         operations = new ArrayList<Operation>();
