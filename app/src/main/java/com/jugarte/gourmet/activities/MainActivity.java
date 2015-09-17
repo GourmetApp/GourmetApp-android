@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Object doInBackground(Void... _void) {
-            DataManager dm = new DataManager();
+            DataManager dm = new DataManager(getApplicationContext());
             return dm.getLastPublishVersion();
         }
 

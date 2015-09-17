@@ -17,6 +17,7 @@ import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.datamanagers.DataManager;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
@@ -66,6 +67,8 @@ public class MainFragment extends BaseFragment {
 
     private void logout() {
         CredentialsLogin.removeCredentials();
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getActivity().getApplicationContext());
+        sqliteHelper.resetTables();
         MainActivity activity = (MainActivity) this.getActivity();
         activity.navigateToLogin();
     }
@@ -162,7 +165,7 @@ public class MainFragment extends BaseFragment {
 
     /**********************
      * 					  *
-     *	  LIFE CICLE 	  *
+     *	  LIFE CYCLE 	  *
      *					  *
      **********************/
 
@@ -182,7 +185,7 @@ public class MainFragment extends BaseFragment {
         protected Object doInBackground(Void... _void) {
             String user = CredentialsLogin.getUserCredential();
             String pass = CredentialsLogin.getPasswordCredential();
-            DataManager dm = new DataManager();
+            DataManager dm = new DataManager(getActivity().getApplicationContext());
             return dm.login(user, pass);
         }
 

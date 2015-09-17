@@ -104,7 +104,7 @@ public class LoginFragment extends BaseFragment {
             if (params.length == 2) {
                 this.mUser = params[0];
                 this.mPass = params[1];
-                DataManager dm = new DataManager();
+                DataManager dm = new DataManager(getActivity().getApplicationContext());
                 return dm.login(this.mUser, this.mPass);
             }
             return null;

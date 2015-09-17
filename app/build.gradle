@@ -42,7 +42,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':gourmet')
     //compile project(':wear-http')
-    compile 'com.kogitune:wear-http:0.0.5'
+    //compile 'com.kogitune:wear-http:0.0.5'
     //debugWearApp project(path:':wear', configuration: 'debug')
     //releaseWearApp project(path:':wear', configuration: 'release')
 }

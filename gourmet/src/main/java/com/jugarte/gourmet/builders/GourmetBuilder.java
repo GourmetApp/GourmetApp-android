@@ -1,39 +1,65 @@
 package com.jugarte.gourmet.builders;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 
 public class GourmetBuilder extends BaseBuilder {
 
 	private String _dataJSON = "";
+    private Context context;
 
-    private Gourmet returnError() {
-        return this.returnError("1", "Error");
+    public GourmetBuilder(Context context) {
+        this.context = context;
     }
 
-    private Gourmet returnError(String errorCode, String errorMessage) {
+    private Gourmet returnError(String errorCode) {
         Gourmet gourmet = new Gourmet();
         gourmet.errorCode = errorCode;
+        return gourmet;
+    }
+
+    private Gourmet getGourmetCacheData() {
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        if (sqliteHelper.getCurrentBalance() == null || sqliteHelper.getCurrentBalance().length() == 0) {
+            return returnError("2");
+        }
+
+        Gourmet gourmet = new Gourmet();
+        gourmet.cardNumber = CredentialsLogin.getUserCredential();
+        gourmet.currentBalance = sqliteHelper.getCurrentBalance();
+        gourmet.modificationDate = sqliteHelper.getModificationDate();
+        gourmet.operations = sqliteHelper.getOperations();
+        gourmet.errorCode = "0";
+
         return gourmet;
     }
 
 	@Override
 	public Gourmet build() throws Exception {
 		Gourmet gourmet = new Gourmet();
-		JSONObject data = null;
+		JSONObject data;
 		JSONArray operations = null;
+
+        if (this._dataJSON == null) {
+            return getGourmetCacheData();
+        }
+
 		try {
 			data = new JSONObject(this._dataJSON);
 		} catch (JSONException e) {
-            return returnError();
+            return getGourmetCacheData();
 		}
 
         if (data != null && !data.getString("errorCode").equalsIgnoreCase("0")) {
-            return returnError(data.getString("errorCode"), data.getString("errorMessage"));
+            return returnError(data.getString("errorCode"));
         }
 
         try {
@@ -56,8 +82,13 @@ public class GourmetBuilder extends BaseBuilder {
             }
         }
 
+        gourmet.cardNumber = CredentialsLogin.getUserCredential();
         gourmet.currentBalance = data.getString("currentBalance");
         gourmet.errorCode = data.getString("errorCode");
+
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        sqliteHelper.updateElementsWithDatas(gourmet);
+        gourmet.operations = sqliteHelper.getOperations();
 
 		return gourmet;
 	}

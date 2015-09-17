@@ -1,10 +1,13 @@
 package com.jugarte.gourmet.datamanagers;
 
+import android.content.Context;
+
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 import com.jugarte.gourmet.builders.LastVersionBuilder;
+import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.internal.Constants;
 
@@ -31,6 +34,12 @@ import java.util.Map;
  * Created by javiergon on 15/05/15.
  */
 public class DataManager {
+
+    private final Context context;
+
+    public DataManager(Context context) {
+        this.context = context;
+    }
 
     public Gourmet login(String user, String pass) {
         if (user != null && pass != null) {
@@ -59,10 +68,10 @@ public class DataManager {
     private Gourmet login(HashMap<String, Object> params) {
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder();
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
         gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
         try {
-            return gourmetBuilder.build();
+             return gourmetBuilder.build();
         } catch (Exception e) {
             return null;
         }
@@ -71,7 +80,7 @@ public class DataManager {
     private Gourmet internalLogin(HashMap<String, Object> params) {
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder();
+        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(this.context);
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
         try {
             return gourmetBuilder.build();

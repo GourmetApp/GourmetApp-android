@@ -1,8 +1,11 @@
 package com.jugarte.gourmet.builders;
 
+import android.content.Context;
+
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,10 +15,11 @@ import org.jsoup.select.Elements;
 public class GourmetInternalBuilder extends BaseBuilder {
 
 	private String _data = "";
+	private final Context context;
 
-    private Gourmet returnError() {
-        return this.returnError("1");
-    }
+	public GourmetInternalBuilder(Context context) {
+		this.context = context;
+	}
 
     private Gourmet returnError(String errorCode) {
         Gourmet gourmet = new Gourmet();
@@ -23,6 +27,22 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		gourmet.operations = null;
         return gourmet;
     }
+
+	private Gourmet getGourmetCacheData() {
+		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+		if (sqliteHelper.getCurrentBalance() == null || sqliteHelper.getCurrentBalance().length() == 0) {
+			return returnError("3");
+		}
+
+		Gourmet gourmet = new Gourmet();
+		gourmet.cardNumber = CredentialsLogin.getUserCredential();
+		gourmet.currentBalance = sqliteHelper.getCurrentBalance();
+		gourmet.modificationDate = sqliteHelper.getModificationDate();
+		gourmet.operations = sqliteHelper.getOperations();
+		gourmet.errorCode = "0";
+
+		return gourmet;
+	}
 
 	public String removeLastWord(String text) {
 		String regex = "((\\s\\w)\\b)+$";
@@ -42,7 +62,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 	@Override
 	public Gourmet build() throws Exception {
 		if (this._data == null || this._data.length() == 0) {
-			return this.returnError("3");
+			return getGourmetCacheData();
 		}
 		Gourmet gourmet = new Gourmet();
 		gourmet.errorCode = "0";
@@ -55,7 +75,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 
 		Element currentBalanceElement = doc.getElementById("TotalSaldo");
 		if (currentBalanceElement == null) {
-			return this.returnError("3");
+			return getGourmetCacheData();
 		}
 		gourmet.currentBalance = this.cleanString(currentBalanceElement.text());
 
@@ -79,6 +99,10 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		}
 
 		gourmet.cardNumber = CredentialsLogin.getUserCredential();
+
+		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+		sqliteHelper.updateElementsWithDatas(gourmet);
+		gourmet.operations = sqliteHelper.getOperations();
 
 		return gourmet;
 	}
