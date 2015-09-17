@@ -5,6 +5,7 @@ import android.content.Context;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.helpers.DateHelper;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 
 import org.jsoup.Jsoup;
@@ -40,6 +41,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		gourmet.modificationDate = sqliteHelper.getModificationDate();
 		gourmet.operations = sqliteHelper.getOperations();
 		gourmet.errorCode = "0";
+		gourmet.offlineMode = true;
 
 		return gourmet;
 	}
@@ -99,6 +101,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		}
 
 		gourmet.cardNumber = CredentialsLogin.getUserCredential();
+		gourmet.modificationDate = DateHelper.getCurrentDateTime();
 
 		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
 		sqliteHelper.updateElementsWithDatas(gourmet);

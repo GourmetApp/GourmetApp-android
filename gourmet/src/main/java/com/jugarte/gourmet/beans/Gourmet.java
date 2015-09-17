@@ -10,6 +10,7 @@ public class Gourmet {
     public String cardNumber = null;
     public String currentBalance = null;
     public String modificationDate = null;
+    public boolean offlineMode;
     public ArrayList<Operation> operations = null;
 
     public String errorCode = null;

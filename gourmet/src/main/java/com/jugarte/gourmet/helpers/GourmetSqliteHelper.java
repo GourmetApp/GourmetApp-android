@@ -101,15 +101,15 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
 
     public String getCurrentData(String data) {
         String selectQuery = "SELECT " + data + " FROM " + TABLE_GOURMET;
-        String currentBalance = null;
+        String returnData = null;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             if (cursor.getCount() > 0) {
-                currentBalance = (cursor.getString(0));
+                returnData = (cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        return currentBalance;
+        return returnData;
     }
 
     public String getCurrentBalance() {

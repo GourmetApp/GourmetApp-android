@@ -11,6 +11,7 @@
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Saldo actual:</string>
     <string name="copy_to_clipboard">Copiado al portapapeles</string>
+    <string name="offline_modification">Offline, última actualización: %s</string>
 
     <!-- Errors -->
     <string name="error_session_expired">La sesión ha expirado</string>

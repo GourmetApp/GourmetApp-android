@@ -43,6 +43,8 @@ public class MainFragment extends BaseFragment {
     private ListView mOperationsList = null;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView mCardNumberTextView = null;
+    private TextView mOfflineTextView = null;
+
 
     /**********************
      * 					  *
@@ -84,6 +86,14 @@ public class MainFragment extends BaseFragment {
                     mCardNumberTextView.setText(cardNumber);
                 }
 
+                if (gourmet.offlineMode && gourmet.modificationDate != null) {
+                    mOfflineTextView.setVisibility(View.VISIBLE);
+                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.modificationDate);
+                    mOfflineTextView.setText(offlineText);
+                } else {
+                    mOfflineTextView.setVisibility(View.GONE);
+                }
+
                 OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
@@ -116,6 +126,7 @@ public class MainFragment extends BaseFragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
         mCardNumberTextView = (TextView) view.findViewById(R.id.main_card_number);
+        mOfflineTextView = (TextView) view.findViewById(R.id.main_offline_text_view);
 
         // AspectRatio 16:9
         RelativeLayout container = (RelativeLayout) view.findViewById(R.id.all_container);

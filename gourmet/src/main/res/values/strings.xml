@@ -11,6 +11,7 @@
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Current balance:</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="offline_modification">Offline, last update: %s</string>
 
     <!-- Errors -->
     <string name="error_session_expired">The session has expired</string>
