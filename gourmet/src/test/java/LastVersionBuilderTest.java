@@ -1,6 +1,7 @@
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.builders.LastVersionBuilder;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,7 +12,14 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by javiergon on 30/07/15.
  */
-public class LastVersionBuilderTest extends BaseTest {
+public class LastVersionBuilderTest {
+
+    public TestUtils utils = null;
+
+    @Before
+    public void setUp() {
+        this.utils = new TestUtils();
+    }
 
     @Test
     public void testResponseOk() throws Exception {

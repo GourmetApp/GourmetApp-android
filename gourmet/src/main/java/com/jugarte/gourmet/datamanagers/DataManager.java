@@ -7,6 +7,8 @@ import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 import com.jugarte.gourmet.builders.LastVersionBuilder;
+import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.helpers.DateHelper;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.internal.Constants;
@@ -66,27 +68,45 @@ public class DataManager {
 
     @Deprecated
     private Gourmet login(HashMap<String, Object> params) {
+        Gourmet gourmet = null;
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
         GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
         gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
+
         try {
-             return gourmetBuilder.build();
+            gourmet = gourmetBuilder.build();
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+
+        if (gourmet == null) {
+            return gourmetBuilder.getGourmetCacheData();
+        }
+
+        return gourmetBuilder.updateGourmetDataWithCache(gourmet);
     }
 
     private Gourmet internalLogin(HashMap<String, Object> params) {
+        Gourmet gourmet = null;
         String response = this.launchPostUrl(Constants.getUrlLoginService(), params);
 
         GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(this.context);
         gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential());
+        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
+
         try {
-            return gourmetBuilder.build();
+            gourmet = gourmetBuilder.build();
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+
+        if (gourmet == null) {
+            return gourmetBuilder.getGourmetCacheData();
+        }
+
+        return gourmetBuilder.updateGourmetDataWithCache(gourmet);
     }
 
     private String launchPostUrl(String url, HashMap<String, Object> bodyParams) {

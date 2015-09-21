@@ -5,7 +5,6 @@ import android.content.Context;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.DateHelper;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 
 import org.jsoup.Jsoup;
@@ -15,10 +14,15 @@ import org.jsoup.select.Elements;
 
 public class GourmetInternalBuilder extends BaseBuilder {
 
+	public static final String DATA_CARD_NUMBER = "cardNumber";
+	public static final String DATA_MODIFICATION_DATE = "modificationDate";
+
 	private String _data = "";
+	private String cardNumber = "";
+    private String modificationDate = "";
 	private final Context context;
 
-	public GourmetInternalBuilder(Context context) {
+    public GourmetInternalBuilder(Context context) {
 		this.context = context;
 	}
 
@@ -28,23 +32,6 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		gourmet.operations = null;
         return gourmet;
     }
-
-	private Gourmet getGourmetCacheData() {
-		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
-		if (sqliteHelper.getCurrentBalance() == null || sqliteHelper.getCurrentBalance().length() == 0) {
-			return returnError("3");
-		}
-
-		Gourmet gourmet = new Gourmet();
-		gourmet.cardNumber = CredentialsLogin.getUserCredential();
-		gourmet.currentBalance = sqliteHelper.getCurrentBalance();
-		gourmet.modificationDate = sqliteHelper.getModificationDate();
-		gourmet.operations = sqliteHelper.getOperations();
-		gourmet.errorCode = "0";
-		gourmet.offlineMode = true;
-
-		return gourmet;
-	}
 
 	public String removeLastWord(String text) {
 		String regex = "((\\s\\w)\\b)+$";
@@ -61,10 +48,34 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		return text;
 	}
 
+    public Gourmet getGourmetCacheData() {
+        Gourmet gourmet = new Gourmet();
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        if (sqliteHelper.getCurrentBalance() == null || sqliteHelper.getCurrentBalance().length() == 0) {
+            return returnError("2");
+        }
+
+        gourmet.cardNumber = CredentialsLogin.getUserCredential();
+        gourmet.currentBalance = sqliteHelper.getCurrentBalance();
+        gourmet.modificationDate = sqliteHelper.getModificationDate();
+        gourmet.operations = sqliteHelper.getOperations();
+        gourmet.errorCode = "0";
+        gourmet.offlineMode = true;
+
+        return gourmet;
+    }
+
+    public Gourmet updateGourmetDataWithCache(Gourmet gourmet) {
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        sqliteHelper.updateElementsWithDatas(gourmet);
+        gourmet.operations = sqliteHelper.getOperations();
+        return gourmet;
+    }
+
 	@Override
 	public Gourmet build() throws Exception {
 		if (this._data == null || this._data.length() == 0) {
-			return getGourmetCacheData();
+			return null;
 		}
 		Gourmet gourmet = new Gourmet();
 		gourmet.errorCode = "0";
@@ -77,7 +88,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 
 		Element currentBalanceElement = doc.getElementById("TotalSaldo");
 		if (currentBalanceElement == null) {
-			return getGourmetCacheData();
+			return null;
 		}
 		gourmet.currentBalance = this.cleanString(currentBalanceElement.text());
 
@@ -100,20 +111,20 @@ public class GourmetInternalBuilder extends BaseBuilder {
 			gourmet.operations = null;
 		}
 
-		gourmet.cardNumber = CredentialsLogin.getUserCredential();
-		gourmet.modificationDate = DateHelper.getCurrentDateTime();
-
-		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
-		sqliteHelper.updateElementsWithDatas(gourmet);
-		gourmet.operations = sqliteHelper.getOperations();
+		gourmet.cardNumber = cardNumber;
+		gourmet.modificationDate = modificationDate;
 
 		return gourmet;
 	}
 
 	@Override
 	public void append(String type, Object data) {
-		if(type.equals(BaseBuilder.DATA_JSON)) {
-			this._data = (String) data;
-		}
+		if(type.equalsIgnoreCase(BaseBuilder.DATA_JSON)) {
+			_data = (String) data;
+		} else if (type.equalsIgnoreCase(DATA_CARD_NUMBER)) {
+			cardNumber = (String) data;
+		} else if (type.equalsIgnoreCase(DATA_MODIFICATION_DATE)) {
+            modificationDate = (String) data;
+        }
 	}
 }

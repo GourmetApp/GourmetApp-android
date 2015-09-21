@@ -7,7 +7,8 @@ import java.io.FileReader;
 public class TestUtils {
 
     public String getResourceToString(String resource) throws Exception {
-        String path = getClass().getResource("/").toURI().getPath() + "../resources/" + resource;
+//        String path = getClass().getResource("/").toURI().getPath() + "../resources/" + resource;
+        String path = "src/test/resources/" + resource;
         System.out.println(path);
 
         BufferedReader br = new BufferedReader(new FileReader(path));

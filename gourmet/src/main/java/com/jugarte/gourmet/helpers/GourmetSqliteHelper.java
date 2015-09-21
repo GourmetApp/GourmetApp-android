@@ -147,6 +147,9 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
     }
 
     public void updateElementsWithDatas(Gourmet gourmet) {
+        if (gourmet == null){
+            return;
+        }
         updateGourmet(gourmet);
         Collections.reverse(gourmet.operations);
         for (Operation operation : gourmet.operations) {
