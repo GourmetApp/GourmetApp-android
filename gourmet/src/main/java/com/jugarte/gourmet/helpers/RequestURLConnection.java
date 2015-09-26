@@ -110,8 +110,13 @@ public class RequestURLConnection {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
-        return response.toString();
+        if (response != null) {
+            return response.toString();
+        }
+
+        return null;
     }
 }
