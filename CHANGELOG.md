@@ -2,8 +2,10 @@ Change Log
 ==========
 Version 1.2.0
 -----------
+* Offline mode
+* Infinite history, since the time of installation
 * Swipe to refresh
-* Android 4.0.4 support!
+* Android 4.0.4 support
 
 Version 1.1.0
 -----------
