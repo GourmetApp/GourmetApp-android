@@ -1,1 +1,1 @@
-include ':gourmet', ':wear', 'app', ':wear-http'
+include ':gourmet', ':wear', 'app'
