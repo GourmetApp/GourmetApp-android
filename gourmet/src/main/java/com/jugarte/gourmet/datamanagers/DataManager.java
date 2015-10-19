@@ -88,6 +88,10 @@ public class DataManager {
             return gourmetBuilder.getGourmetCacheData();
         }
 
+        if (gourmet.operations == null) {
+            return gourmetBuilder.getGourmetCacheData();
+        }
+
         return gourmetBuilder.updateGourmetDataWithCache(gourmet);
     }
 
