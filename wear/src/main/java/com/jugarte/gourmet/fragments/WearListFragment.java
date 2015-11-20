@@ -80,8 +80,8 @@ public class WearListFragment extends BaseFragment {
                     }
                 }); */
 
-        RequestFake dmf = new RequestFake();
-        WearListFragment.this.drawContent(dmf.login(null));
+        RequestFake requestFake = new RequestFake();
+        drawContent(requestFake.login(null, null));
     }
 
     @Override
