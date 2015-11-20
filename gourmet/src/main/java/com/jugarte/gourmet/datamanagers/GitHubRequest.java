@@ -8,7 +8,6 @@ import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.builders.LastVersionBuilder;
 import com.jugarte.gourmet.helpers.VolleySingleton;
 import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.lib.BuildConfig;
 
 public class GitHubRequest  extends ServiceRequest<LastVersion> {
 
@@ -16,7 +15,7 @@ public class GitHubRequest  extends ServiceRequest<LastVersion> {
     public void launchConnection() {
         
         if (Constants.FAKE_SERVICES) {
-            mResponseListener.onResponse(new DataManagerFake().getLastPublishVersion());
+            mResponseListener.onResponse(new RequestFake().getLastPublishVersion());
         }
 
         String url = Constants.getUrlLastPublishVersion();

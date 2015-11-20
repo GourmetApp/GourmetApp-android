@@ -19,7 +19,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
     public void launchConnection() {
         
         if (Constants.FAKE_SERVICES) {
-            mResponseListener.onResponse(new DataManagerFake().login(null, null));
+            mResponseListener.onResponse(new RequestFake().login(null, null));
         }
 
         String url = Constants.getUrlLoginService();

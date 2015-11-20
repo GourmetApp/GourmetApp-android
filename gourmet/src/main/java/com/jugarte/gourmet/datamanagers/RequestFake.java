@@ -3,15 +3,11 @@ package com.jugarte.gourmet.datamanagers;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.beans.Operation;
-import com.jugarte.gourmet.builders.LastVersionBuilder;
-import com.jugarte.gourmet.internal.Constants;
-
-import java.util.HashMap;
 
 /**
  * Created by javiergon on 15/05/15.
  */
-public class DataManagerFake {
+public class RequestFake {
 
     public Gourmet login(String user, String pass) {
         Gourmet gourmet = new Gourmet();

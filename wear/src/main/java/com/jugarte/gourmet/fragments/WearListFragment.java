@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
-import com.jugarte.gourmet.datamanagers.DataManagerFake;
+import com.jugarte.gourmet.datamanagers.RequestFake;
 import com.google.gson.Gson;
 
 /**
@@ -70,7 +70,7 @@ public class WearListFragment extends BaseFragment {
                 new WearGetText.WearGetCallBack() {
                     @Override
                     public void onGet(String result) {
-                        DataManagerFake dmf = new DataManagerFake();
+                        RequestFake dmf = new RequestFake();
                         WearListLayout.this.drawContent(dmf.login(null));
                     }
 
@@ -80,7 +80,7 @@ public class WearListFragment extends BaseFragment {
                     }
                 }); */
 
-        DataManagerFake dmf = new DataManagerFake();
+        RequestFake dmf = new RequestFake();
         WearListFragment.this.drawContent(dmf.login(null));
     }
 
