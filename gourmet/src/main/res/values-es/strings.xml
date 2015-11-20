@@ -14,10 +14,11 @@
     <string name="offline_modification">Offline, última actualización: %s</string>
 
     <!-- Errors -->
-    <string name="error_session_expired">La sesión ha expirado</string>
-    <string name="error_not_user_or_pass_code1">Introduce número de tarjeta y contraseña</string>
-    <string name="error_user_or_password_incorrect_code2">Usuario o contraseña incorrectos</string>
-    <string name="error_connection_code3">"Error de conexión. Por favor, compruebe su conexión a internet"</string>
+    <string name="button_retry">Reintentar</string>
+    <string name="error_session_expired">La sesión ha expirado.</string>
+    <string name="error_not_user_or_pass_code1">Introduce número de tarjeta y contraseña.</string>
+    <string name="error_user_or_password_incorrect_code2">Usuario o contraseña incorrectos.</string>
+    <string name="error_connection_code3">Error de conexión. Compruebe su conexión a internet.</string>
 
     <!-- Dialog -->
     <string name="dialog_download_button">Descargar</string>

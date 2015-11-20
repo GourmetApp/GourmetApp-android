@@ -1,6 +1,8 @@
 package com.jugarte.gourmet.fragments;
 
+import android.graphics.Color;
 import android.graphics.Point;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,6 @@ import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 import com.google.gson.Gson;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.enums.SnackbarType;
 
 import java.util.HashMap;
 
@@ -75,14 +75,22 @@ public class MainFragment extends BaseFragment {
         }
     }
     private void showError(String errorCode) {
-        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
-        if (errorCode != null && errorMessage != null) {
+        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
+        if (errorCode != null && getView() != null) {
             if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")){
-                Snackbar.with(getActivity().getApplicationContext())
-                        .type(SnackbarType.MULTI_LINE)
-                        .text(errorMessage)
-                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-                        .show(getActivity());
+                // Snackbar
+                Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
+                View sbView = snackbar.getView();
+                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+                snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showLoading(true);
+                        loginRequest();
+                    }
+                });
             } else {
                 Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                 logout();

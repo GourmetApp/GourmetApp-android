@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.jugarte.gourmet"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 4
         versionName "1.2.0"
     }
