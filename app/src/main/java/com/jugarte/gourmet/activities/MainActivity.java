@@ -5,8 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.datamanagers.GitHubRequest;
-import com.jugarte.gourmet.datamanagers.ServiceRequest;
+import com.jugarte.gourmet.requests.GitHubRequest;
+import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;

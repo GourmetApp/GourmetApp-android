@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.datamanagers;
+package com.jugarte.gourmet.requests;
 
 import android.content.Context;
 

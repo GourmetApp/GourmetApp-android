@@ -16,8 +16,8 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.datamanagers.LoginRequest;
-import com.jugarte.gourmet.datamanagers.ServiceRequest;
+import com.jugarte.gourmet.requests.LoginRequest;
+import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.internal.Constants;
@@ -130,7 +130,7 @@ public class MainFragment extends BaseFragment {
         final String pass = CredentialsLogin.getPasswordCredential();
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setContext(getContext());
-        loginRequest.setQueryParams(new HashMap<String, String>(3){{
+        loginRequest.setQueryParams(new HashMap<String, String>(3) {{
             put(Constants.SERVICE_PARAM_USER_KEY, user);
             put(Constants.SERVICE_PARAM_PASS_KEY, pass);
             put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);

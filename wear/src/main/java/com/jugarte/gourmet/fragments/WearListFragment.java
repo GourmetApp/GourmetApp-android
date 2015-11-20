@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
-import com.jugarte.gourmet.datamanagers.RequestFake;
+import com.jugarte.gourmet.requests.RequestFake;
 import com.google.gson.Gson;
 
 /**

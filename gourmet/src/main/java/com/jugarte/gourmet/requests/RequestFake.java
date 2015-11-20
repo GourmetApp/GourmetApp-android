@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.datamanagers;
+package com.jugarte.gourmet.requests;
 
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
