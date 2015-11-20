@@ -36,18 +36,6 @@ public class DataManager {
         return null;
     }
 
-    public LastVersion getLastPublishVersion() {
-        String response = RequestURLConnection.launchGetUrl(Constants.getUrlLastPublishVersion());
-        LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, response);
-        try {
-            return (LastVersion) lastVersionBuilder.build();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-
     @Deprecated
     private Gourmet login(HashMap<String, String> params) {
         Gourmet gourmet = null;

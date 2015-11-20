@@ -1,22 +1,49 @@
 package com.jugarte.gourmet.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.datamanagers.DataManager;
+import com.jugarte.gourmet.datamanagers.GitHubRequest;
+import com.jugarte.gourmet.datamanagers.ServiceRequest;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
+import com.jugarte.gourmet.helpers.VolleySingleton;
 
 public class MainActivity extends ActionBarActivity {
 
     /**********************
      * 					  *
      *		INTERNAL	  *
+     *					  *
+     **********************/
+
+    private void checkNewVersion() {
+        GitHubRequest gitHubRequest = new GitHubRequest();
+        gitHubRequest.setContext(this);
+        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
+            @Override
+            public void onResponse(LastVersion lastVersion) {
+                boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(
+                        lastVersion.nameTagVersion,
+                        LastVersionHelper.getCurrentVersion(MainActivity.this));
+
+                if (!isEqualsVersion) {
+                    LastVersionHelper.showDialog(MainActivity.this, lastVersion);
+                }
+
+            }
+        });
+
+        gitHubRequest.launchConnection();
+    }
+
+    /**********************
+     * 					  *
+     *		PUBLIC 		  *
      *					  *
      **********************/
     public void navigateToLogin() {
@@ -39,14 +66,15 @@ public class MainActivity extends ActionBarActivity {
 
     /**********************
      * 					  *
-     *		PUBLIC 		  *
+     *	   OVERRIDE	      *
      *					  *
      **********************/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        VolleySingleton.getVolleyLoader().initializeVolley(this);
 
         CredentialsLogin.setActivity(this);
         if (savedInstanceState == null) {
@@ -58,36 +86,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         // Check a new version
-        new LastVersionAsyncTask().execute();
-    }
-
-    /**********************
-     * 				      *
-     *		AsyncTask	  *
-     *					  *
-     **********************/
-    private class LastVersionAsyncTask extends AsyncTask<Void, Void, Object> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Object doInBackground(Void... _void) {
-            DataManager dm = new DataManager(getApplicationContext());
-            return dm.getLastPublishVersion();
-        }
-
-        @Override
-        protected void onPostExecute(Object result) {
-            LastVersion lastVersion = (LastVersion)result;
-            if (lastVersion != null) {
-                if (!LastVersionHelper.isEqualsVersion(lastVersion.nameTagVersion, LastVersionHelper.getCurrentVersion(MainActivity.this))) {
-                    LastVersionHelper.showDialog(MainActivity.this, lastVersion);
-                }
-            }
-        }
+        checkNewVersion();
     }
 
 }
