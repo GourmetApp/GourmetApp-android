@@ -38,10 +38,14 @@ public abstract class BaseFragment extends Fragment {
 
     public void showLoading(boolean display) {
         View view = getView();
-        View loadingView = view.findViewById(R.id.loading_view);
-        int displayView = (display) ? View.VISIBLE : View.GONE;
-        if (loadingView != null) {
-            loadingView.setVisibility(displayView);
+        if (view != null) {
+            View loadingView = view.findViewById(R.id.loading_view);
+            int displayView = (display) ? View.VISIBLE : View.GONE;
+            if (loadingView != null) {
+                loadingView.setVisibility(displayView);
+            } else {
+                LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
+            }
         } else {
             LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
         }
@@ -63,8 +67,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View result = this.getLayoutInflater(savedInstanceState).inflate(this.getResourceId(), null);
-        return result;
+        return this.getLayoutInflater(savedInstanceState).inflate(this.getResourceId(), null);
     }
 
 }

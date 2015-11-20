@@ -1,7 +1,6 @@
 package com.jugarte.gourmet.fragments;
 
 
-import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -12,23 +11,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.datamanagers.DataManager;
+import com.jugarte.gourmet.datamanagers.LoginRequest;
+import com.jugarte.gourmet.datamanagers.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.google.gson.Gson;
+import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
+import java.util.HashMap;
 
-/**
- * Created by javiergon on 06/05/15.
- */
 public class LoginFragment extends BaseFragment {
 
     private EditText mUserEditText = null;
     private EditText mPassEditText = null;
     private CheckBox mPassRemember = null;
+    private Button mLoginButton= null;
+
+    private void bindingViews() {
+        View view = getView();
+        if (view != null) {
+            mUserEditText = (EditText) view.findViewById(R.id.login_user);
+            mPassEditText = (EditText) view.findViewById(R.id.login_pass);
+            mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
+            mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
+            mLoginButton =  (Button)   view.findViewById(R.id.login_button);
+        }
+    }
 
     private void showError(String errorCode) {
         if (errorCode != null) {
@@ -47,27 +60,62 @@ public class LoginFragment extends BaseFragment {
         String pass = mPassEditText.getText().toString();
         CredentialsLogin.saveCredential(user);
         if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
-            new LoginTask().execute(user, pass);
+            loginRequest(user, pass);
         } else {
-            LoginFragment.this.showError("1");
+            showError("1");
         }
+    }
+
+    private void loginRequest(final String user, final String pass) {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setContext(getContext());
+        loginRequest.setQueryParams(new HashMap<String, String>(3){{
+            put(Constants.SERVICE_PARAM_USER_KEY, user);
+            put(Constants.SERVICE_PARAM_PASS_KEY, pass);
+            put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);
+        }});
+
+        loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
+            @Override
+            public void onResponse(Gourmet gourmet) {
+                showLoading(false);
+                if (gourmet != null) {
+                    if (gourmet.errorCode != null && gourmet.errorCode.equalsIgnoreCase("0")) {
+                        LoginFragment.this.saveCredentials(user, pass);
+                        Gson gson = new Gson();
+                        String response = gson.toJson(gourmet);
+                        MainActivity activity = (MainActivity) getActivity();
+                        activity.navigateToMain(response);
+                    } else {
+                        showError(gourmet.errorCode);
+                    }
+                }
+            }
+        });
+
+        loginRequest.setOnErrorListener(new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        loginRequest.launchConnection();
+        showLoading(true);
     }
 
     @Override
     protected void fragmentInit() {
-        View view = getView();
-        this.mUserEditText = (EditText) view.findViewById(R.id.login_user);
-        this.mPassEditText = (EditText) view.findViewById(R.id.login_pass);
-        this.mPassRemember= (CheckBox) view.findViewById(R.id.login_remember_password);
-        this.mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+        bindingViews();
+
+        mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
         if (CredentialsLogin.getUserCredential() != null) {
             mUserEditText.setText(CredentialsLogin.getUserCredential());
             mPassEditText.requestFocus();
         }
 
-        Button btnLogin = (Button) view.findViewById(R.id.login_button);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -87,44 +135,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     protected int getResourceId() {
         return R.layout.login_fragment;
-    }
-
-    private class LoginTask extends AsyncTask<String, Void, Object> {
-
-        private String mUser = null;
-        private String mPass = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading(true);
-        }
-
-        protected Object doInBackground(String... params) {
-            if (params.length == 2) {
-                this.mUser = params[0];
-                this.mPass = params[1];
-                DataManager dm = new DataManager(getActivity().getApplicationContext());
-                return dm.login(this.mUser, this.mPass);
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Object result) {
-            showLoading(false);
-            if (result != null) {
-                Gourmet gourmet = (Gourmet) result;
-                if (gourmet != null && gourmet.errorCode != null && gourmet.errorCode.equalsIgnoreCase("0")) {
-                    LoginFragment.this.saveCredentials(this.mUser, this.mPass);
-                    Gson gson = new Gson();
-                    String response = gson.toJson(result);
-                    MainActivity activity = (MainActivity) LoginFragment.this.getActivity();
-                    activity.navigateToMain(response);
-                } else {
-                    showError(gourmet.errorCode);
-                }
-            }
-        }
     }
 
     public static class FourDigitCardFormatWatcher implements TextWatcher {

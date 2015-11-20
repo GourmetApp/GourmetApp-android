@@ -142,7 +142,9 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
             }
         }
 
-        Collections.reverse(operations);
+        if (operations != null) {
+            Collections.reverse(operations);
+        }
         return operations;
     }
 
@@ -151,9 +153,11 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
             return;
         }
         updateGourmet(gourmet);
-        Collections.reverse(gourmet.operations);
-        for (Operation operation : gourmet.operations) {
-            insertOperation(operation);
+        if (gourmet.operations != null) {
+            Collections.reverse(gourmet.operations);
+            for (Operation operation : gourmet.operations) {
+                insertOperation(operation);
+            }
         }
     }
 
