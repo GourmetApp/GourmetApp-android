@@ -2,11 +2,14 @@ package com.jugarte.gourmet.fragments;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +24,6 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
@@ -44,7 +46,6 @@ public class MainFragment extends BaseFragment {
      **********************/
     private TextView mCurrentBalance = null;
     private TextView mCurrentText = null;
-    private Button mLogoutButton = null;
     private ListView mOperationsList = null;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView mCardNumberTextView = null;
@@ -63,7 +64,6 @@ public class MainFragment extends BaseFragment {
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
             mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
-            mLogoutButton = (Button) view.findViewById(R.id.main_logout);
             mOperationsList = (ListView) view.findViewById(R.id.main_operations_list);
             mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_refresh_layout);
             mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
@@ -92,18 +92,10 @@ public class MainFragment extends BaseFragment {
                     }
                 });
             } else {
-                Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                logout();
+                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).logout();
             }
         }
-    }
-
-    private void logout() {
-        CredentialsLogin.removeCredentials();
-        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getActivity().getApplicationContext());
-        sqliteHelper.resetTables();
-        MainActivity activity = (MainActivity) this.getActivity();
-        activity.navigateToLogin();
     }
 
     private void drawLayout(Object result) {
@@ -123,13 +115,13 @@ public class MainFragment extends BaseFragment {
                     mOfflineTextView.setVisibility(View.GONE);
                 }
 
-                OperationsAdapter adapter = new OperationsAdapter(MainFragment.this.getActivity(), gourmet.operations, R.layout.operation_cell);
+                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.operations, R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
-                this.showError(gourmet.errorCode);
+                showError(gourmet.errorCode);
             }
         } else {
-            this.showError("3");
+            showError("3");
         }
     }
 
@@ -148,8 +140,8 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onResponse(Gourmet gourmet) {
                 showLoading(false);
-                MainFragment.this.drawLayout(gourmet);
-                MainFragment.this.mSwipeRefreshLayout.setRefreshing(false);
+                drawLayout(gourmet);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -184,9 +176,9 @@ public class MainFragment extends BaseFragment {
         lp.height = (int) ((float) displayPoint.x) * 9 / 16;
         mContainer.setLayoutParams(lp);
 
-        if (this.getParams() != null && this.getParams().length() > 0) {
+        if (getParams() != null && getParams().length() > 0) {
             Gson gson = new Gson();
-            this.drawLayout(gson.fromJson(this.getParams(), Gourmet.class));
+            this.drawLayout(gson.fromJson(getParams(), Gourmet.class));
         } else {
             showLoading(true);
             loginRequest();
@@ -202,20 +194,14 @@ public class MainFragment extends BaseFragment {
         mCardNumberTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardUtils.copyToClipboard(MainFragment.this.getActivity().getApplicationContext(),
+                ClipboardUtils.copyToClipboard(getContext(),
                         CredentialsLogin.getUserCredential());
-                Toast.makeText(MainFragment.this.getActivity(),
+                Toast.makeText(getContext(),
                         getResources().getString(R.string.copy_to_clipboard),
                         Toast.LENGTH_SHORT).show();
             }
         });
 
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainFragment.this.logout();
-            }
-        });
     }
 
     @Override
@@ -228,5 +214,17 @@ public class MainFragment extends BaseFragment {
      *	  LIFE CYCLE 	  *
      *					  *
      **********************/
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        return view;
+    }
 
 }

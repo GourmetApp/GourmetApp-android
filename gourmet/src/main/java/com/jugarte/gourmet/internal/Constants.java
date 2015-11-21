@@ -1,5 +1,9 @@
 package com.jugarte.gourmet.internal;
 
+import android.content.Context;
+
+import com.jugarte.gourmet.lib.R;
+
 /**
  * Created by javiergon on 06/05/15.
  */
@@ -18,12 +22,19 @@ public class Constants {
     }
 
     public static String getUrlLoginService() {
-        //return "http://jugarte.es/api/gourmet/login.php";
         return "http://tarjetagourmet.chequegourmet.com/processLogin_iphoneApp.jsp";
+    }
+
+    public static String getUrlGitHubProject() {
+        return "http://www.github.com/javierugarte/GourmetApp-android";
     }
 
     public static String getUrlHomePage() {
         return "http://javierugarte.github.io/GourmetApp-android";
+    }
+
+    public static String getShareText(Context context) {
+        return String.format(context.getResources().getString(R.string.share_text), getUrlHomePage());
     }
 
 }

@@ -21,8 +21,19 @@
     <string name="error_connection_code3">Error de conexión. Compruebe su conexión a internet.</string>
 
     <!-- Dialog -->
+    <string name="dialog_share_title">Compartir con</string>
     <string name="dialog_download_button">Descargar</string>
     <string name="dialog_cancel_button">Cancelar</string>
     <string name="dialog_title_last_version">Nueva versión</string>
+
+    <!-- Menu -->
+    <string name="menu_share_app">Compartir App</string>
+    <string name="menu_web_site">Sitio web</string>
+    <string name="menu_open_source">Open Source</string>
+    <string name="menu_logout">Logout</string>
+
+    <!-- Share -->
+    <string name="share_text">Descargarte la aplicación Gourmet App si usas una ChequeGourmet - %s</string>
+
 
 </resources>

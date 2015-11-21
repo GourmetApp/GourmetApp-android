@@ -21,8 +21,17 @@
     <string name="error_connection_code3">Connection error. Please check your internet connection.</string>
 
     <!-- Dialog -->
+    <string name="dialog_share_title">Share with</string>
     <string name="dialog_download_button">Download</string>
     <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_title_last_version">New version</string>
 
+    <!-- Menu -->
+    <string name="menu_share_app">Share App</string>
+    <string name="menu_web_site">Web site</string>
+    <string name="menu_open_source">Open Source</string>
+    <string name="menu_logout">Logout</string>
+
+    <!-- Share -->
+    <string name="share_text">Download the Gourmet App if you use ChequeGourmet - %s</string>
 </resources>

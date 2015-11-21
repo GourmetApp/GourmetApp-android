@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_share_app"
+        android:title="@string/menu_share_app"
+        android:orderInCategory="1" />
+
+    <item
+        android:id="@+id/action_web_site"
+        android:orderInCategory="1"
+        android:title="@string/menu_web_site" />
+
+    <item
+        android:id="@+id/action_open_source"
+        android:orderInCategory="1"
+        android:title="@string/menu_open_source" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="1"
+        android:title="@string/menu_logout" />
+
+</menu>

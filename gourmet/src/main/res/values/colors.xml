@@ -19,15 +19,17 @@
     <color name="green">#0ff801</color>
     <color name="lightblue">#abdcef</color>
 
-    <!-- Applicatoin Colors -->
-    <color name="action_bar">#9E9E9E</color>
+    <!-- Application Colors -->
+    <color name="action_bar_background">#FF5722</color>
+    <color name="action_bar_text">#FFFFFF</color>
+
     <color name="primary">#FF5722</color>
     <color name="primary_dark">#E64A19</color>
-    <color name="primary_light">#E64A19</color>
     <color name="accent">#FF5722</color>
+
     <color name="primary_text">#727272</color>
     <color name="secondary_text">#727272</color>
-    <color name="icons">#212121</color>
+
     <color name="divider">#B6B6B6</color>
 
     <color name="background">#fff3f3f3</color>

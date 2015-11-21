@@ -14,4 +14,8 @@
 
     </style>
 
+    <style name="AppToolbar" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/action_bar_text</item>
+    </style>
+
 </resources>
