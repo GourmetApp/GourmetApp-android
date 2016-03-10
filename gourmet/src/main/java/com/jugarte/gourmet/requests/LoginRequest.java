@@ -61,14 +61,19 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (mErrorListener != null) {
-                    mErrorListener.onErrorResponse(error);
+                GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
+
+                Gourmet gourmet = gourmetBuilder.getGourmetCacheData();
+
+                gourmet = gourmetBuilder.updateGourmetDataWithCache(gourmet);
+
+                if (mResponseListener != null) {
+                    mResponseListener.onResponse(gourmet);
                 }
 
             }
 
-        })
-        {
+        }) {
             @Override
             protected Map<String,String> getParams() {
                 return mQueryParams;
