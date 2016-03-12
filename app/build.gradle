@@ -16,13 +16,13 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "com.jugarte.gourmet"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.2.0"
+        versionCode 5
+        versionName "1.2.1"
     }
 
     buildTypes {

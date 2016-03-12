@@ -6,7 +6,6 @@ Version 1.2.1
 * New contextual menu
 * Volley request
 * Update libraries
-* ... (in progress)
 
 Version 1.2.0
 -----------
