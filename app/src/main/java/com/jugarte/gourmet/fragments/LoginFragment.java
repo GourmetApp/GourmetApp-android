@@ -21,6 +21,7 @@ import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.google.gson.Gson;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
 import java.util.HashMap;
@@ -45,8 +46,10 @@ public class LoginFragment extends BaseFragment {
 
     private void showError(String errorCode) {
         if (errorCode != null) {
-            String errorMeesage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
-            Toast.makeText(this.getActivity(), errorMeesage, Toast.LENGTH_SHORT).show();
+            String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
+            Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+
+            Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
         }
     }
 
@@ -81,6 +84,9 @@ public class LoginFragment extends BaseFragment {
                 showLoading(false);
                 if (gourmet != null) {
                     if (gourmet.errorCode != null && gourmet.errorCode.equalsIgnoreCase("0")) {
+
+                        Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+
                         LoginFragment.this.saveCredentials(user, pass);
                         Gson gson = new Gson();
                         String response = gson.toJson(gourmet);
@@ -96,7 +102,7 @@ public class LoginFragment extends BaseFragment {
         loginRequest.setOnErrorListener(new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
             }
         });
 

@@ -25,6 +25,7 @@ import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
@@ -96,14 +97,20 @@ public class MainFragment extends BaseFragment {
                 ((MainActivity) getActivity()).logout();
             }
         }
+
+        Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
     private void drawLayout(Object result) {
         if (result != null) {
             Gourmet gourmet = (Gourmet) result;
             if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
+
+                Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+
                 mCurrentText.setVisibility(View.VISIBLE);
-                mCurrentBalance.setText(gourmet.currentBalance + "€");
+                String currentBalance = gourmet.currentBalance + "€";
+                mCurrentBalance.setText(currentBalance);
                 String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.cardNumber);
                 mCardNumberTextView.setText(cardNumber);
 
@@ -148,7 +155,7 @@ public class MainFragment extends BaseFragment {
         loginRequest.setOnErrorListener(new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
             }
         });
 

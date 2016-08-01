@@ -18,6 +18,7 @@ import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.helpers.VolleySingleton;
+import com.jugarte.gourmet.tracker.Tracker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        Tracker.getInstance(this);
 
         VolleySingleton.getVolleyLoader().initializeVolley(this);
 
