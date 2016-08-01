@@ -21,6 +21,7 @@ import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.google.gson.Gson;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
@@ -103,6 +104,7 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
+                Crash.report(error);
             }
         });
 

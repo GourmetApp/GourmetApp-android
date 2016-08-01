@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.crash.FirebaseCrash;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
@@ -25,6 +28,7 @@ import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
@@ -156,6 +160,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
+                Crash.report(error);
             }
         });
 
