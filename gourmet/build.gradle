@@ -32,6 +32,8 @@ dependencies {
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
+    compile 'com.google.firebase:firebase-core:9.0.0'
+
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'org.jsoup:jsoup:1.8.3'
@@ -41,3 +43,4 @@ dependencies {
     testCompile files('libs/json.jar')
 }
 
+apply plugin: 'com.google.gms.google-services'
