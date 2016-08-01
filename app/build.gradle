@@ -41,8 +41,13 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':gourmet')
+
+    compile 'com.google.firebase:firebase-core:9.0.0'
+
     //compile project(':wear-http')
     //compile 'com.kogitune:wear-http:0.0.5'
     //debugWearApp project(path:':wear', configuration: 'debug')
     //releaseWearApp project(path:':wear', configuration: 'release')
 }
+
+apply plugin: 'com.google.gms.google-services'
