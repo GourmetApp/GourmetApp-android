@@ -208,9 +208,12 @@ public class MainFragment extends BaseFragment {
             public void onClick(View v) {
                 ClipboardUtils.copyToClipboard(getContext(),
                         CredentialsLogin.getUserCredential());
+
                 Toast.makeText(getContext(),
                         getResources().getString(R.string.copy_to_clipboard),
                         Toast.LENGTH_SHORT).show();
+
+                Tracker.getInstance().sendMenuEvent("copy_clipboard");
             }
         });
 

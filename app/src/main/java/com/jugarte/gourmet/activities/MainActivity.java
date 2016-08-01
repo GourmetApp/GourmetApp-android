@@ -128,15 +128,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share_app:
+                Tracker.getInstance().sendMenuEvent("share");
                 shareText(Constants.getShareText(this));
                 break;
             case R.id.action_open_source:
+                Tracker.getInstance().sendMenuEvent("open_source");
                 openUrl(Constants.getUrlGitHubProject());
                 break;
             case R.id.action_web_site:
+                Tracker.getInstance().sendMenuEvent("web_site");
                 openUrl(Constants.getUrlHomePage());
                 break;
             case R.id.action_logout:
+                Tracker.getInstance().sendMenuEvent("logout");
                 logout();
                 break;
             default:
