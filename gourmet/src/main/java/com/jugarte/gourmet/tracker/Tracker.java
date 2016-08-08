@@ -34,8 +34,10 @@ public class Tracker {
         return ourInstance;
     }
 
-    public void sendMenuEvent(String event) {
-        firebaseAnalytics.logEvent("menu", null);
+    public void sendMenuEvent(String menu) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.VALUE, menu);
+        firebaseAnalytics.logEvent("menu" , bundle);
     }
 
     public void sendLoginResult(String result) {
