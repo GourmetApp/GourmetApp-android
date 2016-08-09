@@ -137,8 +137,8 @@ public class MainFragment extends BaseFragment {
     }
 
     private void loginRequest() {
-        final String user = CredentialsLogin.getUserCredential();
-        final String pass = CredentialsLogin.getPasswordCredential();
+        final String user = CredentialsLogin.getUserCredential(getContext());
+        final String pass = CredentialsLogin.getPasswordCredential(getContext());
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setContext(getContext());
         loginRequest.setQueryParams(new HashMap<String, String>(3) {{
@@ -207,7 +207,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 ClipboardUtils.copyToClipboard(getContext(),
-                        CredentialsLogin.getUserCredential());
+                        CredentialsLogin.getUserCredential(getContext()));
 
                 Toast.makeText(getContext(),
                         getResources().getString(R.string.copy_to_clipboard),

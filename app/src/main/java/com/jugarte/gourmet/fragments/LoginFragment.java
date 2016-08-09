@@ -55,14 +55,14 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void saveCredentials(String user, String pass) {
-        CredentialsLogin.removeCredentials();
-        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked());
+        CredentialsLogin.removeCredentials(getContext());
+        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked(), getContext());
     }
 
     private void launchLogin() {
         String user = mUserEditText.getText().toString().replaceAll(" ", "");
         String pass = mPassEditText.getText().toString();
-        CredentialsLogin.saveCredential(user);
+        CredentialsLogin.saveCredential(user, getContext());
         if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
             loginRequest(user, pass);
         } else {
@@ -118,8 +118,8 @@ public class LoginFragment extends BaseFragment {
 
         mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
-        if (CredentialsLogin.getUserCredential() != null) {
-            mUserEditText.setText(CredentialsLogin.getUserCredential());
+        if (CredentialsLogin.getUserCredential(getContext()) != null) {
+            mUserEditText.setText(CredentialsLogin.getUserCredential(getContext()));
             mPassEditText.requestFocus();
         }
 

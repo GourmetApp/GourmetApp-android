@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        CredentialsLogin.removeCredentials();
+        CredentialsLogin.removeCredentials(getApplicationContext());
         GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getApplicationContext());
         sqliteHelper.resetTables();
         navigateToLogin();
@@ -105,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
         VolleySingleton.getVolleyLoader().initializeVolley(this);
 
-        CredentialsLogin.setActivity(this);
         if (savedInstanceState == null) {
-            if (CredentialsLogin.isCredential()) {
+            if (CredentialsLogin.isCredential(getApplicationContext())) {
                 navigateToMain(null);
             } else {
                 navigateToLogin();

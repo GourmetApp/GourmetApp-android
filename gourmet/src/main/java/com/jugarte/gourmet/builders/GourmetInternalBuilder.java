@@ -50,12 +50,12 @@ public class GourmetInternalBuilder extends BaseBuilder {
 
     public Gourmet getGourmetCacheData() {
         Gourmet gourmet = new Gourmet();
-        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
         if (sqliteHelper.getCurrentBalance() == null || sqliteHelper.getCurrentBalance().length() == 0) {
             return returnError("2");
         }
 
-        gourmet.cardNumber = CredentialsLogin.getUserCredential();
+        gourmet.cardNumber = CredentialsLogin.getUserCredential(context);
         gourmet.currentBalance = sqliteHelper.getCurrentBalance();
         gourmet.modificationDate = sqliteHelper.getModificationDate();
         gourmet.operations = sqliteHelper.getOperations();
@@ -66,7 +66,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
     }
 
     public Gourmet updateGourmetDataWithCache(Gourmet gourmet) {
-        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
         sqliteHelper.updateElementsWithDatas(gourmet);
         gourmet.operations = sqliteHelper.getOperations();
         return gourmet;

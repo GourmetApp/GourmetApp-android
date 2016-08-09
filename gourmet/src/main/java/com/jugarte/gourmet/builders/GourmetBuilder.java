@@ -33,7 +33,7 @@ public class GourmetBuilder extends BaseBuilder {
         }
 
         Gourmet gourmet = new Gourmet();
-        gourmet.cardNumber = CredentialsLogin.getUserCredential();
+        gourmet.cardNumber = CredentialsLogin.getUserCredential(this.context);
         gourmet.currentBalance = sqliteHelper.getCurrentBalance();
         gourmet.modificationDate = sqliteHelper.getModificationDate();
         gourmet.operations = sqliteHelper.getOperations();
@@ -89,7 +89,7 @@ public class GourmetBuilder extends BaseBuilder {
             }
         }
 
-        gourmet.cardNumber = CredentialsLogin.getUserCredential();
+        gourmet.cardNumber = CredentialsLogin.getUserCredential(context);
         gourmet.currentBalance = data.getString("currentBalance");
         gourmet.errorCode = data.getString("errorCode");
 

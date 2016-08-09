@@ -29,7 +29,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
             public void onResponse(String response) {
                 GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
                 gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
-                gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential());
+                gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
                 gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
 
                 Gourmet gourmet = null;
