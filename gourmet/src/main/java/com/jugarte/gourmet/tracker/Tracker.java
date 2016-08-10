@@ -36,8 +36,14 @@ public class Tracker {
 
     public void sendMenuEvent(String menu) {
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.VALUE, menu);
+        bundle.putString("item", menu);
         firebaseAnalytics.logEvent("menu" , bundle);
+    }
+
+    public void sendUpgradeEvent(String option) {
+        Bundle bundle = new Bundle();
+        bundle.putString("option", option);
+        firebaseAnalytics.logEvent("download" , bundle);
     }
 
     public void sendLoginResult(String result) {

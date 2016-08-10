@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.text.Html;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.lib.R;
+import com.jugarte.gourmet.tracker.Tracker;
 
 
 /**
@@ -45,14 +46,25 @@ public class LastVersionHelper {
                 .setMessage(Html.fromHtml(lastVersion.changelog))
                 .setPositiveButton(R.string.dialog_download_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Tracker.getInstance().sendUpgradeEvent("download");
                         openUrlInBrowser(activity, lastVersion.urlHomePage);
+
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Tracker.getInstance().sendUpgradeEvent("cancel");
                         dialog.cancel();
                     }
-                });
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        Tracker.getInstance().sendUpgradeEvent("cancel");
+                        dialog.cancel();
+                    }
+        });
+
         builder.show();
 
         setShowDialog(lastVersion.nameTagVersion, activity.getApplicationContext());
