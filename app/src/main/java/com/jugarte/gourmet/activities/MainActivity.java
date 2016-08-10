@@ -34,11 +34,15 @@ public class MainActivity extends AppCompatActivity {
         gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
             @Override
             public void onResponse(LastVersion lastVersion) {
+
                 boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(
                         lastVersion.nameTagVersion,
-                        LastVersionHelper.getCurrentVersion(MainActivity.this));
+                        LastVersionHelper.getCurrentVersion(getApplicationContext()));
 
-                if (!isEqualsVersion) {
+                boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
+                        lastVersion.nameTagVersion, getApplicationContext());
+
+                if (!isEqualsVersion && shouldShowDialog) {
                     LastVersionHelper.showDialog(MainActivity.this, lastVersion);
                 }
 
