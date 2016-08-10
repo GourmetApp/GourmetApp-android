@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_update:
+                Tracker.getInstance().sendMenuEvent("download");
+                openUrl(Constants.getUrlHomePage());
+                break;
             case R.id.action_share_app:
                 Tracker.getInstance().sendMenuEvent("share");
                 shareText(Constants.getShareText(this));

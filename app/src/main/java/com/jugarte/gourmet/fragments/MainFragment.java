@@ -8,6 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -17,13 +19,13 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.crash.FirebaseCrash;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.helpers.LastVersionHelper;
+import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
@@ -56,6 +58,8 @@ public class MainFragment extends BaseFragment {
     private TextView mCardNumberTextView = null;
     private TextView mOfflineTextView = null;
     private RelativeLayout mContainer = null;
+
+    private boolean isEqualsVersion = false;
 
 
     /**********************
@@ -167,6 +171,24 @@ public class MainFragment extends BaseFragment {
         loginRequest.launchConnection();
     }
 
+    private void checkNewVersion() {
+        GitHubRequest gitHubRequest = new GitHubRequest();
+        gitHubRequest.setContext(getContext());
+        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
+            @Override
+            public void onResponse(LastVersion lastVersion) {
+
+                isEqualsVersion = LastVersionHelper.isEqualsVersion(
+                        lastVersion.nameTagVersion,
+                        LastVersionHelper.getCurrentVersion(getContext()));
+
+                setHasOptionsMenu(true);
+            }
+        });
+
+        gitHubRequest.launchConnection();
+    }
+
     /**********************
      * 					  *
      *		PUBLIC 		  *
@@ -183,11 +205,13 @@ public class MainFragment extends BaseFragment {
     protected void fragmentInit() {
         bindingView();
 
+        // Set 16:9 the view
         ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
         Point displayPoint = DisplayUtils.getScreenSize(getActivity());
         lp.height = (int) ((float) displayPoint.x) * 9 / 16;
         mContainer.setLayoutParams(lp);
 
+        // Given data
         if (getParams() != null && getParams().length() > 0) {
             Gson gson = new Gson();
             this.drawLayout(gson.fromJson(getParams(), Gourmet.class));
@@ -195,6 +219,8 @@ public class MainFragment extends BaseFragment {
             showLoading(true);
             loginRequest();
         }
+
+        checkNewVersion();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -240,6 +266,16 @@ public class MainFragment extends BaseFragment {
         activity.setSupportActionBar(toolbar);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isEqualsVersion) {
+            menu.findItem(R.id.action_update).setVisible(true);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+
+
     }
 
 }
