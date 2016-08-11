@@ -3,7 +3,7 @@ Change Log
 
 Version 1.3.0
 * No force download the last update version
-* Remember password mark by defaul
+* Remember password mark by default
 
 Version 1.2.1
 -----------
