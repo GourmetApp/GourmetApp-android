@@ -8,55 +8,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.requests.GitHubRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.helpers.VolleySingleton;
 import com.jugarte.gourmet.tracker.Tracker;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**********************
-     * 					  *
-     *		INTERNAL	  *
-     *					  *
-     **********************/
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
 
-    private void checkNewVersion() {
-        GitHubRequest gitHubRequest = new GitHubRequest();
-        gitHubRequest.setContext(this);
-        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
-            @Override
-            public void onResponse(LastVersion lastVersion) {
+        Tracker.getInstance(getApplicationContext());
 
-                boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(
-                        lastVersion.nameTagVersion,
-                        LastVersionHelper.getCurrentVersion(getApplicationContext()));
+        VolleySingleton.getVolleyLoader().initializeVolley(this);
 
-                boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
-                        lastVersion.nameTagVersion, getApplicationContext());
-
-                if (!isEqualsVersion && shouldShowDialog) {
-                    LastVersionHelper.showDialog(MainActivity.this, lastVersion);
-                }
-
+        if (savedInstanceState == null) {
+            if (CredentialsLogin.isCredential(getApplicationContext())) {
+                navigateToMain(null);
+            } else {
+                navigateToLogin();
             }
-        });
+        }
 
-        gitHubRequest.launchConnection();
     }
 
-    /**********************
-     * 					  *
-     *		PUBLIC 		  *
-     *					  *
-     **********************/
     public void navigateToLogin() {
         LoginFragment loginFragment = new LoginFragment();
         loginFragment.setArguments(getIntent().getExtras());
@@ -95,32 +75,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent ,getResources().getString(R.string.dialog_share_title)));
     }
 
-    /**********************
-     * 					  *
-     *	   OVERRIDE	      *
-     *					  *
-     **********************/
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-
-        Tracker.getInstance(getApplicationContext());
-
-        VolleySingleton.getVolleyLoader().initializeVolley(this);
-
-        if (savedInstanceState == null) {
-            if (CredentialsLogin.isCredential(getApplicationContext())) {
-                navigateToMain(null);
-            } else {
-                navigateToLogin();
-            }
-        }
-
-        // Check a new version
-        checkNewVersion();
-    }
-
+    //region menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -155,5 +110,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    //endregion
 
 }

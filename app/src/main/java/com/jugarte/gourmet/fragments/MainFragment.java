@@ -178,11 +178,22 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onResponse(LastVersion lastVersion) {
 
-                isEqualsVersion = LastVersionHelper.isEqualsVersion(
-                        lastVersion.nameTagVersion,
-                        LastVersionHelper.getCurrentVersion(getContext()));
+                if (lastVersion != null && lastVersion.nameTagVersion != null) {
 
-                setHasOptionsMenu(true);
+                    isEqualsVersion = LastVersionHelper.isEqualsVersion(
+                            lastVersion.nameTagVersion,
+                            LastVersionHelper.getCurrentVersion(getContext()));
+
+                    boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
+                            lastVersion.nameTagVersion, getContext());
+
+                    if (!isEqualsVersion && shouldShowDialog) {
+                        LastVersionHelper.showDialog(getActivity(), lastVersion);
+                    }
+
+                    setHasOptionsMenu(true);
+
+                }
             }
         });
 
