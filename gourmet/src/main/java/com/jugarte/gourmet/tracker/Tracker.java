@@ -35,15 +35,11 @@ public class Tracker {
     }
 
     public void sendMenuEvent(String menu) {
-        Bundle bundle = new Bundle();
-        bundle.putString("item", menu);
-        firebaseAnalytics.logEvent("menu" , bundle);
+        firebaseAnalytics.logEvent("menu_" + menu, null);
     }
 
     public void sendUpgradeEvent(String option) {
-        Bundle bundle = new Bundle();
-        bundle.putString("option", option);
-        firebaseAnalytics.logEvent("download" , bundle);
+        firebaseAnalytics.logEvent("download_" + option, null);
     }
 
     public void sendLoginResult(String result) {
@@ -57,7 +53,7 @@ public class Tracker {
             bundle.putString(Tracker.Param.MESSAGE, message);
         }
 
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN + result, bundle);
     }
 
 }
