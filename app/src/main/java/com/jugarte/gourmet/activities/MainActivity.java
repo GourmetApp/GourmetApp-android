@@ -8,50 +8,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.requests.GitHubRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.helpers.VolleySingleton;
+import com.jugarte.gourmet.tracker.Tracker;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**********************
-     * 					  *
-     *		INTERNAL	  *
-     *					  *
-     **********************/
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
 
-    private void checkNewVersion() {
-        GitHubRequest gitHubRequest = new GitHubRequest();
-        gitHubRequest.setContext(this);
-        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
-            @Override
-            public void onResponse(LastVersion lastVersion) {
-                boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(
-                        lastVersion.nameTagVersion,
-                        LastVersionHelper.getCurrentVersion(MainActivity.this));
+        Tracker.getInstance(getApplicationContext());
 
-                if (!isEqualsVersion) {
-                    LastVersionHelper.showDialog(MainActivity.this, lastVersion);
-                }
+        VolleySingleton.getVolleyLoader().initializeVolley(this);
 
+        if (savedInstanceState == null) {
+            if (CredentialsLogin.isCredential(getApplicationContext())) {
+                navigateToMain(null);
+            } else {
+                navigateToLogin();
             }
-        });
+        }
 
-        gitHubRequest.launchConnection();
     }
 
-    /**********************
-     * 					  *
-     *		PUBLIC 		  *
-     *					  *
-     **********************/
     public void navigateToLogin() {
         LoginFragment loginFragment = new LoginFragment();
         loginFragment.setArguments(getIntent().getExtras());
@@ -71,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        CredentialsLogin.removeCredentials();
+        CredentialsLogin.removeCredentials(getApplicationContext());
         GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getApplicationContext());
         sqliteHelper.resetTables();
         navigateToLogin();
@@ -90,31 +75,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent ,getResources().getString(R.string.dialog_share_title)));
     }
 
-    /**********************
-     * 					  *
-     *	   OVERRIDE	      *
-     *					  *
-     **********************/
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-
-        VolleySingleton.getVolleyLoader().initializeVolley(this);
-
-        CredentialsLogin.setActivity(this);
-        if (savedInstanceState == null) {
-            if (CredentialsLogin.isCredential()) {
-                navigateToMain(null);
-            } else {
-                navigateToLogin();
-            }
-        }
-
-        // Check a new version
-        checkNewVersion();
-    }
-
+    //region menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -124,16 +85,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_update:
+                Tracker.getInstance().sendMenuEvent("download");
+                openUrl(Constants.getUrlHomePage());
+                break;
             case R.id.action_share_app:
+                Tracker.getInstance().sendMenuEvent("share");
                 shareText(Constants.getShareText(this));
                 break;
             case R.id.action_open_source:
+                Tracker.getInstance().sendMenuEvent("open_source");
                 openUrl(Constants.getUrlGitHubProject());
                 break;
             case R.id.action_web_site:
+                Tracker.getInstance().sendMenuEvent("web_site");
                 openUrl(Constants.getUrlHomePage());
                 break;
             case R.id.action_logout:
+                Tracker.getInstance().sendMenuEvent("logout");
                 logout();
                 break;
             default:
@@ -141,5 +110,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    //endregion
 
 }

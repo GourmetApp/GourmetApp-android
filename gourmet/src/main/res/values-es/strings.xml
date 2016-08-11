@@ -27,6 +27,7 @@
     <string name="dialog_title_last_version">Nueva versión</string>
 
     <!-- Menu -->
+    <string name="menu_download_upload">Descargar actualización</string>
     <string name="menu_share_app">Compartir App</string>
     <string name="menu_web_site">Sitio web</string>
     <string name="menu_open_source">Open Source</string>

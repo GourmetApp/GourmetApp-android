@@ -11,9 +11,9 @@ public class RequestFake {
 
     public Gourmet login(String user, String pass) {
         Gourmet gourmet = new Gourmet();
-        gourmet.currentBalance  = "83,45";
-        gourmet.cardNumber = "0000004815162342";
-        gourmet.errorCode = "0";
+        gourmet.setCurrentBalance("83,45");
+        gourmet.setCardNumber("0000004815162342");
+        gourmet.setErrorCode("0");
 
         String [] names = {"Central Perk", "Los Pollos Hermanos", "Moe's Bar", "MacLaren's Pub", "Bada Bing", "Casi K No", "La Almeja Borracha"};
         String [] prices = {"11,23", "5,8", "13,21", "34,55", "89,14", "23,33", "37,7"};
@@ -23,11 +23,11 @@ public class RequestFake {
         Operation operation = null;
         for (int i = 0; i < names.length; i++) {
             operation = new Operation();
-            operation.name = names[i];
-            operation.price = prices[i];
-            operation.date = dates[i];
-            operation.hour = hours[i];
-            gourmet.operations.add(operation);
+            operation.setName(names[i]);
+            operation.setPrice(prices[i]);
+            operation.setDate(dates[i]);
+            operation.setHour(hours[i]);
+            gourmet.addOperation(operation);
         }
         return gourmet;
     }
@@ -35,13 +35,13 @@ public class RequestFake {
     public LastVersion getLastPublishVersion() {
         LastVersion lastVersion = new LastVersion();
 
-        lastVersion.idVersion = "1603617";
-        lastVersion.nameTagVersion = "v1.0.2";
-        lastVersion.nameVersion = "Release v1.0.2";
-        lastVersion.idDownload = "753792";
-        lastVersion.nameDownload = "GourmetApp-v1.0.1.apk";
-        lastVersion.urlDownload = "https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk";
-        lastVersion.changelog = "* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText";
+        lastVersion.setIdVersion("1603617");
+        lastVersion.setNameTagVersion("v1.0.2");
+        lastVersion.setNameVersion("Release v1.0.2");
+        lastVersion.setIdDownload("753792");
+        lastVersion.setNameDownload("GourmetApp-v1.0.1.apk");
+        lastVersion.setUrlDownload("https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk");
+        lastVersion.setChangelog("* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText");
 
         return lastVersion;
     }

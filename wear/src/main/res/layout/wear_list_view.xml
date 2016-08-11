@@ -9,6 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="1dp"
-        android:divider="@color/action_bar"/>
+        android:divider="@color/divider"/>
 
 </RelativeLayout>

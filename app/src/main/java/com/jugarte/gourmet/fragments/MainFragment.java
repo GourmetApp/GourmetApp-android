@@ -8,6 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -21,10 +23,15 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.helpers.LastVersionHelper;
+import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Crash;
+import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
@@ -52,6 +59,7 @@ public class MainFragment extends BaseFragment {
     private TextView mOfflineTextView = null;
     private RelativeLayout mContainer = null;
 
+    private boolean isEqualsVersion = false;
 
     /**********************
      * 					  *
@@ -61,6 +69,7 @@ public class MainFragment extends BaseFragment {
 
     private void bindingView() {
         View view = getView();
+
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
             mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
@@ -96,29 +105,35 @@ public class MainFragment extends BaseFragment {
                 ((MainActivity) getActivity()).logout();
             }
         }
+
+        Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
     private void drawLayout(Object result) {
         if (result != null) {
             Gourmet gourmet = (Gourmet) result;
-            if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
+            if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
+
+                Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+
                 mCurrentText.setVisibility(View.VISIBLE);
-                mCurrentBalance.setText(gourmet.currentBalance + "€");
-                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.cardNumber);
+                String currentBalance = gourmet.getCurrentBalance() + "€";
+                mCurrentBalance.setText(currentBalance);
+                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
                 mCardNumberTextView.setText(cardNumber);
 
-                if (gourmet.offlineMode && gourmet.modificationDate != null) {
+                if (gourmet.isOfflineMode() && gourmet.getModificationDate() != null) {
                     mOfflineTextView.setVisibility(View.VISIBLE);
-                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.modificationDate);
+                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.getModificationDate());
                     mOfflineTextView.setText(offlineText);
                 } else {
                     mOfflineTextView.setVisibility(View.GONE);
                 }
 
-                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.operations, R.layout.operation_cell);
+                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
-                showError(gourmet.errorCode);
+                showError(gourmet.getErrorCode());
             }
         } else {
             showError("3");
@@ -126,8 +141,8 @@ public class MainFragment extends BaseFragment {
     }
 
     private void loginRequest() {
-        final String user = CredentialsLogin.getUserCredential();
-        final String pass = CredentialsLogin.getPasswordCredential();
+        final String user = CredentialsLogin.getUserCredential(getContext());
+        final String pass = CredentialsLogin.getPasswordCredential(getContext());
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setContext(getContext());
         loginRequest.setQueryParams(new HashMap<String, String>(3) {{
@@ -148,11 +163,41 @@ public class MainFragment extends BaseFragment {
         loginRequest.setOnErrorListener(new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
+                Crash.report(error);
             }
         });
 
         loginRequest.launchConnection();
+    }
+
+    private void checkNewVersion() {
+        GitHubRequest gitHubRequest = new GitHubRequest();
+        gitHubRequest.setContext(getContext());
+        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
+            @Override
+            public void onResponse(LastVersion lastVersion) {
+
+                if (lastVersion != null && lastVersion.getNameTagVersion() != null) {
+
+                    isEqualsVersion = LastVersionHelper.isEqualsVersion(
+                            lastVersion.getNameTagVersion(),
+                            LastVersionHelper.getCurrentVersion(getContext()));
+
+                    boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
+                            lastVersion.getNameTagVersion(), getContext());
+
+                    if (!isEqualsVersion && shouldShowDialog) {
+                        LastVersionHelper.showDialog(getActivity(), lastVersion);
+                    }
+
+                    setHasOptionsMenu(true);
+
+                }
+            }
+        });
+
+        gitHubRequest.launchConnection();
     }
 
     /**********************
@@ -171,11 +216,13 @@ public class MainFragment extends BaseFragment {
     protected void fragmentInit() {
         bindingView();
 
+        // Set 16:9 the view
         ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
         Point displayPoint = DisplayUtils.getScreenSize(getActivity());
         lp.height = (int) ((float) displayPoint.x) * 9 / 16;
         mContainer.setLayoutParams(lp);
 
+        // Given data
         if (getParams() != null && getParams().length() > 0) {
             Gson gson = new Gson();
             this.drawLayout(gson.fromJson(getParams(), Gourmet.class));
@@ -183,6 +230,8 @@ public class MainFragment extends BaseFragment {
             showLoading(true);
             loginRequest();
         }
+
+        checkNewVersion();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -195,10 +244,13 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 ClipboardUtils.copyToClipboard(getContext(),
-                        CredentialsLogin.getUserCredential());
+                        CredentialsLogin.getUserCredential(getContext()));
+
                 Toast.makeText(getContext(),
                         getResources().getString(R.string.copy_to_clipboard),
                         Toast.LENGTH_SHORT).show();
+
+                Tracker.getInstance().sendMenuEvent("copy_clipboard");
             }
         });
 
@@ -225,6 +277,16 @@ public class MainFragment extends BaseFragment {
         activity.setSupportActionBar(toolbar);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isEqualsVersion) {
+            menu.findItem(R.id.action_update).setVisible(true);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+
+
     }
 
 }

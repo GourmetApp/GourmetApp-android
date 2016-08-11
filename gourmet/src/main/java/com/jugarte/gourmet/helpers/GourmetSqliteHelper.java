@@ -69,10 +69,10 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
 
         if (cursor.getCount() > 0) {
             Operation operation = new Operation();
-            operation.name = cursor.getString(0);
-            operation.price = cursor.getString(1);
-            operation.date = cursor.getString(2);
-            operation.hour = cursor.getString(3);
+            operation.setName(cursor.getString(0));
+            operation.setPrice(cursor.getString(1));
+            operation.setDate(cursor.getString(2));
+            operation.setHour(cursor.getString(3));
 
             return operation;
         }
@@ -81,20 +81,20 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
 
     private void updateGourmet(Gourmet gourmet) {
         ContentValues values = new ContentValues();
-        values.put(KEY_CURRENT_BALANCE, gourmet.currentBalance);
-        values.put(KEY_MODIFICATION_DATE, gourmet.modificationDate);
+        values.put(KEY_CURRENT_BALANCE, gourmet.getCurrentBalance());
+        values.put(KEY_MODIFICATION_DATE, gourmet.getModificationDate());
         database.update(TABLE_GOURMET, values, KEY_ID + " = 1", null);
     }
 
     private void insertOperation(Operation operation) {
-        String operationId = getOperationId(operation.date, operation.hour);
+        String operationId = getOperationId(operation.getDate(), operation.getHour());
         if (!existsOperation(operationId)) {
             ContentValues values = new ContentValues();
             values.put(KEY_ID, operationId);
-            values.put(KEY_NAME, operation.name);
-            values.put(KEY_PRICE, operation.price);
-            values.put(KEY_HOUR, operation.hour);
-            values.put(KEY_DATE, operation.date);
+            values.put(KEY_NAME, operation.getName());
+            values.put(KEY_PRICE, operation.getPrice());
+            values.put(KEY_HOUR, operation.getHour());
+            values.put(KEY_DATE, operation.getDate());
             database.insert(TABLE_OPERATIONS, null, values);
         }
     }
@@ -132,10 +132,10 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
                 operations = new ArrayList<Operation>();
                 do {
                     Operation operation = new Operation();
-                    operation.name = (cursor.getString(0));
-                    operation.price = (cursor.getString(1));
-                    operation.date = (cursor.getString(2));
-                    operation.hour = (cursor.getString(3));
+                    operation.setName(cursor.getString(0));
+                    operation.setPrice(cursor.getString(1));
+                    operation.setDate(cursor.getString(2));
+                    operation.setHour(cursor.getString(3));
                     // Adding contact to list
                     operations.add(operation);
                 } while (cursor.moveToNext());
@@ -153,9 +153,9 @@ public class GourmetSqliteHelper extends SQLiteOpenHelper {
             return;
         }
         updateGourmet(gourmet);
-        if (gourmet.operations != null) {
-            Collections.reverse(gourmet.operations);
-            for (Operation operation : gourmet.operations) {
+        if (gourmet.getOperations() != null) {
+            Collections.reverse(gourmet.getOperations());
+            for (Operation operation : gourmet.getOperations()) {
                 insertOperation(operation);
             }
         }

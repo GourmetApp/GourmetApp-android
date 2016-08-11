@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "917746367200",
+    "firebase_url": "https://gourmet-2d62b.firebaseio.com",
+    "project_id": "gourmet-2d62b",
+    "storage_bucket": "gourmet-2d62b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917746367200:android:7a94a16a4977d679",
+        "android_client_info": {
+          "package_name": "com.jugarte.gourmet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917746367200-kn0gqufe5k38slb036ok4grnu7nj1l7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqnlg_QQb8ysfGGrGXlDrqqb4D_UAO7I0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917746367200:android:cc23be2e7d18a04a",
+        "android_client_info": {
+          "package_name": "com.jugarte.gourmet.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917746367200-kn0gqufe5k38slb036ok4grnu7nj1l7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqnlg_QQb8ysfGGrGXlDrqqb4D_UAO7I0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

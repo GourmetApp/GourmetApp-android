@@ -21,6 +21,8 @@ import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.google.gson.Gson;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Crash;
+import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
 import java.util.HashMap;
@@ -45,20 +47,22 @@ public class LoginFragment extends BaseFragment {
 
     private void showError(String errorCode) {
         if (errorCode != null) {
-            String errorMeesage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
-            Toast.makeText(this.getActivity(), errorMeesage, Toast.LENGTH_SHORT).show();
+            String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
+            Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+
+            Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
         }
     }
 
     private void saveCredentials(String user, String pass) {
-        CredentialsLogin.removeCredentials();
-        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked());
+        CredentialsLogin.removeCredentials(getContext());
+        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked(), getContext());
     }
 
     private void launchLogin() {
         String user = mUserEditText.getText().toString().replaceAll(" ", "");
         String pass = mPassEditText.getText().toString();
-        CredentialsLogin.saveCredential(user);
+        CredentialsLogin.saveCredential(user, getContext());
         if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
             loginRequest(user, pass);
         } else {
@@ -80,14 +84,17 @@ public class LoginFragment extends BaseFragment {
             public void onResponse(Gourmet gourmet) {
                 showLoading(false);
                 if (gourmet != null) {
-                    if (gourmet.errorCode != null && gourmet.errorCode.equalsIgnoreCase("0")) {
+                    if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
+
+                        Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+
                         LoginFragment.this.saveCredentials(user, pass);
                         Gson gson = new Gson();
                         String response = gson.toJson(gourmet);
                         MainActivity activity = (MainActivity) getActivity();
                         activity.navigateToMain(response);
                     } else {
-                        showError(gourmet.errorCode);
+                        showError(gourmet.getErrorCode());
                     }
                 }
             }
@@ -96,7 +103,8 @@ public class LoginFragment extends BaseFragment {
         loginRequest.setOnErrorListener(new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
+                Crash.report(error);
             }
         });
 
@@ -110,8 +118,8 @@ public class LoginFragment extends BaseFragment {
 
         mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
-        if (CredentialsLogin.getUserCredential() != null) {
-            mUserEditText.setText(CredentialsLogin.getUserCredential());
+        if (CredentialsLogin.getUserCredential(getContext()) != null) {
+            mUserEditText.setText(CredentialsLogin.getUserCredential(getContext()));
             mPassEditText.requestFocus();
         }
 
