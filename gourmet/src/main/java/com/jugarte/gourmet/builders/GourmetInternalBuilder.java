@@ -28,8 +28,8 @@ public class GourmetInternalBuilder extends BaseBuilder {
 
     private Gourmet returnError(String errorCode) {
         Gourmet gourmet = new Gourmet();
-        gourmet.errorCode = errorCode;
-		gourmet.operations = null;
+        gourmet.setErrorCode(errorCode);
+		gourmet.setOperations(null);
         return gourmet;
     }
 
@@ -55,12 +55,12 @@ public class GourmetInternalBuilder extends BaseBuilder {
             return returnError("2");
         }
 
-        gourmet.cardNumber = CredentialsLogin.getUserCredential(context);
-        gourmet.currentBalance = sqliteHelper.getCurrentBalance();
-        gourmet.modificationDate = sqliteHelper.getModificationDate();
-        gourmet.operations = sqliteHelper.getOperations();
-        gourmet.errorCode = "0";
-        gourmet.offlineMode = true;
+        gourmet.setCardNumber(CredentialsLogin.getUserCredential(context));
+        gourmet.setCurrentBalance(sqliteHelper.getCurrentBalance());
+        gourmet.setModificationDate(sqliteHelper.getModificationDate());
+        gourmet.setOperations(sqliteHelper.getOperations());
+        gourmet.setErrorCode("0");
+        gourmet.setOfflineMode(true);
 
         return gourmet;
     }
@@ -68,7 +68,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
     public Gourmet updateGourmetDataWithCache(Gourmet gourmet) {
         GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
         sqliteHelper.updateElementsWithDatas(gourmet);
-        gourmet.operations = sqliteHelper.getOperations();
+        gourmet.setOperations(sqliteHelper.getOperations());
         return gourmet;
     }
 
@@ -78,7 +78,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 			return null;
 		}
 		Gourmet gourmet = new Gourmet();
-		gourmet.errorCode = "0";
+		gourmet.setErrorCode("0");
 
 		Document doc = Jsoup.parse(this._data);
 
@@ -90,29 +90,29 @@ public class GourmetInternalBuilder extends BaseBuilder {
 		if (currentBalanceElement == null) {
 			return null;
 		}
-		gourmet.currentBalance = this.cleanString(currentBalanceElement.text());
+		gourmet.setCurrentBalance(this.cleanString(currentBalanceElement.text()));
 
 		Elements operationsElement = doc.getElementsByTag("tr");
 		for (Element operationElement : operationsElement) {
 			Operation operation = new Operation();
-			operation.name = this.removeLastWord(operationElement.getElementById("operacion").text());
-			operation.price = operationElement.getElementById("importe").text();
-			operation.date = operationElement.getElementById("fecha").text();
-			operation.hour = operationElement.getElementById("horaOperacion").text();
-			gourmet.operations.add(operation);
+			operation.setName(this.removeLastWord(operationElement.getElementById("operacion").text()));
+			operation.setPrice(operationElement.getElementById("importe").text());
+			operation.setDate(operationElement.getElementById("fecha").text());
+			operation.setHour(operationElement.getElementById("horaOperacion").text());
+			gourmet.addOperation(operation);
 		}
 
-		if (gourmet.operations.size() > 0) {
-			Operation a = gourmet.operations.get(gourmet.operations.size() - 1);
-			if (a.price.equalsIgnoreCase("fin")) {
-				gourmet.operations.remove(gourmet.operations.size() - 1);
+		if (gourmet.getOperations().size() > 0) {
+			Operation o = gourmet.getOperations().get(gourmet.getOperations().size() - 1);
+			if (o.getPrice().equalsIgnoreCase("fin")) {
+				gourmet.getOperations().remove(gourmet.getOperations().size() - 1);
 			}
 		} else {
-			gourmet.operations = null;
+			gourmet.setOperations(null);
 		}
 
-		gourmet.cardNumber = cardNumber;
-		gourmet.modificationDate = modificationDate;
+		gourmet.setCardNumber(cardNumber);
+		gourmet.setModificationDate(modificationDate);
 
 		return gourmet;
 	}

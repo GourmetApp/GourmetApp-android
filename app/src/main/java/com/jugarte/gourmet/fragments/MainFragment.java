@@ -61,7 +61,6 @@ public class MainFragment extends BaseFragment {
 
     private boolean isEqualsVersion = false;
 
-
     /**********************
      * 					  *
      *	    INTERNAL	  *
@@ -70,6 +69,7 @@ public class MainFragment extends BaseFragment {
 
     private void bindingView() {
         View view = getView();
+
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
             mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
@@ -112,28 +112,28 @@ public class MainFragment extends BaseFragment {
     private void drawLayout(Object result) {
         if (result != null) {
             Gourmet gourmet = (Gourmet) result;
-            if (gourmet.errorCode != null && gourmet.errorCode.equals("0")) {
+            if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
 
                 Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
                 mCurrentText.setVisibility(View.VISIBLE);
-                String currentBalance = gourmet.currentBalance + "€";
+                String currentBalance = gourmet.getCurrentBalance() + "€";
                 mCurrentBalance.setText(currentBalance);
-                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.cardNumber);
+                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
                 mCardNumberTextView.setText(cardNumber);
 
-                if (gourmet.offlineMode && gourmet.modificationDate != null) {
+                if (gourmet.isOfflineMode() && gourmet.getModificationDate() != null) {
                     mOfflineTextView.setVisibility(View.VISIBLE);
-                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.modificationDate);
+                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.getModificationDate());
                     mOfflineTextView.setText(offlineText);
                 } else {
                     mOfflineTextView.setVisibility(View.GONE);
                 }
 
-                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.operations, R.layout.operation_cell);
+                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
                 mOperationsList.setAdapter(adapter);
             } else {
-                showError(gourmet.errorCode);
+                showError(gourmet.getErrorCode());
             }
         } else {
             showError("3");
@@ -178,14 +178,14 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onResponse(LastVersion lastVersion) {
 
-                if (lastVersion != null && lastVersion.nameTagVersion != null) {
+                if (lastVersion != null && lastVersion.getNameTagVersion() != null) {
 
                     isEqualsVersion = LastVersionHelper.isEqualsVersion(
-                            lastVersion.nameTagVersion,
+                            lastVersion.getNameTagVersion(),
                             LastVersionHelper.getCurrentVersion(getContext()));
 
                     boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
-                            lastVersion.nameTagVersion, getContext());
+                            lastVersion.getNameTagVersion(), getContext());
 
                     if (!isEqualsVersion && shouldShowDialog) {
                         LastVersionHelper.showDialog(getActivity(), lastVersion);

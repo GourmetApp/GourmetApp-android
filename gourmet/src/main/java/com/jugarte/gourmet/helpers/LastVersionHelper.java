@@ -42,12 +42,12 @@ public class LastVersionHelper {
 
     public static void showDialog(final Activity activity, final LastVersion lastVersion) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(activity.getResources().getString(R.string.dialog_title_last_version) + " " + lastVersion.nameTagVersion)
-                .setMessage(Html.fromHtml(lastVersion.changelog))
+        builder.setTitle(activity.getResources().getString(R.string.dialog_title_last_version) + " " + lastVersion.getNameTagVersion())
+                .setMessage(Html.fromHtml(lastVersion.getChangelog()))
                 .setPositiveButton(R.string.dialog_download_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Tracker.getInstance().sendUpgradeEvent("download");
-                        openUrlInBrowser(activity, lastVersion.urlHomePage);
+                        openUrlInBrowser(activity, lastVersion.getUrlHomePage());
 
                     }
                 })
@@ -67,7 +67,7 @@ public class LastVersionHelper {
 
         builder.show();
 
-        setShowDialog(lastVersion.nameTagVersion, activity.getApplicationContext());
+        setShowDialog(lastVersion.getNameTagVersion(), activity.getApplicationContext());
     }
 
     public static void openUrlInBrowser(Context context, String url) {

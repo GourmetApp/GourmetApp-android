@@ -46,7 +46,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                     gourmet = gourmetBuilder.getGourmetCacheData();
                 }
 
-                if (gourmet.operations == null) {
+                if (gourmet.getOperations() == null) {
                     gourmet = gourmetBuilder.getGourmetCacheData();
                 }
 

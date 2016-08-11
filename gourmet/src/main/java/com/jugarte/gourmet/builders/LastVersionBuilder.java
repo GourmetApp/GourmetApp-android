@@ -46,20 +46,20 @@ public class LastVersionBuilder extends BaseBuilder {
             JSONObject releaseObject = (JSONObject) lastVersionJSONArray.get(0);
             if (releaseObject != null) {
                 lastVersion = new LastVersion();
-                lastVersion.idVersion = "" + releaseObject.getInt(ID_KEY);
-                lastVersion.nameTagVersion = releaseObject.getString(TAG_NAME_KEY);
-                lastVersion.nameVersion = releaseObject.getString(NAME_KEY);
-                lastVersion.urlDownload = releaseObject.getString(HTML_URL_KEY);
-                lastVersion.urlHomePage = Constants.getUrlHomePage();
-                lastVersion.changelog = getChangelogWithHtmlCode(releaseObject.getString(CHANGELOG_KEY));
+                lastVersion.setIdVersion("" + releaseObject.getInt(ID_KEY));
+                lastVersion.setNameTagVersion(releaseObject.getString(TAG_NAME_KEY));
+                lastVersion.setNameVersion(releaseObject.getString(NAME_KEY));
+                lastVersion.setUrlDownload(releaseObject.getString(HTML_URL_KEY));
+                lastVersion.setUrlHomePage(Constants.getUrlHomePage());
+                lastVersion.setChangelog(getChangelogWithHtmlCode(releaseObject.getString(CHANGELOG_KEY)));
 
                 if (releaseObject.getJSONArray(ASSSETS_KEY) != null &&
                         releaseObject.getJSONArray(ASSSETS_KEY).length() > 0) {
                     JSONObject assetObject = (JSONObject) releaseObject.getJSONArray(ASSSETS_KEY).get(0);
                     if (assetObject != null) {
-                        lastVersion.urlDownload = assetObject.getString(URL_KEY);
-                        lastVersion.idDownload = "" + assetObject.getInt(ID_KEY);
-                        lastVersion.nameDownload = assetObject.getString(NAME_KEY);
+                        lastVersion.setUrlDownload(assetObject.getString(URL_KEY));
+                        lastVersion.setIdDownload("" + assetObject.getInt(ID_KEY));
+                        lastVersion.setNameDownload(assetObject.getString(NAME_KEY));
                     }
                 }
             }

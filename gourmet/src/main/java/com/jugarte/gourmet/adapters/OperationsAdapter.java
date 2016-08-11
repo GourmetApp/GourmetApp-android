@@ -67,9 +67,9 @@ public class OperationsAdapter extends BaseAdapter {
         if (operation == null)
             return view;
 
-        h.date.setText(operation.date + " " + operation.hour);
-        h.name.setText(operation.name);
-        h.price.setText(operation.price + "€");
+        h.date.setText(operation.getDate() + " " + operation.getHour());
+        h.name.setText(operation.getName());
+        h.price.setText(operation.getPrice() + "€");
 
         return view;
     }

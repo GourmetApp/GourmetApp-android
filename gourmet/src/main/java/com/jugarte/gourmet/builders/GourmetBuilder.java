@@ -13,7 +13,7 @@ import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 
 public class GourmetBuilder extends BaseBuilder {
 
-	private String _dataJSON = "";
+	private String dataJSON = "";
     private Context context;
 
     public GourmetBuilder(Context context) {
@@ -22,7 +22,7 @@ public class GourmetBuilder extends BaseBuilder {
 
     private Gourmet returnError(String errorCode) {
         Gourmet gourmet = new Gourmet();
-        gourmet.errorCode = errorCode;
+        gourmet.setErrorCode(errorCode);
         return gourmet;
     }
 
@@ -33,11 +33,11 @@ public class GourmetBuilder extends BaseBuilder {
         }
 
         Gourmet gourmet = new Gourmet();
-        gourmet.cardNumber = CredentialsLogin.getUserCredential(this.context);
-        gourmet.currentBalance = sqliteHelper.getCurrentBalance();
-        gourmet.modificationDate = sqliteHelper.getModificationDate();
-        gourmet.operations = sqliteHelper.getOperations();
-        gourmet.errorCode = "0";
+        gourmet.setCardNumber(CredentialsLogin.getUserCredential(this.context));
+        gourmet.setCurrentBalance(sqliteHelper.getCurrentBalance());
+        gourmet.setModificationDate(sqliteHelper.getModificationDate());
+        gourmet.setOperations(sqliteHelper.getOperations());
+        gourmet.setErrorCode("0");
 
         return gourmet;
     }
@@ -45,7 +45,7 @@ public class GourmetBuilder extends BaseBuilder {
     public Gourmet updateGourmetDataWithCache(Gourmet gourmet) {
         GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(this.context);
         sqliteHelper.updateElementsWithDatas(gourmet);
-        gourmet.operations = sqliteHelper.getOperations();
+        gourmet.setOperations(sqliteHelper.getOperations());
         return gourmet;
     }
 
@@ -55,12 +55,12 @@ public class GourmetBuilder extends BaseBuilder {
 		JSONObject data;
 		JSONArray operations = null;
 
-        if (this._dataJSON == null) {
+        if (this.dataJSON == null) {
             return getGourmetCacheData();
         }
 
 		try {
-			data = new JSONObject(this._dataJSON);
+			data = new JSONObject(this.dataJSON);
 		} catch (JSONException e) {
             return getGourmetCacheData();
 		}
@@ -78,20 +78,20 @@ public class GourmetBuilder extends BaseBuilder {
             Operation operation = null;
             for (int i = 0; i < operations.length(); i++) {
                 operation = new Operation();
-                JSONObject _item = (JSONObject) operations.get(i);
+                JSONObject jsonItem = (JSONObject) operations.get(i);
 
-                operation.name = _item.getString("name");
-                operation.date = _item.getString("date");
-                operation.hour = _item.getString("hour");
-                operation.price = _item.getString("price");
+                operation.setName(jsonItem.getString("name"));
+                operation.setDate(jsonItem.getString("date"));
+                operation.setHour(jsonItem.getString("hour"));
+                operation.setPrice(jsonItem.getString("price"));
 
-                gourmet.operations.add(operation);
+                gourmet.addOperation(operation);
             }
         }
 
-        gourmet.cardNumber = CredentialsLogin.getUserCredential(context);
-        gourmet.currentBalance = data.getString("currentBalance");
-        gourmet.errorCode = data.getString("errorCode");
+        gourmet.setCardNumber(CredentialsLogin.getUserCredential(context));
+        gourmet.setCurrentBalance(data.getString("currentBalance"));
+        gourmet.setErrorCode(data.getString("errorCode"));
 
 		return gourmet;
 	}
@@ -99,7 +99,7 @@ public class GourmetBuilder extends BaseBuilder {
 	@Override
 	public void append(String type, Object data) {
 		if(type.equals(BaseBuilder.DATA_JSON)) {
-			this._dataJSON = (String) data;
+			this.dataJSON = (String) data;
 		}
 	}
 }

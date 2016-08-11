@@ -84,7 +84,7 @@ public class LoginFragment extends BaseFragment {
             public void onResponse(Gourmet gourmet) {
                 showLoading(false);
                 if (gourmet != null) {
-                    if (gourmet.errorCode != null && gourmet.errorCode.equalsIgnoreCase("0")) {
+                    if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
 
                         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
@@ -94,7 +94,7 @@ public class LoginFragment extends BaseFragment {
                         MainActivity activity = (MainActivity) getActivity();
                         activity.navigateToMain(response);
                     } else {
-                        showError(gourmet.errorCode);
+                        showError(gourmet.getErrorCode());
                     }
                 }
             }
