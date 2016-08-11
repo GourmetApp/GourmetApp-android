@@ -18,7 +18,7 @@ public class Constants {
     public static String SERVICE_PARAM_TOKEN_RESPONSE = "xAeSYsTQQTCVyPOGWLpR";
 
     public static String getUrlLastPublishVersion() {
-        return "https://api.github.com/repos/javierugarte/GourmetApp-android/releases";
+        return "https://api.github.com/repos/gourmetapp/GourmetApp-android/releases";
     }
 
     public static String getUrlLoginService() {
@@ -26,11 +26,11 @@ public class Constants {
     }
 
     public static String getUrlGitHubProject() {
-        return "http://www.github.com/javierugarte/GourmetApp-android";
+        return "http://www.github.com/gourmetapp/GourmetApp-android";
     }
 
     public static String getUrlHomePage() {
-        return "http://javierugarte.github.io/GourmetApp-android";
+        return "http://gourmetapp.github.io/android";
     }
 
     public static String getShareText(Context context) {
