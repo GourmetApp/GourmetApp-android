@@ -19,7 +19,6 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.google.gson.Gson;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
@@ -34,8 +33,7 @@ public class LoginFragment extends BaseFragment {
     private CheckBox mPassRemember = null;
     private Button mLoginButton= null;
 
-    private void bindingViews() {
-        View view = getView();
+    private void bindingViews(View view) {
         if (view != null) {
             mUserEditText = (EditText) view.findViewById(R.id.login_user);
             mPassEditText = (EditText) view.findViewById(R.id.login_pass);
@@ -112,8 +110,8 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    protected void fragmentInit() {
-        bindingViews();
+    protected void fragmentInit(View view) {
+        bindingViews(view);
 
         mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 

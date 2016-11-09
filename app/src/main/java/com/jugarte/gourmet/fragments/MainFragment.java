@@ -70,9 +70,7 @@ public class MainFragment extends BaseFragment {
      *					  *
      **********************/
 
-    private void bindingView() {
-        View view = getView();
-
+    private void bindingView(View view) {
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
             mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
@@ -236,11 +234,12 @@ public class MainFragment extends BaseFragment {
      *					  *
      *		OVERRIDE	  *
      *					  *
-     **********************/
+     *********************
+     * @param view*/
 
     @Override
-    protected void fragmentInit() {
-        bindingView();
+    protected void fragmentInit(View view) {
+        bindingView(view);
 
         // Set 16:9 the view
         ViewGroup.LayoutParams lp = mContainer.getLayoutParams();

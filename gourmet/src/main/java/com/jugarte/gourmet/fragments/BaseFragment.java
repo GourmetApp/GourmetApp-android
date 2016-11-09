@@ -1,6 +1,7 @@
 package com.jugarte.gourmet.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import com.jugarte.gourmet.utils.LogUtils;
  */
 public abstract class BaseFragment extends Fragment {
 
-    abstract protected void fragmentInit();
+    abstract protected void fragmentInit(View view);
     abstract protected int getResourceId();
 
     /**********************
@@ -51,16 +52,14 @@ public abstract class BaseFragment extends Fragment {
      **********************/
 
     @Override
-    public void onStart() {
-        super.onStart();
-        this.fragmentInit();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return this.getLayoutInflater(savedInstanceState).inflate(this.getResourceId(), null);
+
+        View view = getLayoutInflater(savedInstanceState).inflate(getResourceId(), null);
+        fragmentInit(view);
+
+        return view;
     }
 
 }

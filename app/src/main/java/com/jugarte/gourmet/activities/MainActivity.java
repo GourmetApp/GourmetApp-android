@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public void navigateToLogin() {
         LoginFragment loginFragment = new LoginFragment();
         loginFragment.setArguments(getIntent().getExtras());
-        getSupportFragmentManager().beginTransaction().add(
+        getSupportFragmentManager().beginTransaction().replace(
                 android.R.id.content, loginFragment).commit();
     }
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             mainFragment.setArguments(bundleParams);
         }
 
-        getSupportFragmentManager().beginTransaction().add(
+        getSupportFragmentManager().beginTransaction().replace(
                 android.R.id.content, mainFragment).commit();
     }
 
