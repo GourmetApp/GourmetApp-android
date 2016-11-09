@@ -15,14 +15,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 
-
 /**
  * Created by javiergon on 30/07/15.
  */
-public class GourmetBuilderTest  {
+public class GourmetBuilderTest {
 
     private TestUtils utils = null;
-    private Context context= null;
+    private Context context = null;
     private Activity activity;
 
     @Before
@@ -41,25 +40,25 @@ public class GourmetBuilderTest  {
         gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
-        assertEquals(gourmet.errorCode, "0");
+        assertEquals(gourmet.getErrorCode(), "0");
 
-        assertEquals(gourmet.currentBalance, "34,56");
-        assertNotNull(gourmet.operations);
-        assertTrue(gourmet.operations.size() == 9);
-        assertEquals(gourmet.operations.get(0).name, "BURGER KING QUEVEDO");
-        assertEquals(gourmet.operations.get(0).price, "7,45");
-        assertEquals(gourmet.operations.get(0).date, "05/07/2015");
-        assertEquals(gourmet.operations.get(0).hour, "22:58");
+        assertEquals(gourmet.getCurrentBalance(), "34,56");
+        assertNotNull(gourmet.getOperations());
+        assertTrue(gourmet.getOperations().size() == 9);
+        assertEquals(gourmet.getOperations().get(0).getName(), "BURGER KING QUEVEDO");
+        assertEquals(gourmet.getOperations().get(0).getPrice(), "7,45");
+        assertEquals(gourmet.getOperations().get(0).getDate(), "05/07/2015");
+        assertEquals(gourmet.getOperations().get(0).getHour(), "22:58");
 
-        assertEquals(gourmet.operations.get(1).name, "COECOE HOSTELEROS");
+        assertEquals(gourmet.getOperations().get(1).getName(), "COECOE HOSTELEROS");
 
-        assertEquals(gourmet.operations.get(3).name, "DI BOCCA RESTAURACIO");
-        assertEquals(gourmet.operations.get(3).price, "11,95");
+        assertEquals(gourmet.getOperations().get(3).getName(), "DI BOCCA RESTAURACIO");
+        assertEquals(gourmet.getOperations().get(3).getPrice(), "11,95");
 
-        assertEquals(gourmet.operations.get(8).name, "BURGER KING QUEVEDO");
-        assertEquals(gourmet.operations.get(8).price, "1,49");
-        assertEquals(gourmet.operations.get(8).date, "21/06/2015");
-        assertEquals(gourmet.operations.get(8).hour, "21:55");
+        assertEquals(gourmet.getOperations().get(8).getName(), "BURGER KING QUEVEDO");
+        assertEquals(gourmet.getOperations().get(8).getPrice(), "1,49");
+        assertEquals(gourmet.getOperations().get(8).getDate(), "21/06/2015");
+        assertEquals(gourmet.getOperations().get(8).getHour(), "21:55");
     }
 
     @Test
@@ -72,21 +71,21 @@ public class GourmetBuilderTest  {
         gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
-        assertEquals(gourmet.errorCode, "0");
+        assertEquals(gourmet.getErrorCode(), "0");
 
-        assertEquals(gourmet.currentBalance, "101,89");
-        assertNotNull(gourmet.operations);
-        assertTrue(gourmet.operations.size() == 9);
-        assertEquals(gourmet.operations.get(0).name, "DI BOCCA RESTAURACIO");
-        assertEquals(gourmet.operations.get(0).price, "23,90");
-        assertEquals(gourmet.operations.get(0).date, "20/08/2015");
-        assertEquals(gourmet.operations.get(0).hour, "15:51");
+        assertEquals(gourmet.getCurrentBalance(), "101,89");
+        assertNotNull(gourmet.getOperations());
+        assertTrue(gourmet.getOperations().size() == 9);
+        assertEquals(gourmet.getOperations().get(0).getName(), "DI BOCCA RESTAURACIO");
+        assertEquals(gourmet.getOperations().get(0).getPrice(), "23,90");
+        assertEquals(gourmet.getOperations().get(0).getDate(), "20/08/2015");
+        assertEquals(gourmet.getOperations().get(0).getHour(), "15:51");
 
-        assertEquals(gourmet.operations.get(1).name, "BK TALAVERA GOLF");
+        assertEquals(gourmet.getOperations().get(1).getName(), "BK TALAVERA GOLF");
 
-        assertEquals(gourmet.operations.get(2).name, "BAR-RESTAURANTE USE");
-        assertEquals(gourmet.operations.get(3).name, "Actualizaci�n de saldo");
-        assertEquals(gourmet.operations.get(4).name, "BURGER KING QUEVEDO");
+        assertEquals(gourmet.getOperations().get(2).getName(), "BAR-RESTAURANTE USE");
+        assertEquals(gourmet.getOperations().get(3).getName(), "Actualizaci�n de saldo");
+        assertEquals(gourmet.getOperations().get(4).getName(), "BURGER KING QUEVEDO");
     }
 
     @Test
@@ -99,10 +98,10 @@ public class GourmetBuilderTest  {
         gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
-        assertEquals(gourmet.errorCode, "0");
+        assertEquals(gourmet.getErrorCode(), "0");
 
-        assertNotNull(gourmet.currentBalance);
-        assertNull(gourmet.operations);
+        assertNotNull(gourmet.getCurrentBalance());
+        assertNull(gourmet.getOperations());
     }
 
     @Test
@@ -115,10 +114,10 @@ public class GourmetBuilderTest  {
         gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
-        assertEquals(gourmet.errorCode, "2");
+        assertEquals(gourmet.getErrorCode(), "2");
 
-        assertNull(gourmet.currentBalance);
-        assertNull(gourmet.operations);
+        assertNull(gourmet.getCurrentBalance());
+        assertNull(gourmet.getOperations());
     }
 
     @Test

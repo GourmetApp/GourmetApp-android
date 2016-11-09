@@ -26,11 +26,11 @@ public class Constants {
     }
 
     public static String getUrlGitHubProject() {
-        return "http://www.github.com/gourmetapp/GourmetApp-android";
+        return "https://www.github.com/gourmetapp/GourmetApp-android";
     }
 
     public static String getUrlHomePage() {
-        return "http://gourmetapp.github.io/android";
+        return "https://gourmetapp.github.io/android/";
     }
 
     public static String getShareText(Context context) {
