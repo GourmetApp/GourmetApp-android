@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
+import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
@@ -251,7 +252,8 @@ public class MainFragment extends BaseFragment {
         // Given data
         if (getParams() != null && getParams().length() > 0) {
             Gson gson = new Gson();
-            this.drawLayout(gson.fromJson(getParams(), Gourmet.class));
+            Gourmet gourmet = gson.fromJson(getParams(), Gourmet.class);
+            drawLayout(gourmet);
         } else {
             showLoading(true);
             loginRequest();
@@ -322,7 +324,7 @@ public class MainFragment extends BaseFragment {
                 break;
             case R.id.action_search:
                 Tracker.getInstance().sendMenuEvent("search");
-
+                startActivity(SearchActivity.newStartIntent(getContext()));
                 break;
             case R.id.action_share_app:
                 Tracker.getInstance().sendMenuEvent("share");
