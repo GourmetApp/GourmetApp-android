@@ -66,6 +66,8 @@ public class MainFragment extends BaseFragment {
 
     private boolean isEqualsVersion = false;
 
+    Gourmet gourmet = null;
+
     /**********************
      * 					  *
      *	    INTERNAL	  *
@@ -114,9 +116,10 @@ public class MainFragment extends BaseFragment {
         Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
-    private void drawLayout(Object result) {
-        if (result != null) {
-            Gourmet gourmet = (Gourmet) result;
+    private void drawLayout(Gourmet gourmet) {
+        this.gourmet = gourmet;
+        if (gourmet != null) {
+
             if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
 
                 Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
@@ -324,7 +327,7 @@ public class MainFragment extends BaseFragment {
                 break;
             case R.id.action_search:
                 Tracker.getInstance().sendMenuEvent("search");
-                startActivity(SearchActivity.newStartIntent(getContext()));
+                startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
                 break;
             case R.id.action_share_app:
                 Tracker.getInstance().sendMenuEvent("share");
