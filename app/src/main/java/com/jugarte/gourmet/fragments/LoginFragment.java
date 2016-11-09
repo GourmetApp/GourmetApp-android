@@ -89,6 +89,7 @@ public class LoginFragment extends BaseFragment {
                         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
                         LoginFragment.this.saveCredentials(user, pass);
+
                         MainActivity activity = (MainActivity) getActivity();
                         activity.navigateToMain(gourmet);
                     } else {

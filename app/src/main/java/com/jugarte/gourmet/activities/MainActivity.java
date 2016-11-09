@@ -1,8 +1,11 @@
 package com.jugarte.gourmet.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
@@ -41,22 +44,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToMain(Gourmet gourmet) {
+        hideKeyboard();
+
         MainFragment mainFragment = new MainFragment();
         if (gourmet != null) {
             Bundle bundleParams = new Bundle();
             bundleParams.putParcelable(MainFragment.ARG_GOURMET, gourmet);
             mainFragment.setArguments(bundleParams);
         }
+
         getSupportFragmentManager().beginTransaction().add(
                 android.R.id.content, mainFragment).commit();
     }
 
-    //region menu
+    private void hideKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-    //endregion
 
 }
