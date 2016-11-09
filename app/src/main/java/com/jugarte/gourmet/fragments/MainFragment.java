@@ -41,7 +41,6 @@ import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -51,11 +50,8 @@ import java.util.HashMap;
  */
 public class MainFragment extends BaseFragment {
 
-    /**********************
-     * 					  *
-     *	  PROPERTIES	  *
-     *					  *
-     **********************/
+    public static final String ARG_GOURMET = "ARG_GOURMET";
+
     private TextView mCurrentBalance = null;
     private TextView mCurrentText = null;
     private ListView mOperationsList = null;
@@ -253,9 +249,8 @@ public class MainFragment extends BaseFragment {
         mContainer.setLayoutParams(lp);
 
         // Given data
-        if (getParams() != null && getParams().length() > 0) {
-            Gson gson = new Gson();
-            Gourmet gourmet = gson.fromJson(getParams(), Gourmet.class);
+        if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
+            Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
             drawLayout(gourmet);
         } else {
             showLoading(true);
@@ -350,4 +345,5 @@ public class MainFragment extends BaseFragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

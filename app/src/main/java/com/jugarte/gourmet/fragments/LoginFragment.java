@@ -89,10 +89,8 @@ public class LoginFragment extends BaseFragment {
                         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
                         LoginFragment.this.saveCredentials(user, pass);
-                        Gson gson = new Gson();
-                        String response = gson.toJson(gourmet);
                         MainActivity activity = (MainActivity) getActivity();
-                        activity.navigateToMain(response);
+                        activity.navigateToMain(gourmet);
                     } else {
                         showError(gourmet.getErrorCode());
                     }

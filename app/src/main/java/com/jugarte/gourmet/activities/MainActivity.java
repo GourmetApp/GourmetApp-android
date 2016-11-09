@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.jugarte.gourmet.R;
+import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
@@ -39,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
                 android.R.id.content, loginFragment).commit();
     }
 
-    public void navigateToMain(String params) {
+    public void navigateToMain(Gourmet gourmet) {
         MainFragment mainFragment = new MainFragment();
-        if (params != null && params.length() > 0) {
+        if (gourmet != null) {
             Bundle bundleParams = new Bundle();
-            bundleParams.putString("params", params);
+            bundleParams.putParcelable(MainFragment.ARG_GOURMET, gourmet);
             mainFragment.setArguments(bundleParams);
         }
         getSupportFragmentManager().beginTransaction().add(

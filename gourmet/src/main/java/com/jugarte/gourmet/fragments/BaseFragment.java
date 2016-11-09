@@ -29,13 +29,6 @@ public abstract class BaseFragment extends Fragment {
      *					  *
      **********************/
 
-    public String getParams() {
-        if (getArguments() != null) {
-            Bundle args = getArguments();
-            return args.getString("params");
-        } return null;
-    }
-
     public void showLoading(boolean display) {
         View view = getView();
         if (view != null) {
