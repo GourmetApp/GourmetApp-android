@@ -4,33 +4,41 @@
     <item
         android:id="@+id/action_update"
         android:icon="@drawable/ic_action_update"
+        android:orderInCategory="0"
         android:title="@string/menu_download_upload"
         android:visible="false"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="0" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="0"
+        android:title="@string/menu_search"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_share_app"
+        android:orderInCategory="1"
         android:title="@string/menu_share_app"
-        app:showAsAction="collapseActionView"
-        android:orderInCategory="1" />
+        app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/action_web_site"
         android:orderInCategory="1"
-        app:showAsAction="collapseActionView"
-        android:title="@string/menu_web_site" />
+        android:title="@string/menu_web_site"
+        app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/action_open_source"
         android:orderInCategory="1"
-        app:showAsAction="collapseActionView"
-        android:title="@string/menu_open_source" />
+        android:title="@string/menu_open_source"
+        app:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="1"
-        app:showAsAction="collapseActionView"
-        android:title="@string/menu_logout" />
+        android:title="@string/menu_logout"
+        app:showAsAction="collapseActionView" />
 
 </menu>

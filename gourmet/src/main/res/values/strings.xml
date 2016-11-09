@@ -29,6 +29,7 @@
     <!-- Menu -->
     <string name="menu_download_upload">Download update</string>
     <string name="menu_share_app">Share App</string>
+    <string name="menu_search">Search</string>
     <string name="menu_web_site">Web site</string>
     <string name="menu_open_source">Open Source</string>
     <string name="menu_logout">Logout</string>

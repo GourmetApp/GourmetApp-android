@@ -102,7 +102,7 @@ public class GourmetInternalBuilder extends BaseBuilder {
 			gourmet.addOperation(operation);
 		}
 
-		if (gourmet.getOperations().size() > 0) {
+		if (gourmet.getOperations() != null && gourmet.getOperations().size() > 0) {
 			Operation o = gourmet.getOperations().get(gourmet.getOperations().size() - 1);
 			if (o.getPrice().equalsIgnoreCase("fin")) {
 				gourmet.getOperations().remove(gourmet.getOperations().size() - 1);

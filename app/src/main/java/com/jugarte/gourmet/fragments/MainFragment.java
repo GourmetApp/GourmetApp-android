@@ -1,7 +1,9 @@
 package com.jugarte.gourmet.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -24,6 +27,7 @@ import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.LoginRequest;
@@ -102,7 +106,7 @@ public class MainFragment extends BaseFragment {
                 });
             } else {
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).logout();
+                logout();
             }
         }
 
@@ -200,6 +204,28 @@ public class MainFragment extends BaseFragment {
         gitHubRequest.launchConnection();
     }
 
+    public void openUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
+    public void shareText(String textToShare) {
+        Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, textToShare);
+        startActivity(Intent.createChooser(intent ,getResources().getString(R.string.dialog_share_title)));
+    }
+
+    private void logout() {
+        CredentialsLogin.removeCredentials(getContext());
+        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getContext());
+        sqliteHelper.resetTables();
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.navigateToLogin();
+    }
+
     /**********************
      * 					  *
      *		PUBLIC 		  *
@@ -285,8 +311,38 @@ public class MainFragment extends BaseFragment {
             menu.findItem(R.id.action_update).setVisible(true);
         }
         super.onCreateOptionsMenu(menu, inflater);
-
-
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_update:
+                Tracker.getInstance().sendMenuEvent("download");
+                openUrl(Constants.getUrlHomePage());
+                break;
+            case R.id.action_search:
+                Tracker.getInstance().sendMenuEvent("search");
+
+                break;
+            case R.id.action_share_app:
+                Tracker.getInstance().sendMenuEvent("share");
+                shareText(Constants.getShareText(getActivity()));
+                break;
+            case R.id.action_open_source:
+                Tracker.getInstance().sendMenuEvent("open_source");
+                openUrl(Constants.getUrlGitHubProject());
+                break;
+            case R.id.action_web_site:
+                Tracker.getInstance().sendMenuEvent("web_site");
+                openUrl(Constants.getUrlHomePage());
+                break;
+            case R.id.action_logout:
+                Tracker.getInstance().sendMenuEvent("logout");
+                logout();
+                break;
+            default:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
