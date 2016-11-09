@@ -39,21 +39,23 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':gourmet')
 
     def supportLibVersion = '24.2.1'
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
 
+    def firebaseVersion = '9.8.0'
+    compile "com.google.firebase:firebase-core:$firebaseVersion"
+    compile "com.google.firebase:firebase-crash:$firebaseVersion"
+
+    // Wear module:
     //compile project(':wear-http')
     //compile 'com.kogitune:wear-http:0.0.7'
     //debugWearApp project(path:':wear', configuration: 'debug')
     //releaseWearApp project(path:':wear', configuration: 'release')
-    compile 'com.google.firebase:firebase-core:9.8.0'
-    compile 'com.google.firebase:firebase-crash:9.8.0'
-    compile 'com.android.support:design:24.2.1'
-}
 
+}
 
 apply plugin: 'com.google.gms.google-services'
