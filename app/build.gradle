@@ -50,6 +50,8 @@ dependencies {
     compile "com.google.firebase:firebase-core:$firebaseVersion"
     compile "com.google.firebase:firebase-crash:$firebaseVersion"
 
+    compile 'com.github.javierugarte:searchtoolbar:1.0.1'
+
     // Wear module:
     //compile project(':wear-http')
     //compile 'com.kogitune:wear-http:0.0.7'
