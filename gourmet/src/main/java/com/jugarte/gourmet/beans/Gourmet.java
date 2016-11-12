@@ -60,7 +60,7 @@ public class Gourmet implements Parcelable {
     public ArrayList<Operation> getOperations(String pattern) {
         ArrayList<Operation> copyOperations = new ArrayList<>();
         for (Operation operation : operations) {
-            if (operation.getName().contains(pattern)) {
+            if (operation.getName().toLowerCase().contains(pattern.toLowerCase())) {
                 copyOperations.add(operation);
             }
         }
