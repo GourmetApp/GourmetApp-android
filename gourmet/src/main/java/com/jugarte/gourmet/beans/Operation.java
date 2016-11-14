@@ -16,6 +16,10 @@ public class Operation implements Parcelable {
     private String date = null;
     private String hour = null;
 
+    public String getId() {
+        return date + hour;
+    }
+
     public String getName() {
         return name;
     }
@@ -79,4 +83,5 @@ public class Operation implements Parcelable {
             return new Operation[size];
         }
     };
+
 }

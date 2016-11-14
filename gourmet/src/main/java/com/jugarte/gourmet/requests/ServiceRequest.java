@@ -20,10 +20,10 @@ public class ServiceRequest<T> {
 
     /**
      * <p>Response listener</p>
-     * @param <T>
+     * @param <Gourmet>
      */
-    public interface Listener<T> {
-        public void onResponse(T response);
+    public interface Listener<Gourmet> {
+        public void onResponse(Gourmet response);
     }
 
     /**********************

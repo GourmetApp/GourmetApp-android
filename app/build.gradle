@@ -46,10 +46,6 @@ dependencies {
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
-    def firebaseVersion = '9.8.0'
-    compile "com.google.firebase:firebase-core:$firebaseVersion"
-    compile "com.google.firebase:firebase-crash:$firebaseVersion"
-
     compile 'com.github.javierugarte:searchtoolbar:1.0.2'
 
     // Wear module:

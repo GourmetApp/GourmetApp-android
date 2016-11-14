@@ -66,11 +66,18 @@ public class GourmetInternalBuilder extends BaseBuilder {
     }
 
     public Gourmet updateGourmetDataWithCache(Gourmet gourmet) {
-        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
-        sqliteHelper.updateElementsWithDatas(gourmet);
-        gourmet.setOperations(sqliteHelper.getOperations());
-        return gourmet;
-    }
+		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
+		sqliteHelper.updateElementsWithDatas(gourmet);
+		gourmet.setOperations(sqliteHelper.getOperations());
+		return gourmet;
+	}
+
+	public Gourmet updateGourmetDataWithFirebase(Gourmet requestGourmet, Gourmet firebaseGourmet) {
+		GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(context);
+		sqliteHelper.updateElementsWithDatas(requestGourmet);
+		requestGourmet.setOperations(sqliteHelper.getOperations());
+		return requestGourmet;
+	}
 
 	@Override
 	public Gourmet build() throws Exception {

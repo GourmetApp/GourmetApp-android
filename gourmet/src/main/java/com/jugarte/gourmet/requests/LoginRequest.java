@@ -1,17 +1,29 @@
 package com.jugarte.gourmet.requests;
 
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.builders.GourmetInternalBuilder;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.DateHelper;
 import com.jugarte.gourmet.helpers.VolleySingleton;
 import com.jugarte.gourmet.internal.Constants;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
 
 public class LoginRequest extends ServiceRequest<Gourmet> {
 
@@ -27,7 +39,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
+                final GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
                 gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
                 gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
                 gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
@@ -50,27 +62,60 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                     gourmet = gourmetBuilder.getGourmetCacheData();
                 }
 
-                gourmet = gourmetBuilder.updateGourmetDataWithCache(gourmet);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference reference = database.getReference("users/" + gourmet.getCardNumber());
 
-                if (mResponseListener != null) {
-                    mResponseListener.onResponse(gourmet);
-                }
+                final Gourmet finalGourmet = gourmet;
+
+                final Listener<Gourmet> finalResponse = mResponseListener;
+                ValueEventListener postListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Gourmet firebaseGourmet = dataSnapshot.getValue(Gourmet.class);
+                        Gourmet resultGourmet = mergeGourmetDataWithFirebase(finalGourmet, firebaseGourmet);
+
+                        reference.setValue(resultGourmet);
+
+                        if (finalResponse != null) {
+                            finalResponse.onResponse(resultGourmet);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                };
+                reference.addListenerForSingleValueEvent(postListener);
 
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference reference = database.getReference(CredentialsLogin.getUserCredential(mContext));
 
-                Gourmet gourmet = gourmetBuilder.getGourmetCacheData();
+                final Listener<Gourmet> finalResponse = mResponseListener;
+                ValueEventListener postListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Gourmet firebaseGourmet = dataSnapshot.getValue(Gourmet.class);
+                        firebaseGourmet.setOfflineMode(true);
 
-                gourmet = gourmetBuilder.updateGourmetDataWithCache(gourmet);
+                        if (finalResponse != null) {
+                            finalResponse.onResponse(firebaseGourmet);
+                        }
+                    }
 
-                if (mResponseListener != null) {
-                    mResponseListener.onResponse(gourmet);
-                }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
+                    }
+
+                };
+                reference.addListenerForSingleValueEvent(postListener);
             }
 
         }) {
@@ -82,6 +127,31 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
         VolleySingleton.getVolleyLoader().getRequestQueue().add(stringRequest);
 
+    }
+
+    private Gourmet mergeGourmetDataWithFirebase(Gourmet localGourmet, Gourmet firebaseGourmet) {
+        if (firebaseGourmet == null || firebaseGourmet.getOperations() == null) {
+            return localGourmet;
+        }
+
+        Collections.reverse(localGourmet.getOperations());
+
+        for (Operation operation : localGourmet.getOperations()) {
+            if (!containsId(firebaseGourmet.getOperations(), operation.getId())) {
+                firebaseGourmet.getOperations().add(0, operation);
+            }
+        }
+        localGourmet.setOperations(firebaseGourmet.getOperations());
+        return localGourmet;
+    }
+
+    private static boolean containsId(List<Operation> operations, String id) {
+        for (Operation operation : operations) {
+            if (operation.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.fragments.LoginFragment;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         Tracker.getInstance(getApplicationContext());
 
         VolleySingleton.getVolleyLoader().initializeVolley(this);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
 
         if (savedInstanceState == null) {
             if (CredentialsLogin.isCredential(getApplicationContext())) {
