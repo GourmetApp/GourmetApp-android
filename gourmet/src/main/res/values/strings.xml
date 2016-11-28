@@ -12,6 +12,7 @@
     <string name="current_text">Current balance:</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="offline_modification">Offline, last update: %s</string>
+    <string name="price_euro">%s€</string>
 
     <!-- Errors -->
     <string name="button_retry">Retry</string>

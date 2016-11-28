@@ -17,9 +17,9 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.requests.LoginRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
@@ -61,7 +61,7 @@ public class LoginFragment extends BaseFragment {
         String user = mUserEditText.getText().toString().replaceAll(" ", "");
         String pass = mPassEditText.getText().toString();
         CredentialsLogin.saveCredential(user, getContext());
-        if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
+        if (user != null && user.length() > 0 && pass.length() > 0) {
             loginRequest(user, pass);
         } else {
             showError("1");

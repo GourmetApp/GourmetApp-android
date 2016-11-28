@@ -107,7 +107,7 @@ public class Gourmet implements Parcelable {
         this.currentBalance = in.readString();
         this.modificationDate = in.readString();
         this.offlineMode = in.readByte() != 0;
-        this.operations = new ArrayList<Operation>();
+        this.operations = new ArrayList<>();
         in.readList(this.operations, Operation.class.getClassLoader());
         this.errorCode = in.readString();
     }

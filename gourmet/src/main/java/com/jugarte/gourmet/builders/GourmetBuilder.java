@@ -65,13 +65,14 @@ public class GourmetBuilder extends BaseBuilder {
             return getGourmetCacheData();
 		}
 
-        if (data != null && !data.getString("errorCode").equalsIgnoreCase("0")) {
+        if (!data.getString("errorCode").equalsIgnoreCase("0")) {
             return returnError(data.getString("errorCode"));
         }
 
         try {
             operations = new JSONArray(data.getString("operations"));
         } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         if (operations != null) {

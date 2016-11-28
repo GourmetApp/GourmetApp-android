@@ -38,5 +38,6 @@
     <string name="share_text">Descargarte la aplicación Gourmet App si usas una ChequeGourmet - %s</string>
 
     <string name="search_hint">Buscar</string>
+    <string name="price_euro">%s€</string>
 
 </resources>
