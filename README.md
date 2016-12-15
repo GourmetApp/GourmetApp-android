@@ -5,7 +5,7 @@ This GitHub repository hosts the code for the Android app Gourmet.
 This application shows the balance and last operations of http://www.up-spain.es/ card Cheque Gourmet
 
 ## Download the last version:
-[<i class="icon-download"></i>Gourmet 1.3.0](http://gourmetapp.github.io/android/)
+![http://gourmetapp.github.io/android/](https://img.shields.io/github/release/GourmetApp/GourmetApp-android.svg?label=Last%20version) (click here to download)
 
 (Android 4.0.4 or above)
 
