@@ -69,7 +69,8 @@ public class OperationsAdapter extends BaseAdapter {
 
         h.date.setText(operation.getDate() + " " + operation.getHour());
         h.name.setText(operation.getName());
-        h.price.setText(operation.getPrice() + "€");
+        String price = String.format(mContext.getString(R.string.price_euro), operation.getPrice());
+        h.price.setText(price);
 
         return view;
     }

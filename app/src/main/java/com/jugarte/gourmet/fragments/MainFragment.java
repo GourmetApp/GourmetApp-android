@@ -1,7 +1,9 @@
 package com.jugarte.gourmet.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -21,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
+import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
@@ -36,7 +40,6 @@ import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -46,11 +49,8 @@ import java.util.HashMap;
  */
 public class MainFragment extends BaseFragment {
 
-    /**********************
-     * 					  *
-     *	  PROPERTIES	  *
-     *					  *
-     **********************/
+    public static final String ARG_GOURMET = "ARG_GOURMET";
+
     private TextView mCurrentBalance = null;
     private TextView mCurrentText = null;
     private ListView mOperationsList = null;
@@ -61,15 +61,15 @@ public class MainFragment extends BaseFragment {
 
     private boolean isEqualsVersion = false;
 
+    Gourmet gourmet = null;
+
     /**********************
      * 					  *
      *	    INTERNAL	  *
      *					  *
      **********************/
 
-    private void bindingView() {
-        View view = getView();
-
+    private void bindingView(View view) {
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
             mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
@@ -96,22 +96,23 @@ public class MainFragment extends BaseFragment {
                 snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoading(true);
+                        showLoading(getView(), true);
                         loginRequest();
                     }
                 });
             } else {
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).logout();
+                logout();
             }
         }
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
-    private void drawLayout(Object result) {
-        if (result != null) {
-            Gourmet gourmet = (Gourmet) result;
+    private void drawLayout(Gourmet gourmet) {
+        this.gourmet = gourmet;
+        if (gourmet != null) {
+
             if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
 
                 Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
@@ -154,7 +155,7 @@ public class MainFragment extends BaseFragment {
         loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
             @Override
             public void onResponse(Gourmet gourmet) {
-                showLoading(false);
+                showLoading(getView(), false);
                 drawLayout(gourmet);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -200,6 +201,26 @@ public class MainFragment extends BaseFragment {
         gitHubRequest.launchConnection();
     }
 
+    public void openUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
+    public void shareText(String textToShare) {
+        Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, textToShare);
+        startActivity(Intent.createChooser(intent ,getResources().getString(R.string.dialog_share_title)));
+    }
+
+    private void logout() {
+        CredentialsLogin.removeCredentials(getContext());
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.navigateToLogin();
+    }
+
     /**********************
      * 					  *
      *		PUBLIC 		  *
@@ -210,11 +231,12 @@ public class MainFragment extends BaseFragment {
      *					  *
      *		OVERRIDE	  *
      *					  *
-     **********************/
+     *********************
+     * @param view*/
 
     @Override
-    protected void fragmentInit() {
-        bindingView();
+    protected void fragmentInit(View view) {
+        bindingView(view);
 
         // Set 16:9 the view
         ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
@@ -223,11 +245,11 @@ public class MainFragment extends BaseFragment {
         mContainer.setLayoutParams(lp);
 
         // Given data
-        if (getParams() != null && getParams().length() > 0) {
-            Gson gson = new Gson();
-            this.drawLayout(gson.fromJson(getParams(), Gourmet.class));
+        if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
+            Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
+            drawLayout(gourmet);
         } else {
-            showLoading(true);
+            showLoading(view, true);
             loginRequest();
         }
 
@@ -269,7 +291,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
@@ -285,8 +307,39 @@ public class MainFragment extends BaseFragment {
             menu.findItem(R.id.action_update).setVisible(true);
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_update:
+                Tracker.getInstance().sendMenuEvent("download");
+                openUrl(Constants.getUrlHomePage());
+                break;
+            case R.id.action_search:
+                Tracker.getInstance().sendMenuEvent("search");
+                startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
+                break;
+            case R.id.action_share_app:
+                Tracker.getInstance().sendMenuEvent("share");
+                shareText(Constants.getShareText(getActivity()));
+                break;
+            case R.id.action_open_source:
+                Tracker.getInstance().sendMenuEvent("open_source");
+                openUrl(Constants.getUrlGitHubProject());
+                break;
+            case R.id.action_web_site:
+                Tracker.getInstance().sendMenuEvent("web_site");
+                openUrl(Constants.getUrlHomePage());
+                break;
+            case R.id.action_logout:
+                Tracker.getInstance().sendMenuEvent("logout");
+                logout();
+                break;
+            default:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

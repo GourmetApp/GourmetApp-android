@@ -40,7 +40,7 @@ public class WearGridFragment extends BaseFragment {
     }
 
     @Override
-    protected void fragmentInit() {
+    protected void fragmentInit(View view) {
         new WearGetText(this.getActivity()).get("http://jugarte.es/api/gourmet/gourmet.php",
                 new WearGetText.WearGetCallBack() {
                     @Override

@@ -17,10 +17,9 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.requests.LoginRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.google.gson.Gson;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
@@ -34,8 +33,7 @@ public class LoginFragment extends BaseFragment {
     private CheckBox mPassRemember = null;
     private Button mLoginButton= null;
 
-    private void bindingViews() {
-        View view = getView();
+    private void bindingViews(View view) {
         if (view != null) {
             mUserEditText = (EditText) view.findViewById(R.id.login_user);
             mPassEditText = (EditText) view.findViewById(R.id.login_pass);
@@ -63,7 +61,7 @@ public class LoginFragment extends BaseFragment {
         String user = mUserEditText.getText().toString().replaceAll(" ", "");
         String pass = mPassEditText.getText().toString();
         CredentialsLogin.saveCredential(user, getContext());
-        if (user != null && user.length() > 0 && pass != null && pass.length() > 0) {
+        if (user != null && user.length() > 0 && pass.length() > 0) {
             loginRequest(user, pass);
         } else {
             showError("1");
@@ -82,17 +80,16 @@ public class LoginFragment extends BaseFragment {
         loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
             @Override
             public void onResponse(Gourmet gourmet) {
-                showLoading(false);
+                showLoading(getView(), false);
                 if (gourmet != null) {
                     if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
 
                         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
                         LoginFragment.this.saveCredentials(user, pass);
-                        Gson gson = new Gson();
-                        String response = gson.toJson(gourmet);
+
                         MainActivity activity = (MainActivity) getActivity();
-                        activity.navigateToMain(response);
+                        activity.navigateToMain(gourmet);
                     } else {
                         showError(gourmet.getErrorCode());
                     }
@@ -109,12 +106,12 @@ public class LoginFragment extends BaseFragment {
         });
 
         loginRequest.launchConnection();
-        showLoading(true);
+        showLoading(getView(), true);
     }
 
     @Override
-    protected void fragmentInit() {
-        bindingViews();
+    protected void fragmentInit(View view) {
+        bindingViews(view);
 
         mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 

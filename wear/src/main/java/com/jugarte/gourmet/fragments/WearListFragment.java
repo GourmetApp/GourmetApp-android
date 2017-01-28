@@ -65,7 +65,7 @@ public class WearListFragment extends BaseFragment {
     }
 
     @Override
-    protected void fragmentInit() {
+    protected void fragmentInit(View view) {
         /* new WearGetText(getActivity()).get("",
                 new WearGetText.WearGetCallBack() {
                     @Override

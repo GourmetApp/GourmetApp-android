@@ -14,30 +14,21 @@ import com.jugarte.gourmet.utils.LogUtils;
  */
 public abstract class BaseFragment extends Fragment {
 
-    abstract protected void fragmentInit();
+    abstract protected void fragmentInit(View view);
     abstract protected int getResourceId();
 
-    /**********************
-     * 					  *
-     *	    INTERNAL	  *
-     *					  *
-     **********************/
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-    /**********************
-     * 					  *
-     *		PUBLIC 		  *
-     *					  *
-     **********************/
+        View view = getLayoutInflater(savedInstanceState).inflate(getResourceId(), null);
+        fragmentInit(view);
 
-    public String getParams() {
-        if (getArguments() != null) {
-            Bundle args = getArguments();
-            return args.getString("params");
-        } return null;
+        return view;
     }
 
-    public void showLoading(boolean display) {
-        View view = getView();
+    public void showLoading(View view, boolean display) {
         if (view != null) {
             View loadingView = view.findViewById(R.id.loading_view);
             int displayView = (display) ? View.VISIBLE : View.GONE;
@@ -49,25 +40,6 @@ public abstract class BaseFragment extends Fragment {
         } else {
             LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
         }
-    }
-
-    /**********************
-     * 					  *
-     *	  LIFE CICLE 	  *
-     *					  *
-     **********************/
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        this.fragmentInit();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return this.getLayoutInflater(savedInstanceState).inflate(this.getResourceId(), null);
     }
 
 }
