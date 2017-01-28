@@ -1,7 +1,6 @@
 package com.jugarte.gourmet.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +17,18 @@ public abstract class BaseFragment extends Fragment {
     abstract protected void fragmentInit(View view);
     abstract protected int getResourceId();
 
-    /**********************
-     * 					  *
-     *	    INTERNAL	  *
-     *					  *
-     **********************/
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-    /**********************
-     * 					  *
-     *		PUBLIC 		  *
-     *					  *
-     **********************/
+        View view = getLayoutInflater(savedInstanceState).inflate(getResourceId(), null);
+        fragmentInit(view);
 
-    public void showLoading(boolean display) {
-        View view = getView();
+        return view;
+    }
+
+    public void showLoading(View view, boolean display) {
         if (view != null) {
             View loadingView = view.findViewById(R.id.loading_view);
             int displayView = (display) ? View.VISIBLE : View.GONE;
@@ -43,23 +40,6 @@ public abstract class BaseFragment extends Fragment {
         } else {
             LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
         }
-    }
-
-    /**********************
-     * 					  *
-     *	  LIFE CICLE 	  *
-     *					  *
-     **********************/
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        View view = getLayoutInflater(savedInstanceState).inflate(getResourceId(), null);
-        fragmentInit(view);
-
-        return view;
     }
 
 }

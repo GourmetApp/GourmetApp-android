@@ -7,19 +7,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
-import com.jugarte.gourmet.builders.GourmetInternalBuilder;
+import com.jugarte.gourmet.builders.GourmetBuilder;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.DateHelper;
 import com.jugarte.gourmet.helpers.VolleySingleton;
 import com.jugarte.gourmet.internal.Constants;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +37,10 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                final GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(mContext);
-                gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, response);
-                gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
-                gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
+                final GourmetBuilder gourmetBuilder = new GourmetBuilder(mContext);
+                gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
+                gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
+                gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
 
                 Gourmet gourmet = null;
                 try {
@@ -54,14 +52,6 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                     }
                 }
 
-                if (gourmet == null) {
-                    gourmet = gourmetBuilder.getGourmetCacheData();
-                }
-
-                if (gourmet.getOperations() == null) {
-                    gourmet = gourmetBuilder.getGourmetCacheData();
-                }
-
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference reference = database.getReference("users/" + gourmet.getCardNumber());
 
@@ -71,8 +61,8 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Gourmet firebaseGourmet = dataSnapshot.getValue(Gourmet.class);
-                        Gourmet resultGourmet = mergeGourmetDataWithFirebase(finalGourmet, firebaseGourmet);
+                        Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
+                        Gourmet resultGourmet = mergeGourmetDataWithFirebase(finalGourmet, fireBaseGourmet);
 
                         reference.setValue(resultGourmet);
 
@@ -101,11 +91,11 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Gourmet firebaseGourmet = dataSnapshot.getValue(Gourmet.class);
-                        firebaseGourmet.setOfflineMode(true);
+                        Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
+                        fireBaseGourmet.setOfflineMode(true);
 
                         if (finalResponse != null) {
-                            finalResponse.onResponse(firebaseGourmet);
+                            finalResponse.onResponse(fireBaseGourmet);
                         }
                     }
 

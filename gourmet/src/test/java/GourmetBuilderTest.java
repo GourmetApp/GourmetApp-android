@@ -4,7 +4,7 @@ import android.content.Context;
 import android.test.mock.MockContext;
 
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.builders.GourmetInternalBuilder;
+import com.jugarte.gourmet.builders.GourmetBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,10 +34,10 @@ public class GourmetBuilderTest {
     public void testResponseOk() throws Exception {
         String data = this.utils.getResourceToString("response_ok.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
         assertEquals(gourmet.getErrorCode(), "0");
@@ -65,10 +65,10 @@ public class GourmetBuilderTest {
     public void testResponseOk2() throws Exception {
         String data = this.utils.getResourceToString("response_ok2.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
         assertEquals(gourmet.getErrorCode(), "0");
@@ -92,10 +92,10 @@ public class GourmetBuilderTest {
     public void testResponseWithoutOperations() throws Exception {
         String data = this.utils.getResourceToString("response_okwithoutops.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
         assertEquals(gourmet.getErrorCode(), "0");
@@ -108,10 +108,10 @@ public class GourmetBuilderTest {
     public void testResponseFail() throws Exception {
         String data = this.utils.getResourceToString("response_fail.html");
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
         assertEquals(gourmet.getErrorCode(), "2");
@@ -123,28 +123,28 @@ public class GourmetBuilderTest {
     @Test
     public void testResponseEmptyAndNull() throws Exception {
         String data = "";
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         Gourmet gourmet = (Gourmet) gourmetBuilder.build();
 
         assertNull(gourmet);
 
         data = null;
-        gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         gourmet = (Gourmet) gourmetBuilder.build();
 
         assertNull(gourmet);
 
         data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
-        gourmetBuilder = new GourmetInternalBuilder(context);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetInternalBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
+        gourmetBuilder = new GourmetBuilder(context);
+        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
+        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
+        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
         gourmet = (Gourmet) gourmetBuilder.build();
 
         assertNull(gourmet);
@@ -153,7 +153,7 @@ public class GourmetBuilderTest {
     @Test
     public void testHelperClass() throws Exception {
 
-        GourmetInternalBuilder gourmetBuilder = new GourmetInternalBuilder(context);
+        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
 
         assertEquals(gourmetBuilder.cleanString(" hola "), "hola");
         assertEquals(gourmetBuilder.cleanString(" hola    "), "hola");

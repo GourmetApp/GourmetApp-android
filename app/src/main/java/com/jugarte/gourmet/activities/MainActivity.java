@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         VolleySingleton.getVolleyLoader().initializeVolley(this);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true);
-
         if (savedInstanceState == null) {
             if (CredentialsLogin.isCredential(getApplicationContext())) {
                 navigateToMain(null);

@@ -28,7 +28,6 @@ import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.helpers.GourmetSqliteHelper;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.LoginRequest;
@@ -97,7 +96,7 @@ public class MainFragment extends BaseFragment {
                 snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoading(true);
+                        showLoading(getView(), true);
                         loginRequest();
                     }
                 });
@@ -156,7 +155,7 @@ public class MainFragment extends BaseFragment {
         loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
             @Override
             public void onResponse(Gourmet gourmet) {
-                showLoading(false);
+                showLoading(getView(), false);
                 drawLayout(gourmet);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -217,8 +216,6 @@ public class MainFragment extends BaseFragment {
 
     private void logout() {
         CredentialsLogin.removeCredentials(getContext());
-        GourmetSqliteHelper sqliteHelper = new GourmetSqliteHelper(getContext());
-        sqliteHelper.resetTables();
 
         MainActivity activity = (MainActivity) getActivity();
         activity.navigateToLogin();
@@ -252,7 +249,7 @@ public class MainFragment extends BaseFragment {
             Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
             drawLayout(gourmet);
         } else {
-            showLoading(true);
+            showLoading(view, true);
             loginRequest();
         }
 

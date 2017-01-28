@@ -80,7 +80,7 @@ public class LoginFragment extends BaseFragment {
         loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
             @Override
             public void onResponse(Gourmet gourmet) {
-                showLoading(false);
+                showLoading(getView(), false);
                 if (gourmet != null) {
                     if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
 
@@ -106,7 +106,7 @@ public class LoginFragment extends BaseFragment {
         });
 
         loginRequest.launchConnection();
-        showLoading(true);
+        showLoading(getView(), true);
     }
 
     @Override
