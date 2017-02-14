@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        Tracker.getInstance(getApplicationContext());
-
         VolleySingleton.getVolleyLoader().initializeVolley(this);
 
         if (savedInstanceState == null) {

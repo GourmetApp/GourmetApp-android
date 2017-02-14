@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     signingConfigs {
@@ -17,7 +23,7 @@ android {
     }
 
     compileSdkVersion 25
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.jugarte.gourmet"
         minSdkVersion 14
@@ -48,6 +54,10 @@ dependencies {
     compile "com.android.support:design:$supportLibVersion"
 
     compile 'com.github.javierugarte:searchtoolbar:1.0.2'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
 
     // Wear module:
     //compile project(':wear-http')
