@@ -1,8 +1,5 @@
 package com.jugarte.gourmet.utils;
 
-/**
- * Created by javiergon on 02/07/15.
- */
 public class TextFormatUtils {
 
     private static final char SPACE = ' ';

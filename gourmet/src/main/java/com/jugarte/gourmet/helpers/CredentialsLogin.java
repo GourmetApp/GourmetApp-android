@@ -1,12 +1,8 @@
 package com.jugarte.gourmet.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by javiergon on 18/05/15.
- */
 public class CredentialsLogin {
 
     private static String PREFERENCE_ID = "credentials";
@@ -15,7 +11,7 @@ public class CredentialsLogin {
     private static String PASS_KEY = "pass";
     private static String CREDENTIAL_KEY = "credential";
 
-    private static  SharedPreferences getSharedPreferences(Context context) {
+    private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(PREFERENCE_ID, Context.MODE_PRIVATE);
     }
 

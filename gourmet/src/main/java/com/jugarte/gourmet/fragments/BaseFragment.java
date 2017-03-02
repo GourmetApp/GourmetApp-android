@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 import com.jugarte.gourmet.lib.R;
 import com.jugarte.gourmet.utils.LogUtils;
 
-/**
- * Created by javiergon on 30/06/15.
- */
 public abstract class BaseFragment extends Fragment {
 
     abstract protected void fragmentInit(View view);
+
     abstract protected int getResourceId();
 
     @Override

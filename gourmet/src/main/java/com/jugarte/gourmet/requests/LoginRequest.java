@@ -1,6 +1,5 @@
 package com.jugarte.gourmet.requests;
 
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 public class LoginRequest extends ServiceRequest<Gourmet> {
 
     @Override
@@ -37,7 +35,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                final GourmetBuilder gourmetBuilder = new GourmetBuilder(mContext);
+                final GourmetBuilder gourmetBuilder = new GourmetBuilder();
                 gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
                 gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
                 gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());

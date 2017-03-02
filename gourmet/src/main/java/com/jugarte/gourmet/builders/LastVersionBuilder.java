@@ -7,10 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by javiergon on 03/08/15.
- */
-
 public class LastVersionBuilder extends BaseBuilder {
 
     private static final String ID_KEY = "id";
@@ -70,7 +66,7 @@ public class LastVersionBuilder extends BaseBuilder {
 
     @Override
     public void append(String type, Object data) {
-        if(type.equals(BaseBuilder.DATA_JSON)) {
+        if (type.equals(BaseBuilder.DATA_JSON)) {
             this._data = (String) data;
         }
     }

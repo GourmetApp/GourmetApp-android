@@ -7,14 +7,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.fragments.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.VolleySingleton;
-import com.jugarte.gourmet.tracker.Tracker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        VolleySingleton.getVolleyLoader().initializeVolley(this);
-
         if (savedInstanceState == null) {
             if (CredentialsLogin.isCredential(getApplicationContext())) {
                 navigateToMain(null);
@@ -32,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
                 navigateToLogin();
             }
         }
-
     }
 
     public void navigateToLogin() {
@@ -60,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

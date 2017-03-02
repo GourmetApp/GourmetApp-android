@@ -12,9 +12,6 @@ import com.jugarte.gourmet.lib.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by javiergon on 30/05/15.
- */
 public class OperationsAdapter extends BaseAdapter {
 
     private Context mContext = null;
@@ -42,7 +39,7 @@ public class OperationsAdapter extends BaseAdapter {
         return 0;
     }
 
-    private void applyStyles (ContentHolder holder) {
+    private void applyStyles(ContentHolder holder) {
     }
 
     @Override
@@ -63,7 +60,7 @@ public class OperationsAdapter extends BaseAdapter {
             h = (ContentHolder) view.getTag();
         }
 
-        Operation operation = (Operation)this.getItem(position);
+        Operation operation = (Operation) this.getItem(position);
         if (operation == null)
             return view;
 

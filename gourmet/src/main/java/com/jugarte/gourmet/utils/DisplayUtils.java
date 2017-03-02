@@ -7,9 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-/**
- * Created by javiergon on 11/08/15.
- */
 public class DisplayUtils {
 
     public static Point getScreenSize(Activity activity) {

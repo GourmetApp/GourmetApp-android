@@ -7,9 +7,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 
-/**
- * Created by javiergon on 18/05/15.
- */
 public class Gourmet implements Parcelable {
 
     public Gourmet() {

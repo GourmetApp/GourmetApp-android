@@ -3,9 +3,6 @@ package com.jugarte.gourmet.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by javiergon on 18/05/15.
- */
 public class Operation implements Parcelable {
 
     public Operation() {
