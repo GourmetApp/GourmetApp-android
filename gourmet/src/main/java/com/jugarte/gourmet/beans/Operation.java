@@ -26,6 +26,7 @@ public class Operation implements Parcelable, Comparable<Operation> {
     }
 
     public String getName() {
+        fixTitle();
         return name;
     }
 
@@ -106,6 +107,12 @@ public class Operation implements Parcelable, Comparable<Operation> {
             return getDateObject().compareTo(operation.getDateObject());
         }
         return 0;
+    }
+
+    private void fixTitle() {
+        name = name.replace("¥", "Ñ");
+        name = name.replace("#", "Ñ");
+        name = name.replace("ï", "'");
     }
 
 }
