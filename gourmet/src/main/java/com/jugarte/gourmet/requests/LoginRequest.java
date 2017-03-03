@@ -25,7 +25,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
     @Override
     public void launchConnection() {
-        
+
         if (Constants.FAKE_SERVICES) {
             mResponseListener.onResponse(new RequestFake().login(null, null));
         }
@@ -71,7 +71,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        finalResponse.onResponse(null);
                     }
 
                 };
@@ -83,14 +83,16 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference reference = database.getReference(CredentialsLogin.getUserCredential(mContext));
+                final DatabaseReference reference = database.getReference("users/" + CredentialsLogin.getUserCredential(mContext));
 
                 final Listener<Gourmet> finalResponse = mResponseListener;
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
-                        fireBaseGourmet.setOfflineMode(true);
+                        if (fireBaseGourmet != null) {
+                            fireBaseGourmet.setOfflineMode(true);
+                        }
 
                         if (finalResponse != null) {
                             finalResponse.onResponse(fireBaseGourmet);
@@ -99,7 +101,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        finalResponse.onResponse(null);
                     }
 
                 };
@@ -108,7 +110,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
         }) {
             @Override
-            protected Map<String,String> getParams() {
+            protected Map<String, String> getParams() {
                 return mQueryParams;
             }
         };
