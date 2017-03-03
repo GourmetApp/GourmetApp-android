@@ -62,6 +62,8 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                         Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
                         Gourmet resultGourmet = mergeGourmetDataWithFirebase(finalGourmet, fireBaseGourmet);
 
+                        resultGourmet.orderOperations();
+
                         reference.setValue(resultGourmet);
 
                         if (finalResponse != null) {
