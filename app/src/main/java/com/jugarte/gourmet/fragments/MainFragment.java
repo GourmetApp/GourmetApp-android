@@ -28,12 +28,12 @@ import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
+import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
@@ -43,10 +43,6 @@ import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import java.util.HashMap;
 
-
-/**
- * Created by javiergon on 15/05/15.
- */
 public class MainFragment extends BaseFragment {
 
     public static final String ARG_GOURMET = "ARG_GOURMET";
@@ -63,12 +59,6 @@ public class MainFragment extends BaseFragment {
 
     Gourmet gourmet = null;
 
-    /**********************
-     * 					  *
-     *	    INTERNAL	  *
-     *					  *
-     **********************/
-
     private void bindingView(View view) {
         if (view != null) {
             mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
@@ -83,10 +73,11 @@ public class MainFragment extends BaseFragment {
             mContainer = (RelativeLayout) view.findViewById(R.id.all_container);
         }
     }
+
     private void showError(String errorCode) {
         String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
         if (errorCode != null && getView() != null) {
-            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")){
+            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")) {
                 // Snackbar
                 Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
                 View sbView = snackbar.getView();
@@ -211,7 +202,7 @@ public class MainFragment extends BaseFragment {
         intent.setType("text/plain");
         intent.setAction(Intent.ACTION_SEND);
         intent.putExtra(android.content.Intent.EXTRA_TEXT, textToShare);
-        startActivity(Intent.createChooser(intent ,getResources().getString(R.string.dialog_share_title)));
+        startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_share_title)));
     }
 
     private void logout() {
@@ -220,19 +211,6 @@ public class MainFragment extends BaseFragment {
         MainActivity activity = (MainActivity) getActivity();
         activity.navigateToLogin();
     }
-
-    /**********************
-     * 					  *
-     *		PUBLIC 		  *
-     *					  *
-     **********************/
-
-    /**********************
-     *					  *
-     *		OVERRIDE	  *
-     *					  *
-     *********************
-     * @param view*/
 
     @Override
     protected void fragmentInit(View view) {
@@ -282,12 +260,6 @@ public class MainFragment extends BaseFragment {
     protected int getResourceId() {
         return R.layout.main_fragment;
     }
-
-    /**********************
-     * 					  *
-     *	  LIFE CYCLE 	  *
-     *					  *
-     **********************/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

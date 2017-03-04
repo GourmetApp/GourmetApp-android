@@ -11,9 +11,6 @@ import com.android.volley.toolbox.HurlStack;
 
 import java.io.File;
 
-/**
- * Created by javiergon on 20/11/15.
- */
 public class VolleySingleton {
 
     private static VolleySingleton sInstance;
@@ -27,7 +24,7 @@ public class VolleySingleton {
         String cachePath = context.getCacheDir().getAbsolutePath() + CACHE_LOCATION;
         File cacheDir = new File(cachePath);
 
-        Cache cache = new DiskBasedCache(cacheDir,  CACHE_SIZE);
+        Cache cache = new DiskBasedCache(cacheDir, CACHE_SIZE);
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
@@ -35,6 +32,7 @@ public class VolleySingleton {
 
     /**
      * <p>Return the image loader</p>
+     *
      * @return image loader
      */
     public RequestQueue getRequestQueue() {
@@ -44,7 +42,7 @@ public class VolleySingleton {
     /**
      * Initialize Volley Helper
      */
-    public void initializeVolley (Context context) {
+    public void initializeVolley(Context context) {
         if (context == null) {
             return;
         }
@@ -54,9 +52,10 @@ public class VolleySingleton {
 
     /**
      * <p>Return a singleton instance to access Volley helper features</p>
+     *
      * @return singleton helper
      */
-    public static synchronized VolleySingleton getVolleyLoader () {
+    public static synchronized VolleySingleton getVolleyLoader() {
         if (sInstance == null) {
             sInstance = new VolleySingleton();
         }

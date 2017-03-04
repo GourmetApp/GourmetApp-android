@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.jugarte.gourmet.lib.R;
 
-/**
- * Created by javiergon on 17/08/15.
- */
 public class ErrorMessageUtils {
 
     public static String getErrorMessageWithCode(Context context, String errorCode) {

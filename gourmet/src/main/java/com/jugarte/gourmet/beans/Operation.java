@@ -2,11 +2,16 @@ package com.jugarte.gourmet.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-/**
- * Created by javiergon on 18/05/15.
- */
-public class Operation implements Parcelable {
+import com.google.firebase.database.Exclude;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class Operation implements Parcelable, Comparable<Operation> {
 
     public Operation() {
     }
@@ -21,6 +26,7 @@ public class Operation implements Parcelable {
     }
 
     public String getName() {
+        fixTitle();
         return name;
     }
 
@@ -38,6 +44,17 @@ public class Operation implements Parcelable {
 
     public String getDate() {
         return date;
+    }
+
+    @Exclude
+    public Date getDateObject() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+        try {
+            return formatter.parse(date + " " + hour);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     public void setDate(String date) {
@@ -83,5 +100,19 @@ public class Operation implements Parcelable {
             return new Operation[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull Operation operation) {
+        if (getDateObject() != null && operation.getDateObject() != null) {
+            return getDateObject().compareTo(operation.getDateObject());
+        }
+        return 0;
+    }
+
+    private void fixTitle() {
+        name = name.replace("¥", "Ñ");
+        name = name.replace("#", "Ñ");
+        name = name.replace("ï", "'");
+    }
 
 }

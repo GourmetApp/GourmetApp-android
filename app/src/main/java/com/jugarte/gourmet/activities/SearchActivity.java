@@ -17,10 +17,6 @@ import com.jugarte.gourmet.beans.Operation;
 
 import java.util.ArrayList;
 
-/**
- * Created by javiergon on 15/05/15.
- */
-
 public class SearchActivity extends AppCompatActivity implements SearchToolbarListener {
 
     private static final String EXTRA_GOURMET = "extraGourmet";
@@ -37,7 +33,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        SearchToolbar searchToolbar = (SearchToolbar)findViewById(R.id.search_toolbar);
+        SearchToolbar searchToolbar = (SearchToolbar) findViewById(R.id.search_toolbar);
 
         setSupportActionBar(searchToolbar);
         searchToolbar.setSearchToolbarListener(this);

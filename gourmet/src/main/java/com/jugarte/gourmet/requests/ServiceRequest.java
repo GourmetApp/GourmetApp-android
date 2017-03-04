@@ -20,6 +20,7 @@ public class ServiceRequest<T> {
 
     /**
      * <p>Response listener</p>
+     *
      * @param <Gourmet>
      */
     public interface Listener<Gourmet> {
@@ -34,6 +35,7 @@ public class ServiceRequest<T> {
 
     /**
      * <p>Set Query params that will be used to compose the http query</p>
+     *
      * @param params (could be null)
      */
     public void setQueryParams(Map<String, String> params) {
@@ -42,26 +44,29 @@ public class ServiceRequest<T> {
 
     /**
      * <p>Callback interface for delivering parsed responses</p>
+     *
      * @param listener
      */
-    public void setResponseListener (Listener<T> listener) {
+    public void setResponseListener(Listener<T> listener) {
         this.mResponseListener = listener;
     }
 
     /**
      * <p>Callback method that an error has been occurred with the
      * provided error code and optional user-readable message.</p>
+     *
      * @param listener
      */
-    public void setOnErrorListener (Response.ErrorListener listener) {
+    public void setOnErrorListener(Response.ErrorListener listener) {
         this.mErrorListener = listener;
     }
 
     /**
      * <p>Set the context to execute</p>
+     *
      * @param context
      */
-    public void setContext (Context context) {
+    public void setContext(Context context) {
         this.mContext = context;
     }
 
@@ -69,21 +74,21 @@ public class ServiceRequest<T> {
      * <p>Launch the request using Volley. The response will be received
      * through listener</p>
      */
-    public void launchConnection () {
+    public void launchConnection() {
 
     }
 
     /**
      * <p>Stop the processing request</p>
      */
-    public void stopConnection () {
+    public void stopConnection() {
 
     }
 
     /**********************
-     * 					  *
-     *	   LIFE CYCLE	  *
-     *					  *
+     * *
+     * LIFE CYCLE	  *
+     * *
      **********************/
     public ServiceRequest() {
 

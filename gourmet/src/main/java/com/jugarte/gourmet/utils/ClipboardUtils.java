@@ -2,9 +2,6 @@ package com.jugarte.gourmet.utils;
 
 import android.content.Context;
 
-/**
- * Created by javiergon on 02/07/15.
- */
 public class ClipboardUtils {
 
     public static void copyToClipboard(Context context, String textToCopy) {

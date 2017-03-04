@@ -1,6 +1,5 @@
 package com.jugarte.gourmet.helpers;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,15 +9,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
+
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.lib.R;
 import com.jugarte.gourmet.tracker.Tracker;
 
+import static android.text.Html.FROM_HTML_MODE_COMPACT;
 
-/**
- * Created by javiergon on 04/08/15.
- */
 public class LastVersionHelper {
 
     private static final String PREFERENCE_ID = "last_version";
@@ -36,14 +35,22 @@ public class LastVersionHelper {
         return "v" + pInfo.versionName;
     }
 
-    public static boolean isEqualsVersion (String localVersionTagName, String serverVersionTagName){
+    public static boolean isEqualsVersion(String localVersionTagName, String serverVersionTagName) {
         return (localVersionTagName.equalsIgnoreCase(serverVersionTagName));
     }
 
     public static void showDialog(final Activity activity, final LastVersion lastVersion) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        String message;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            message = String.valueOf(Html.fromHtml(lastVersion.getChangelog(), FROM_HTML_MODE_COMPACT));
+        } else {
+            message = String.valueOf(Html.fromHtml(lastVersion.getChangelog()));
+        }
+
         builder.setTitle(activity.getResources().getString(R.string.dialog_title_last_version) + " " + lastVersion.getNameTagVersion())
-                .setMessage(Html.fromHtml(lastVersion.getChangelog()))
+                .setMessage(message)
                 .setPositiveButton(R.string.dialog_download_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Tracker.getInstance().sendUpgradeEvent("download");
@@ -63,10 +70,9 @@ public class LastVersionHelper {
                         Tracker.getInstance().sendUpgradeEvent("cancel");
                         dialog.cancel();
                     }
-        });
+                });
 
         builder.show();
-
         setShowDialog(lastVersion.getNameTagVersion(), activity.getApplicationContext());
     }
 

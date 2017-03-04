@@ -6,10 +6,8 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-/**
- * Created by javiergon on 18/05/15.
- */
 public class Gourmet implements Parcelable {
 
     public Gourmet() {
@@ -19,10 +17,7 @@ public class Gourmet implements Parcelable {
     private String currentBalance = null;
     private String modificationDate = null;
     private ArrayList<Operation> operations = null;
-
-    @Exclude
     private boolean offlineMode;
-    @Exclude
     private String errorCode = null;
 
     public String getCardNumber() {
@@ -49,6 +44,7 @@ public class Gourmet implements Parcelable {
         this.modificationDate = modificationDate;
     }
 
+    @Exclude
     public boolean isOfflineMode() {
         return offlineMode;
     }
@@ -83,6 +79,7 @@ public class Gourmet implements Parcelable {
         this.operations.add(operation);
     }
 
+    @Exclude
     public String getErrorCode() {
         return errorCode;
     }
@@ -127,4 +124,8 @@ public class Gourmet implements Parcelable {
             return new Gourmet[size];
         }
     };
+
+    public void orderOperations() {
+        Collections.sort(operations, Collections.<Operation>reverseOrder());
+    }
 }

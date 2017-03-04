@@ -16,9 +16,9 @@ import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
@@ -31,7 +31,7 @@ public class LoginFragment extends BaseFragment {
     private EditText mUserEditText = null;
     private EditText mPassEditText = null;
     private CheckBox mPassRemember = null;
-    private Button mLoginButton= null;
+    private Button mLoginButton = null;
 
     private void bindingViews(View view) {
         if (view != null) {
@@ -39,7 +39,7 @@ public class LoginFragment extends BaseFragment {
             mPassEditText = (EditText) view.findViewById(R.id.login_pass);
             mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
             mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
-            mLoginButton =  (Button)   view.findViewById(R.id.login_button);
+            mLoginButton = (Button) view.findViewById(R.id.login_button);
         }
     }
 
@@ -71,7 +71,7 @@ public class LoginFragment extends BaseFragment {
     private void loginRequest(final String user, final String pass) {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setContext(getContext());
-        loginRequest.setQueryParams(new HashMap<String, String>(3){{
+        loginRequest.setQueryParams(new HashMap<String, String>(3) {{
             put(Constants.SERVICE_PARAM_USER_KEY, user);
             put(Constants.SERVICE_PARAM_PASS_KEY, pass);
             put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);

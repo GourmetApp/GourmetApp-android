@@ -1,8 +1,5 @@
 package com.jugarte.gourmet.beans;
 
-/**
- * Created by javiergon on 03/08/15.
- */
 public class LastVersion {
 
     private String idVersion = null;

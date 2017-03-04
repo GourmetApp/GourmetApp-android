@@ -5,6 +5,9 @@
 *.jks
 keystoreproperties.txt
 
+# Fabric
+fabric.properties
+
 # Local configuration files (sdk path, etc)
 gradle.properties
 local.properties

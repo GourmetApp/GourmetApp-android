@@ -9,11 +9,11 @@ import com.jugarte.gourmet.builders.LastVersionBuilder;
 import com.jugarte.gourmet.helpers.VolleySingleton;
 import com.jugarte.gourmet.internal.Constants;
 
-public class GitHubRequest  extends ServiceRequest<LastVersion> {
+public class GitHubRequest extends ServiceRequest<LastVersion> {
 
     @Override
     public void launchConnection() {
-        
+
         if (Constants.FAKE_SERVICES) {
             mResponseListener.onResponse(new RequestFake().getLastPublishVersion());
         }

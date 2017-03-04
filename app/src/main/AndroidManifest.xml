@@ -24,6 +24,9 @@
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c15957853e81d15876bf5b3453e50c11b0049798" />
     </application>
 
 </manifest>

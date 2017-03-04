@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.jugarte.gourmet.lib.R;
 
-/**
- * Created by javiergon on 06/05/15.
- */
 public class Constants {
 
     /// PARAMS

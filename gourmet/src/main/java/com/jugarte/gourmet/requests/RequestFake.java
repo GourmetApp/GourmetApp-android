@@ -4,9 +4,6 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.beans.Operation;
 
-/**
- * Created by javiergon on 15/05/15.
- */
 public class RequestFake {
 
     public Gourmet login(String user, String pass) {
@@ -15,10 +12,10 @@ public class RequestFake {
         gourmet.setCardNumber("0000004815162342");
         gourmet.setErrorCode("0");
 
-        String [] names = {"Central Perk", "Los Pollos Hermanos", "Moe's Bar", "MacLaren's Pub", "Bada Bing", "Casi K No", "La Almeja Borracha"};
-        String [] prices = {"11,23", "5,8", "13,21", "34,55", "89,14", "23,33", "37,7"};
-        String [] dates  = {"22/09/1994", "20/01/2008", "17/12/1989", "19/09/2005", "10/01/1999", "17/01/1999", "31/01/1999"};
-        String [] hours  = {"22:00", "14:22", "21:56", "03:20", "20:45", "21:30", "22:50"};
+        String[] names = {"Central Perk", "Los Pollos Hermanos", "Moe's Bar", "MacLaren's Pub", "Bada Bing", "Casi K No", "La Almeja Borracha"};
+        String[] prices = {"11,23", "5,8", "13,21", "34,55", "89,14", "23,33", "37,7"};
+        String[] dates = {"22/09/1994", "20/01/2008", "17/12/1989", "19/09/2005", "10/01/1999", "17/01/1999", "31/01/1999"};
+        String[] hours = {"22:00", "14:22", "21:56", "03:20", "20:45", "21:30", "22:50"};
 
         Operation operation = null;
         for (int i = 0; i < names.length; i++) {

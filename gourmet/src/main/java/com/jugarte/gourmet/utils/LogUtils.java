@@ -3,9 +3,6 @@ package com.jugarte.gourmet.utils;
 import android.support.v4.BuildConfig;
 import android.util.Log;
 
-/**
- * Created by javiergon on 30/06/15.
- */
 public class LogUtils {
     private static final String LOG_PREFIX = "gourmet_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
@@ -20,8 +17,8 @@ public class LogUtils {
     }
 
     /**
-    * Don't use this when obfuscating class names!
-    */
+     * Don't use this when obfuscating class names!
+     */
     public static String makeLogTag(Class cls) {
         return makeLogTag(cls.getSimpleName());
     }

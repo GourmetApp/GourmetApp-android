@@ -1,6 +1,5 @@
 package com.jugarte.gourmet.requests;
 
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,12 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 public class LoginRequest extends ServiceRequest<Gourmet> {
 
     @Override
     public void launchConnection() {
-        
+
         if (Constants.FAKE_SERVICES) {
             mResponseListener.onResponse(new RequestFake().login(null, null));
         }
@@ -37,7 +35,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                final GourmetBuilder gourmetBuilder = new GourmetBuilder(mContext);
+                final GourmetBuilder gourmetBuilder = new GourmetBuilder();
                 gourmetBuilder.append(GourmetBuilder.DATA_JSON, response);
                 gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, CredentialsLogin.getUserCredential(mContext));
                 gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, DateHelper.getCurrentDateTime());
@@ -64,6 +62,8 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                         Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
                         Gourmet resultGourmet = mergeGourmetDataWithFirebase(finalGourmet, fireBaseGourmet);
 
+                        resultGourmet.orderOperations();
+
                         reference.setValue(resultGourmet);
 
                         if (finalResponse != null) {
@@ -73,7 +73,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        finalResponse.onResponse(null);
                     }
 
                 };
@@ -85,14 +85,16 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference reference = database.getReference(CredentialsLogin.getUserCredential(mContext));
+                final DatabaseReference reference = database.getReference("users/" + CredentialsLogin.getUserCredential(mContext));
 
                 final Listener<Gourmet> finalResponse = mResponseListener;
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Gourmet fireBaseGourmet = dataSnapshot.getValue(Gourmet.class);
-                        fireBaseGourmet.setOfflineMode(true);
+                        if (fireBaseGourmet != null) {
+                            fireBaseGourmet.setOfflineMode(true);
+                        }
 
                         if (finalResponse != null) {
                             finalResponse.onResponse(fireBaseGourmet);
@@ -101,7 +103,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        finalResponse.onResponse(null);
                     }
 
                 };
@@ -110,7 +112,7 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
 
         }) {
             @Override
-            protected Map<String,String> getParams() {
+            protected Map<String, String> getParams() {
                 return mQueryParams;
             }
         };
