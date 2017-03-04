@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.4.1
+* Fixed bug when you haven't connection
+* Sort transactions by date
+* Fixed some strange characters. No more ESPA¥A!
+
 Version 1.4.0
 * Added search functionality
 * Device synchronization
