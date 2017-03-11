@@ -1,11 +1,13 @@
 package com.jugarte.gourmet.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,39 +41,94 @@ import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
+import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import java.util.HashMap;
 
-public class MainFragment extends BaseFragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class MainFragment extends Fragment {
 
     public static final String ARG_GOURMET = "ARG_GOURMET";
 
-    private TextView mCurrentBalance = null;
-    private TextView mCurrentText = null;
-    private ListView mOperationsList = null;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TextView mCardNumberTextView = null;
-    private TextView mOfflineTextView = null;
-    private RelativeLayout mContainer = null;
+    @BindView(R.id.main_current_balance)
+    TextView mCurrentBalance;
+
+    @BindView(R.id.main_current_text)
+    TextView mCurrentText = null;
+
+    @BindView(R.id.main_operations_list)
+    ListView mOperationsList = null;
+
+    @BindView(R.id.main_swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindView(R.id.main_card_number)
+    TextView mCardNumberTextView = null;
+
+    @BindView(R.id.main_offline_text_view)
+    TextView mOfflineTextView = null;
+
+    @BindView(R.id.all_container)
+    RelativeLayout mContainer = null;
 
     private boolean isEqualsVersion = false;
 
     Gourmet gourmet = null;
 
-    private void bindingView(View view) {
-        if (view != null) {
-            mCurrentText = (TextView) view.findViewById(R.id.main_current_text);
-            mCurrentBalance = (TextView) view.findViewById(R.id.main_current_balance);
-            mOperationsList = (ListView) view.findViewById(R.id.main_operations_list);
-            mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.main_swipe_refresh_layout);
-            mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
-            mCardNumberTextView = (TextView) view.findViewById(R.id.main_card_number);
-            mOfflineTextView = (TextView) view.findViewById(R.id.main_offline_text_view);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-            // AspectRatio 16:9
-            mContainer = (RelativeLayout) view.findViewById(R.id.all_container);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.main_fragment, null);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        ButterKnife.bind(this, view);
+
+        // Set 16:9 the view
+        ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
+        Point displayPoint = DisplayUtils.getScreenSize(getActivity());
+        lp.height = (int) ((float) displayPoint.x) * 9 / 16;
+        mContainer.setLayoutParams(lp);
+
+        // Given data
+        if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
+            Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
+            drawLayout(gourmet);
+        } else {
+            showLoading(view, true);
+            loginRequest();
         }
+
+        checkNewVersion();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loginRequest();
+            }
+        });
+
+        return view;
+    }
+
+    @OnClick(R.id.main_card_number)
+    public void cardNumberClick() {
+        ClipboardUtils.copyToClipboard(getContext(),
+                CredentialsLogin.getUserCredential(getContext()));
+
+        Toast.makeText(getContext(),
+                getResources().getString(R.string.copy_to_clipboard),
+                Toast.LENGTH_SHORT).show();
+
+        Tracker.getInstance().sendMenuEvent("copy_clipboard");
     }
 
     private void showError(String errorCode) {
@@ -212,65 +269,19 @@ public class MainFragment extends BaseFragment {
         activity.navigateToLogin();
     }
 
-    @Override
-    protected void fragmentInit(View view) {
-        bindingView(view);
 
-        // Set 16:9 the view
-        ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
-        Point displayPoint = DisplayUtils.getScreenSize(getActivity());
-        lp.height = (int) ((float) displayPoint.x) * 9 / 16;
-        mContainer.setLayoutParams(lp);
-
-        // Given data
-        if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
-            Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
-            drawLayout(gourmet);
+    public void showLoading(View view, boolean display) {
+        if (view != null) {
+            View loadingView = view.findViewById(com.jugarte.gourmet.lib.R.id.loading_view);
+            int displayView = (display) ? View.VISIBLE : View.GONE;
+            if (loadingView != null) {
+                loadingView.setVisibility(displayView);
+            } else {
+                LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
+            }
         } else {
-            showLoading(view, true);
-            loginRequest();
+            LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
         }
-
-        checkNewVersion();
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loginRequest();
-            }
-        });
-
-        mCardNumberTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardUtils.copyToClipboard(getContext(),
-                        CredentialsLogin.getUserCredential(getContext()));
-
-                Toast.makeText(getContext(),
-                        getResources().getString(R.string.copy_to_clipboard),
-                        Toast.LENGTH_SHORT).show();
-
-                Tracker.getInstance().sendMenuEvent("copy_clipboard");
-            }
-        });
-
-    }
-
-    @Override
-    protected int getResourceId() {
-        return R.layout.main_fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-
-        return view;
     }
 
     @Override

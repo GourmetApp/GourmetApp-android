@@ -32,7 +32,8 @@
                 android:inputType="number"
                 android:lines="1"
                 android:maxLength="19"
-                android:singleLine="true" />
+                android:maxLines="1"
+                 />
 
             <EditText
                 android:id="@+id/login_pass"
@@ -42,8 +43,8 @@
                 android:fontFamily="sans-serif"
                 android:hint="@string/login_hint_password"
                 android:lines="1"
-                android:password="true"
-                android:singleLine="true" />
+                android:inputType="textPassword"
+                android:maxLines="1" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -65,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:background="@color/transparent"
                     android:text="@string/login_button"
                     android:textColor="@color/accent"

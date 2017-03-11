@@ -1,14 +1,10 @@
 package com.jugarte.gourmet.fragments;
 
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -26,22 +22,19 @@ import com.jugarte.gourmet.utils.ErrorMessageUtils;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnEditorAction;
+
 public class LoginFragment extends BaseFragment {
 
-    private EditText mUserEditText = null;
-    private EditText mPassEditText = null;
-    private CheckBox mPassRemember = null;
-    private Button mLoginButton = null;
-
-    private void bindingViews(View view) {
-        if (view != null) {
-            mUserEditText = (EditText) view.findViewById(R.id.login_user);
-            mPassEditText = (EditText) view.findViewById(R.id.login_pass);
-            mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
-            mPassRemember = (CheckBox) view.findViewById(R.id.login_remember_password);
-            mLoginButton = (Button) view.findViewById(R.id.login_button);
-        }
-    }
+    @BindView(R.id.login_user)
+    EditText userEditText = null;
+    @BindView(R.id.login_pass)
+    EditText passEditText = null;
+    @BindView(R.id.login_remember_password)
+    CheckBox passRemember = null;
 
     private void showError(String errorCode) {
         if (errorCode != null) {
@@ -54,12 +47,12 @@ public class LoginFragment extends BaseFragment {
 
     private void saveCredentials(String user, String pass) {
         CredentialsLogin.removeCredentials(getContext());
-        CredentialsLogin.saveCredentials(user, pass, mPassRemember.isChecked(), getContext());
+        CredentialsLogin.saveCredentials(user, pass, passRemember.isChecked(), getContext());
     }
 
     private void launchLogin() {
-        String user = mUserEditText.getText().toString().replaceAll(" ", "");
-        String pass = mPassEditText.getText().toString();
+        String user = userEditText.getText().toString().replaceAll(" ", "");
+        String pass = passEditText.getText().toString();
         CredentialsLogin.saveCredential(user, getContext());
         if (user != null && user.length() > 0 && pass.length() > 0) {
             loginRequest(user, pass);
@@ -109,32 +102,27 @@ public class LoginFragment extends BaseFragment {
         showLoading(getView(), true);
     }
 
+    @OnClick(R.id.login_button)
+    public void loginClick() {
+        launchLogin();
+    }
+
+    @OnEditorAction(R.id.login_pass)
+    public boolean onEditorAction() {
+        launchLogin();
+        return false;
+    }
+
     @Override
     protected void fragmentInit(View view) {
-        bindingViews(view);
+        ButterKnife.bind(this, view);
 
-        mUserEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
         if (CredentialsLogin.getUserCredential(getContext()) != null) {
-            mUserEditText.setText(CredentialsLogin.getUserCredential(getContext()));
-            mPassEditText.requestFocus();
+            userEditText.setText(CredentialsLogin.getUserCredential(getContext()));
+            passEditText.requestFocus();
         }
-
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                launchLogin();
-            }
-        });
-
-        mPassEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                launchLogin();
-                return false;
-            }
-        });
     }
 
     @Override
@@ -142,7 +130,7 @@ public class LoginFragment extends BaseFragment {
         return R.layout.login_fragment;
     }
 
-    public static class FourDigitCardFormatWatcher implements TextWatcher {
+    private static class FourDigitCardFormatWatcher implements TextWatcher {
 
         private static final char space = ' ';
 

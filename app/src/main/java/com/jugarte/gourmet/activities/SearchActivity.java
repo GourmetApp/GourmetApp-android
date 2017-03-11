@@ -46,12 +46,6 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
 
         gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
 
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-        }
-
         OperationsAdapter adapter = new OperationsAdapter(this,
                 gourmet.getOperations(), R.layout.operation_cell);
         ListView operationsList = (ListView) findViewById(R.id.search_operation_list);
