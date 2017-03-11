@@ -1,8 +1,13 @@
-package com.jugarte.gourmet.fragments;
+package com.jugarte.gourmet.login;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +24,7 @@ import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
+import com.jugarte.gourmet.utils.LogUtils;
 
 import java.util.HashMap;
 
@@ -27,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends Fragment {
 
     @BindView(R.id.login_user)
     EditText userEditText = null;
@@ -35,6 +41,23 @@ public class LoginFragment extends BaseFragment {
     EditText passEditText = null;
     @BindView(R.id.login_remember_password)
     CheckBox passRemember = null;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.login_fragment, null);
+
+        ButterKnife.bind(this, view);
+
+        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+
+        if (CredentialsLogin.getUserCredential(getContext()) != null) {
+            userEditText.setText(CredentialsLogin.getUserCredential(getContext()));
+            passEditText.requestFocus();
+        }
+
+        return view;
+    }
 
     private void showError(String errorCode) {
         if (errorCode != null) {
@@ -113,21 +136,18 @@ public class LoginFragment extends BaseFragment {
         return false;
     }
 
-    @Override
-    protected void fragmentInit(View view) {
-        ButterKnife.bind(this, view);
-
-        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
-
-        if (CredentialsLogin.getUserCredential(getContext()) != null) {
-            userEditText.setText(CredentialsLogin.getUserCredential(getContext()));
-            passEditText.requestFocus();
+    public void showLoading(View view, boolean display) {
+        if (view != null) {
+            View loadingView = view.findViewById(com.jugarte.gourmet.lib.R.id.loading_view);
+            int displayView = (display) ? View.VISIBLE : View.GONE;
+            if (loadingView != null) {
+                loadingView.setVisibility(displayView);
+            } else {
+                LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
+            }
+        } else {
+            LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
         }
-    }
-
-    @Override
-    protected int getResourceId() {
-        return R.layout.login_fragment;
     }
 
     private static class FourDigitCardFormatWatcher implements TextWatcher {

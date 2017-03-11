@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.fragments.LoginFragment;
+import com.jugarte.gourmet.login.LoginFragment;
 import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 
