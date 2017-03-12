@@ -7,6 +7,7 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Gourmet implements Parcelable {
 
@@ -67,8 +68,8 @@ public class Gourmet implements Parcelable {
         return copyOperations;
     }
 
-    public void setOperations(ArrayList<Operation> operations) {
-        this.operations = operations;
+    public void setOperations(List<Operation> operations) {
+        this.operations = (ArrayList<Operation>) operations;
     }
 
     public void addOperation(Operation operation) {

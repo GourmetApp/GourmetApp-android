@@ -1,10 +1,14 @@
 package com.jugarte.gourmet.balance;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.jugarte.gourmet.ThreadManager;
+import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.GetGourmet;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.requests.LoginRequest;
@@ -14,10 +18,12 @@ import com.jugarte.gourmet.tracker.Tracker;
 
 import java.util.HashMap;
 
-public class BalancePresenter {
+public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
     private Context context;
     private BalanceScreen screen;
+
+    private final ThreadManager threadManager = new ThreadManagerImp();
 
     public void bind(Context context, BalanceScreen screen) {
         this.context = context;
@@ -27,6 +33,13 @@ public class BalancePresenter {
     public void login() {
         final String user = CredentialsLogin.getUserCredential(context);
         final String pass = CredentialsLogin.getPasswordCredential(context);
+
+        threadManager.runOnBackground(new Runnable() {
+            @Override
+            public void run() {
+                new GetGourmet().execute(user, pass, BalancePresenter.this);
+            }
+        });
 
         screen.showLoading(true);
 
@@ -57,4 +70,23 @@ public class BalancePresenter {
         loginRequest.launchConnection();
     }
 
+    @Override
+    public void success(Gourmet gourmet) {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void error(Exception exception) {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "Fail", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
