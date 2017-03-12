@@ -177,23 +177,17 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void showGourmetData(Gourmet gourmet) {
-        this.gourmet = gourmet;
-        if (gourmet != null) {
+        currentText.setVisibility(View.VISIBLE);
+        offlineTextView.setVisibility(View.GONE);
+        String balance = gourmet.getCurrentBalance() + "€";
+        currentBalance.setText(balance);
+        String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
+        cardNumberTextView.setText(cardNumber);
 
-            Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+        OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
+        operationsList.setAdapter(adapter);
 
-            currentText.setVisibility(View.VISIBLE);
-            offlineTextView.setVisibility(View.GONE);
-            String balance = gourmet.getCurrentBalance() + "€";
-            currentBalance.setText(balance);
-            String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
-            cardNumberTextView.setText(cardNumber);
-
-            OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
-            operationsList.setAdapter(adapter);
-        } else {
-            showError("3");
-        }
+        Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
     }
 
     @Override

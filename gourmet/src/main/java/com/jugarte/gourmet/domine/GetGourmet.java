@@ -5,6 +5,7 @@ import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.NotFoundException;
+import com.jugarte.gourmet.helpers.DateHelper;
 
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class GetGourmet {
             serviceResult();
         }
 
+        finalGourmet.setModificationDate(DateHelper.getCurrentDateTime());
         finalGourmet.orderOperations();
     }
 

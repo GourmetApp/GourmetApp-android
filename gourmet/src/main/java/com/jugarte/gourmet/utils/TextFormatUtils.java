@@ -2,13 +2,13 @@ package com.jugarte.gourmet.utils;
 
 public class TextFormatUtils {
 
-    private static final char SPACE = ' ';
+    private static final String SPACE = " ";
 
     public static String formatCreditCardNumber(String cardNumber) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < cardNumber.length(); i++) {
             if (i % 4 == 0 && i != 0) {
-                result.append(" ");
+                result.append(SPACE);
             }
             result.append(cardNumber.charAt(i));
         }
@@ -16,6 +16,6 @@ public class TextFormatUtils {
     }
 
     public static String formatRemoveSpaces(String text) {
-        return text.replaceAll(" ", "");
+        return text.replaceAll(SPACE, "");
     }
 }
