@@ -1,6 +1,5 @@
-package com.jugarte.gourmet.fragments;
+package com.jugarte.gourmet.balance;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -22,8 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.activities.SearchActivity;
@@ -34,56 +31,39 @@ import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.requests.GitHubRequest;
-import com.jugarte.gourmet.requests.LoginRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
-import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
-import com.jugarte.gourmet.utils.LogUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainFragment extends Fragment {
+public class BalanceFragment extends Fragment implements BalanceScreen {
 
     public static final String ARG_GOURMET = "ARG_GOURMET";
 
-    @BindView(R.id.main_current_balance)
-    TextView mCurrentBalance;
-
-    @BindView(R.id.main_current_text)
-    TextView mCurrentText = null;
-
-    @BindView(R.id.main_operations_list)
-    ListView mOperationsList = null;
-
-    @BindView(R.id.main_swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
-    @BindView(R.id.main_card_number)
-    TextView mCardNumberTextView = null;
-
-    @BindView(R.id.main_offline_text_view)
-    TextView mOfflineTextView = null;
-
-    @BindView(R.id.all_container)
-    RelativeLayout mContainer = null;
+    @BindView(R.id.balance_current_balance) TextView currentBalance;
+    @BindView(R.id.balance_current_text) TextView currentText;
+    @BindView(R.id.balance_operations_list) ListView operationsList;
+    @BindView(R.id.balance_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.balance_card_number) TextView cardNumberTextView;
+    @BindView(R.id.balance_offline_text_view) TextView offlineTextView;
+    @BindView(R.id.all_container) RelativeLayout balanceRL;
 
     private boolean isEqualsVersion = false;
 
+    BalancePresenter presenter = new BalancePresenter();
     Gourmet gourmet = null;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+        super.onCreateView(inflater, viewGroup, savedInstanceState);
 
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.main_fragment, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.balance_fragment, null);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
@@ -91,35 +71,35 @@ public class MainFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
 
         ButterKnife.bind(this, view);
+        presenter.bind(getContext(), this);
 
         // Set 16:9 the view
-        ViewGroup.LayoutParams lp = mContainer.getLayoutParams();
+        ViewGroup.LayoutParams lp = balanceRL.getLayoutParams();
         Point displayPoint = DisplayUtils.getScreenSize(getActivity());
         lp.height = (int) ((float) displayPoint.x) * 9 / 16;
-        mContainer.setLayoutParams(lp);
+        balanceRL.setLayoutParams(lp);
 
         // Given data
         if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
             Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
-            drawLayout(gourmet);
+            showGourmetData(gourmet);
         } else {
-            showLoading(view, true);
-            loginRequest();
+            presenter.login();
         }
 
         checkNewVersion();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loginRequest();
+                presenter.login();
             }
         });
 
         return view;
     }
 
-    @OnClick(R.id.main_card_number)
+    @OnClick(R.id.balance_card_number)
     public void cardNumberClick() {
         ClipboardUtils.copyToClipboard(getContext(),
                 CredentialsLogin.getUserCredential(getContext()));
@@ -135,7 +115,6 @@ public class MainFragment extends Fragment {
         String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
         if (errorCode != null && getView() != null) {
             if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")) {
-                // Snackbar
                 Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
                 View sbView = snackbar.getView();
                 TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -144,8 +123,7 @@ public class MainFragment extends Fragment {
                 snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoading(getView(), true);
-                        loginRequest();
+                        presenter.login();
                     }
                 });
             } else {
@@ -155,69 +133,6 @@ public class MainFragment extends Fragment {
         }
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
-    }
-
-    private void drawLayout(Gourmet gourmet) {
-        this.gourmet = gourmet;
-        if (gourmet != null) {
-
-            if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
-
-                Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
-
-                mCurrentText.setVisibility(View.VISIBLE);
-                String currentBalance = gourmet.getCurrentBalance() + "€";
-                mCurrentBalance.setText(currentBalance);
-                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
-                mCardNumberTextView.setText(cardNumber);
-
-                if (gourmet.isOfflineMode() && gourmet.getModificationDate() != null) {
-                    mOfflineTextView.setVisibility(View.VISIBLE);
-                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.getModificationDate());
-                    mOfflineTextView.setText(offlineText);
-                } else {
-                    mOfflineTextView.setVisibility(View.GONE);
-                }
-
-                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
-                mOperationsList.setAdapter(adapter);
-            } else {
-                showError(gourmet.getErrorCode());
-            }
-        } else {
-            showError("3");
-        }
-    }
-
-    private void loginRequest() {
-        final String user = CredentialsLogin.getUserCredential(getContext());
-        final String pass = CredentialsLogin.getPasswordCredential(getContext());
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setContext(getContext());
-        loginRequest.setQueryParams(new HashMap<String, String>(3) {{
-            put(Constants.SERVICE_PARAM_USER_KEY, user);
-            put(Constants.SERVICE_PARAM_PASS_KEY, pass);
-            put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);
-        }});
-
-        loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
-            @Override
-            public void onResponse(Gourmet gourmet) {
-                showLoading(getView(), false);
-                drawLayout(gourmet);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        loginRequest.setOnErrorListener(new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
-                Crash.report(error);
-            }
-        });
-
-        loginRequest.launchConnection();
     }
 
     private void checkNewVersion() {
@@ -249,6 +164,49 @@ public class MainFragment extends Fragment {
         gitHubRequest.launchConnection();
     }
 
+    @Override
+    public void showOfflineMode() {
+
+    }
+
+    @Override
+    public void showGourmetData(Gourmet gourmet) {
+        this.gourmet = gourmet;
+        if (gourmet != null) {
+
+            if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
+
+                Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+
+                currentText.setVisibility(View.VISIBLE);
+                String balance = gourmet.getCurrentBalance() + "€";
+                currentBalance.setText(balance);
+                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
+                cardNumberTextView.setText(cardNumber);
+
+                if (gourmet.isOfflineMode() && gourmet.getModificationDate() != null) {
+                    offlineTextView.setVisibility(View.VISIBLE);
+                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.getModificationDate());
+                    offlineTextView.setText(offlineText);
+                } else {
+                    offlineTextView.setVisibility(View.GONE);
+                }
+
+                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
+                operationsList.setAdapter(adapter);
+            } else {
+                showError(gourmet.getErrorCode());
+            }
+        } else {
+            showError("3");
+        }
+    }
+
+    @Override
+    public void showLoading(boolean display) {
+        swipeRefreshLayout.setRefreshing(display);
+    }
+
     public void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
@@ -269,20 +227,6 @@ public class MainFragment extends Fragment {
         activity.navigateToLogin();
     }
 
-
-    public void showLoading(View view, boolean display) {
-        if (view != null) {
-            View loadingView = view.findViewById(com.jugarte.gourmet.lib.R.id.loading_view);
-            int displayView = (display) ? View.VISIBLE : View.GONE;
-            if (loadingView != null) {
-                loadingView.setVisibility(displayView);
-            } else {
-                LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
-            }
-        } else {
-            LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
-        }
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.jugarte.gourmet.R;
+import com.jugarte.gourmet.balance.BalanceFragment;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.login.LoginFragment;
-import com.jugarte.gourmet.fragments.MainFragment;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     public void navigateToMain(Gourmet gourmet) {
         hideKeyboard();
 
-        MainFragment mainFragment = new MainFragment();
+        BalanceFragment mainFragment = new BalanceFragment();
         if (gourmet != null) {
             Bundle bundleParams = new Bundle();
-            bundleParams.putParcelable(MainFragment.ARG_GOURMET, gourmet);
+            bundleParams.putParcelable(BalanceFragment.ARG_GOURMET, gourmet);
             mainFragment.setArguments(bundleParams);
         }
 
