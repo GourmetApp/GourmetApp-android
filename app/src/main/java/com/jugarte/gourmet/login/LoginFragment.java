@@ -1,10 +1,7 @@
 package com.jugarte.gourmet.login;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,35 +9,27 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.requests.LoginRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
-import com.jugarte.gourmet.tracker.Crash;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
+import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
 import com.jugarte.gourmet.utils.LogUtils;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LoginScreen {
 
-    @BindView(R.id.login_user)
-    EditText userEditText = null;
-    @BindView(R.id.login_pass)
-    EditText passEditText = null;
-    @BindView(R.id.login_remember_password)
-    CheckBox passRemember = null;
+    @BindView(R.id.login_user) EditText userEditText;
+    @BindView(R.id.login_pass) EditText passEditText;
+    @BindView(R.id.login_remember_password) CheckBox passRemember;
+
+    LoginPresenter presenter = new LoginPresenter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +37,7 @@ public class LoginFragment extends Fragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.login_fragment, null);
 
         ButterKnife.bind(this, view);
+        presenter.bind(getContext(), this);
 
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
@@ -59,7 +49,30 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void showError(String errorCode) {
+    private void launchLogin() {
+        String user = userEditText.getText().toString().replaceAll(" ", "");
+        String pass = passEditText.getText().toString();
+        presenter.login(user, pass);
+    }
+
+    @Override
+    public void navigateToMain(Gourmet gourmet) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.navigateToMain(gourmet);
+    }
+
+    @Override
+    public void showLoading() {
+        showLoading(getView(), true);
+    }
+
+    @Override
+    public void hideLoading() {
+        showLoading(getView(), false);
+    }
+
+    @Override
+    public void showError(String errorCode) {
         if (errorCode != null) {
             String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
             Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
@@ -68,61 +81,10 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void saveCredentials(String user, String pass) {
+    @Override
+    public void saveCredentials(String user, String password) {
         CredentialsLogin.removeCredentials(getContext());
-        CredentialsLogin.saveCredentials(user, pass, passRemember.isChecked(), getContext());
-    }
-
-    private void launchLogin() {
-        String user = userEditText.getText().toString().replaceAll(" ", "");
-        String pass = passEditText.getText().toString();
-        CredentialsLogin.saveCredential(user, getContext());
-        if (user != null && user.length() > 0 && pass.length() > 0) {
-            loginRequest(user, pass);
-        } else {
-            showError("1");
-        }
-    }
-
-    private void loginRequest(final String user, final String pass) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setContext(getContext());
-        loginRequest.setQueryParams(new HashMap<String, String>(3) {{
-            put(Constants.SERVICE_PARAM_USER_KEY, user);
-            put(Constants.SERVICE_PARAM_PASS_KEY, pass);
-            put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);
-        }});
-
-        loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
-            @Override
-            public void onResponse(Gourmet gourmet) {
-                showLoading(getView(), false);
-                if (gourmet != null) {
-                    if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
-
-                        Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
-
-                        LoginFragment.this.saveCredentials(user, pass);
-
-                        MainActivity activity = (MainActivity) getActivity();
-                        activity.navigateToMain(gourmet);
-                    } else {
-                        showError(gourmet.getErrorCode());
-                    }
-                }
-            }
-        });
-
-        loginRequest.setOnErrorListener(new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
-                Crash.report(error);
-            }
-        });
-
-        loginRequest.launchConnection();
-        showLoading(getView(), true);
+        CredentialsLogin.saveCredentials(user, password, passRemember.isChecked(), getContext());
     }
 
     @OnClick(R.id.login_button)
@@ -131,7 +93,7 @@ public class LoginFragment extends Fragment {
     }
 
     @OnEditorAction(R.id.login_pass)
-    public boolean onEditorAction() {
+    public boolean loginAction() {
         launchLogin();
         return false;
     }
@@ -147,43 +109,6 @@ public class LoginFragment extends Fragment {
             }
         } else {
             LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
-        }
-    }
-
-    private static class FourDigitCardFormatWatcher implements TextWatcher {
-
-        private static final char space = ' ';
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            // Remove all spacing char
-            int pos = 0;
-            while (pos < s.length()) {
-                if (space == s.charAt(pos) && (((pos + 1) % 5) != 0 || pos + 1 == s.length())) {
-                    s.delete(pos, pos + 1);
-                } else {
-                    pos++;
-                }
-            }
-
-            // Insert char where needed.
-            pos = 4;
-            while (pos < s.length()) {
-                final char c = s.charAt(pos);
-                // Only if its a digit where there should be a space we insert a space
-                if ("0123456789".indexOf(c) >= 0) {
-                    s.insert(pos, "" + space);
-                }
-                pos += 5;
-            }
         }
     }
 

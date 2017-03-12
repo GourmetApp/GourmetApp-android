@@ -50,6 +50,11 @@ public class LoginRequest extends ServiceRequest<Gourmet> {
                     }
                 }
 
+                if (gourmet != null && gourmet.getErrorCode().equalsIgnoreCase("2")) {
+                    mResponseListener.onResponse(gourmet);
+                    return;
+                }
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference reference = database.getReference("users/" + gourmet.getCardNumber());
 
