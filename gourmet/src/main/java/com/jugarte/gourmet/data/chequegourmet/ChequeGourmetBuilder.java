@@ -14,7 +14,8 @@ import java.util.ArrayList;
 
 class ChequeGourmetBuilder {
 
-    public ChequeGourmet build(String response) throws NotFoundException, ConnectionException, EmptyException {
+    public ChequeGourmet build(String response, String cardNumber)
+            throws NotFoundException, ConnectionException, EmptyException {
 
         if (response == null || response.length() == 0) {
             throw new ConnectionException();
@@ -53,7 +54,7 @@ class ChequeGourmetBuilder {
 
         }
 
-        return new ChequeGourmet(balance, operationArrayList);
+        return new ChequeGourmet(cardNumber, balance, operationArrayList);
     }
 
     private String removeLastWord(String text) {

@@ -8,14 +8,12 @@ import com.jugarte.gourmet.exceptions.NotFoundException;
 
 class GetChequeGourmet {
 
-    public interface OnChequeGourmetResponse {
-
+    interface OnChequeGourmetResponse {
         void success(ChequeGourmet chequeGourmet);
-
         void error(Exception exception);
     }
 
-    public void execute(String user, String password, OnChequeGourmetResponse response) {
+    void execute(String user, String password, OnChequeGourmetResponse response) {
         ChequeGourmetDataManager chequeGourmetDataManager = new ChequeGourmetDataManager();
         try {
             ChequeGourmet chequeGourmet = chequeGourmetDataManager.getChequeGourmet(user, password);

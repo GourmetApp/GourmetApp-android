@@ -55,7 +55,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
             @Override
             public void onResponse(Gourmet gourmet) {
                 screen.showLoading(false);
-                screen.showGourmetData(gourmet);
+//                screen.showGourmetData(gourmet);
             }
         });
 
@@ -71,22 +71,38 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     }
 
     @Override
-    public void success(Gourmet gourmet) {
+    public void success(final Gourmet gourmet) {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
+                // TODO: 12/3/17 añadir la fecha de modificación
+                // TODO: 12/3/17 guardar los datos en firebase de nuevo 
+                screen.showGourmetData(gourmet);
             }
         });
     }
 
     @Override
-    public void error(Exception exception) {
+    public void notConnection(final Gourmet gourmet) {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, "Fail", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "notConnection", Toast.LENGTH_SHORT).show();
+                screen.showGourmetData(gourmet);
+                screen.showOfflineMode(gourmet.getModificationDate());
             }
         });
     }
+
+    @Override
+    public void notUserFound() {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, "notUserFound", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

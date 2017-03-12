@@ -29,6 +29,6 @@ public class ChequeGourmetDataManager {
         }
 
         ChequeGourmetBuilder chequeGourmetBuilder = new ChequeGourmetBuilder();
-        return chequeGourmetBuilder.build(response);
+        return chequeGourmetBuilder.build(response, username);
     }
 }

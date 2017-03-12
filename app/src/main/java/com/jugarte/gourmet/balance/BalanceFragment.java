@@ -165,8 +165,14 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     }
 
     @Override
-    public void showOfflineMode() {
-
+    public void showOfflineMode(String modificationDate) {
+        if (modificationDate != null) {
+            offlineTextView.setVisibility(View.VISIBLE);
+            String offlineText = String.format(getString(R.string.offline_modification), modificationDate);
+            offlineTextView.setText(offlineText);
+        } else {
+            offlineTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -174,29 +180,17 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         this.gourmet = gourmet;
         if (gourmet != null) {
 
-            if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equals("0")) {
+            Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
 
-                Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+            currentText.setVisibility(View.VISIBLE);
+            offlineTextView.setVisibility(View.GONE);
+            String balance = gourmet.getCurrentBalance() + "€";
+            currentBalance.setText(balance);
+            String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
+            cardNumberTextView.setText(cardNumber);
 
-                currentText.setVisibility(View.VISIBLE);
-                String balance = gourmet.getCurrentBalance() + "€";
-                currentBalance.setText(balance);
-                String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
-                cardNumberTextView.setText(cardNumber);
-
-                if (gourmet.isOfflineMode() && gourmet.getModificationDate() != null) {
-                    offlineTextView.setVisibility(View.VISIBLE);
-                    String offlineText = String.format(getString(R.string.offline_modification), gourmet.getModificationDate());
-                    offlineTextView.setText(offlineText);
-                } else {
-                    offlineTextView.setVisibility(View.GONE);
-                }
-
-                OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
-                operationsList.setAdapter(adapter);
-            } else {
-                showError(gourmet.getErrorCode());
-            }
+            OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
+            operationsList.setAdapter(adapter);
         } else {
             showError("3");
         }

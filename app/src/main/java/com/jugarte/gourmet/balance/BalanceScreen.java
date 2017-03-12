@@ -4,9 +4,9 @@ import com.jugarte.gourmet.beans.Gourmet;
 
 public interface BalanceScreen {
 
-    void showOfflineMode();
-
     void showGourmetData(Gourmet gourmet);
+
+    void showOfflineMode(String modificationDate);
 
     void showLoading(boolean display);
 
