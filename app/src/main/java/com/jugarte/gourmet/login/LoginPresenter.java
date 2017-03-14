@@ -2,22 +2,20 @@ package com.jugarte.gourmet.login;
 
 import android.content.Context;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.jugarte.gourmet.ThreadManager;
+import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.requests.LoginRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
-import com.jugarte.gourmet.tracker.Crash;
-import com.jugarte.gourmet.tracker.Tracker;
 
-import java.util.HashMap;
-
-public class LoginPresenter {
+public class LoginPresenter implements GetGourmet.OnGourmetResponse {
 
     private Context context;
     private LoginScreen screen;
+
+    private String user, password;
+
+    private final ThreadManager threadManager = new ThreadManagerImp();
 
     void bind(Context context, LoginScreen screen) {
         this.context = context;
@@ -25,48 +23,61 @@ public class LoginPresenter {
     }
 
     void login(final String user, final String password) {
+        this.user = user;
+        this.password = password;
 
         CredentialsLogin.saveCredential(user, context);
-        if (user == null || user.length() == 0 || password == null || password.length() == 0) {
-            screen.showError("1");
+        if (user == null || user.length() == 0
+                || password == null || password.length() == 0) {
+            screen.showErrorEmptyFields();
             return;
         }
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setContext(context);
-        loginRequest.setQueryParams(new HashMap<String, String>(3) {{
-            put(Constants.SERVICE_PARAM_USER_KEY, user);
-            put(Constants.SERVICE_PARAM_PASS_KEY, password);
-            put(Constants.SERVICE_PARAM_TOKEN_KEY, Constants.SERVICE_PARAM_TOKEN_RESPONSE);
-        }});
-
-        loginRequest.setResponseListener(new ServiceRequest.Listener<Gourmet>() {
+        screen.showLoading();
+        threadManager.runOnBackground(new Runnable() {
             @Override
-            public void onResponse(Gourmet gourmet) {
+            public void run() {
+                new GetGourmet().execute(user, password, LoginPresenter.this);
+            }
+        });
+
+    }
+
+    @Override
+    public void success(final Gourmet gourmet) {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
                 screen.hideLoading();
                 if (gourmet != null) {
-                    if (gourmet.getErrorCode() != null && gourmet.getErrorCode().equalsIgnoreCase("0")) {
-
-                        screen.saveCredentials(user, password);
-                        screen.navigateToMain(gourmet);
-
-                    } else {
-                        screen.showError(gourmet.getErrorCode());
-                    }
+                    screen.saveCredentials(user, password);
+                    screen.navigateToMain(gourmet);
+                } else {
+                    screen.showErrorNotConnection();
                 }
             }
         });
-
-        loginRequest.setOnErrorListener(new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, "Volley error");
-                Crash.report(error);
-            }
-        });
-
-        loginRequest.launchConnection();
-        screen.showLoading();
     }
 
+    @Override
+    public void notConnection(Gourmet gourmet) {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                screen.hideLoading();
+                screen.showErrorNotConnection();
+            }
+        });
+    }
+
+    @Override
+    public void notUserFound() {
+        threadManager.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                screen.hideLoading();
+                screen.showErrorNotUserFound();
+            }
+        });
+    }
 }

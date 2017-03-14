@@ -3,22 +3,12 @@ package com.jugarte.gourmet.balance;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.domine.GetGourmet;
-import com.jugarte.gourmet.domine.SaveGourmet;
+import com.jugarte.gourmet.domine.gourmet.GetGourmet;
+import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.helpers.DateHelper;
-import com.jugarte.gourmet.internal.Constants;
-import com.jugarte.gourmet.requests.LoginRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
-import com.jugarte.gourmet.tracker.Crash;
-import com.jugarte.gourmet.tracker.Tracker;
-
-import java.util.HashMap;
 
 public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
@@ -38,8 +28,10 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
         if (user == null || user.length() == 0 ||
                 pass == null || pass.length() == 0) {
-            // TODO: 12/3/17 Marcar error
-//            screen.showError();
+            // TODO: 14/3/17 logout
+            // Crear interactor para hacer el logout este debería eliminar las credenciales
+            screen.navigateToLogin();
+            return;
         }
 
         screen.showLoading(true);

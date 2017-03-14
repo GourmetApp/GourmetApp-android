@@ -8,6 +8,10 @@ public interface BalanceScreen {
 
     void showOfflineMode(String modificationDate);
 
+    void navigateToLogin();
+
+    void showError();
+
     void showLoading(boolean display);
 
     void openUrl(String url);

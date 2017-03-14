@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.domine;
+package com.jugarte.gourmet.domine.gourmet;
 
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmetDataManager;

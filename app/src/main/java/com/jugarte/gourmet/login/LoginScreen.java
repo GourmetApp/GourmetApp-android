@@ -7,7 +7,9 @@ public interface LoginScreen {
     void navigateToMain(Gourmet gourmet);
     void showLoading();
     void hideLoading();
-    void showError(String errorCode);
+    void showErrorNotConnection();
+    void showErrorEmptyFields();
+    void showErrorNotUserFound();
 
     void saveCredentials(String user, String password);
 }

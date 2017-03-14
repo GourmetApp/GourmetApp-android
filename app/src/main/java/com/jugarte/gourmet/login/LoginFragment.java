@@ -72,13 +72,18 @@ public class LoginFragment extends Fragment implements LoginScreen {
     }
 
     @Override
-    public void showError(String errorCode) {
-        if (errorCode != null) {
-            String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getActivity(), errorCode);
-            Toast.makeText(this.getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+    public void showErrorNotConnection() {
+        Toast.makeText(getContext(), R.string.error_connection_code3, Toast.LENGTH_SHORT).show();
+    }
 
-            Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
-        }
+    @Override
+    public void showErrorEmptyFields() {
+        Toast.makeText(getContext(), R.string.error_not_user_or_pass_code1, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorNotUserFound() {
+        Toast.makeText(getContext(), R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
     @Override

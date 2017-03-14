@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.domine;
+package com.jugarte.gourmet.domine.gourmet;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

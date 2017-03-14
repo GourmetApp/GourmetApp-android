@@ -176,6 +176,16 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     }
 
     @Override
+    public void navigateToLogin() {
+        logout();
+    }
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
     public void showGourmetData(Gourmet gourmet) {
         currentText.setVisibility(View.VISIBLE);
         offlineTextView.setVisibility(View.GONE);
