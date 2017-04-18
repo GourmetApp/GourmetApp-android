@@ -8,7 +8,7 @@ import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.domine.user.GetUser;
 
 public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
@@ -16,15 +16,17 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     private BalanceScreen screen;
 
     private final ThreadManager threadManager = new ThreadManagerImp();
+    GetUser getUser;
 
     public void bind(Context context, BalanceScreen screen) {
         this.context = context;
         this.screen = screen;
+        getUser = new GetUser(context);
     }
 
     public void login() {
-        final String user = CredentialsLogin.getUserCredential(context);
-        final String pass = CredentialsLogin.getPasswordCredential(context);
+        final String user = getUser.getUser();
+        final String pass = getUser.getPassword();
 
         if (user == null || user.length() == 0 ||
                 pass == null || pass.length() == 0) {

@@ -10,8 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.balance.BalanceFragment;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.login.LoginFragment;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        GetUser getUser = new GetUser(getApplicationContext());
+
         if (savedInstanceState == null) {
-            if (CredentialsLogin.isCredential(getApplicationContext())) {
+            if (getUser.isLogged()) {
                 navigateToMain(null);
             } else {
                 navigateToLogin();

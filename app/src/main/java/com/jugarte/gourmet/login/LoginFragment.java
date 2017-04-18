@@ -12,9 +12,6 @@ import android.widget.Toast;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
-import com.jugarte.gourmet.tracker.Tracker;
-import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
 import com.jugarte.gourmet.utils.LogUtils;
 
@@ -25,9 +22,12 @@ import butterknife.OnEditorAction;
 
 public class LoginFragment extends Fragment implements LoginScreen {
 
-    @BindView(R.id.login_user) EditText userEditText;
-    @BindView(R.id.login_pass) EditText passEditText;
-    @BindView(R.id.login_remember_password) CheckBox passRemember;
+    @BindView(R.id.login_user)
+    EditText userEditText;
+    @BindView(R.id.login_pass)
+    EditText passEditText;
+    @BindView(R.id.login_remember_password)
+    CheckBox passRemember;
 
     LoginPresenter presenter = new LoginPresenter();
 
@@ -40,11 +40,6 @@ public class LoginFragment extends Fragment implements LoginScreen {
         presenter.bind(getContext(), this);
 
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
-
-        if (CredentialsLogin.getUserCredential(getContext()) != null) {
-            userEditText.setText(CredentialsLogin.getUserCredential(getContext()));
-            passEditText.requestFocus();
-        }
 
         return view;
     }
@@ -59,6 +54,12 @@ public class LoginFragment extends Fragment implements LoginScreen {
     public void navigateToMain(Gourmet gourmet) {
         MainActivity activity = (MainActivity) getActivity();
         activity.navigateToMain(gourmet);
+    }
+
+    @Override
+    public void showUser(String user) {
+        userEditText.setText(user);
+        passEditText.requestFocus();
     }
 
     @Override
@@ -86,12 +87,6 @@ public class LoginFragment extends Fragment implements LoginScreen {
         Toast.makeText(getContext(), R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void saveCredentials(String user, String password) {
-        CredentialsLogin.removeCredentials(getContext());
-        CredentialsLogin.saveCredentials(user, password, passRemember.isChecked(), getContext());
-    }
-
     @OnClick(R.id.login_button)
     public void loginClick() {
         launchLogin();
@@ -103,7 +98,7 @@ public class LoginFragment extends Fragment implements LoginScreen {
         return false;
     }
 
-    public void showLoading(View view, boolean display) {
+    private void showLoading(View view, boolean display) {
         if (view != null) {
             View loadingView = view.findViewById(com.jugarte.gourmet.lib.R.id.loading_view);
             int displayView = (display) ? View.VISIBLE : View.GONE;

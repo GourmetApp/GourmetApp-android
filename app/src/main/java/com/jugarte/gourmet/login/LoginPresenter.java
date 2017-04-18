@@ -6,7 +6,7 @@ import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
+import com.jugarte.gourmet.domine.user.SaveUser;
 
 public class LoginPresenter implements GetGourmet.OnGourmetResponse {
 
@@ -14,24 +14,27 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
     private LoginScreen screen;
 
     private String user, password;
+    SaveUser saveUser;
 
     private final ThreadManager threadManager = new ThreadManagerImp();
 
     void bind(Context context, LoginScreen screen) {
         this.context = context;
         this.screen = screen;
+        this.saveUser = new SaveUser(context);
     }
 
     void login(final String user, final String password) {
         this.user = user;
         this.password = password;
 
-        CredentialsLogin.saveCredential(user, context);
         if (user == null || user.length() == 0
                 || password == null || password.length() == 0) {
             screen.showErrorEmptyFields();
             return;
         }
+
+        saveUser.saveUser(user, null);
 
         screen.showLoading();
         threadManager.runOnBackground(new Runnable() {
@@ -50,7 +53,7 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
             public void run() {
                 screen.hideLoading();
                 if (gourmet != null) {
-                    screen.saveCredentials(user, password);
+                    saveUser.saveUser(user, password);
                     screen.navigateToMain(gourmet);
                 } else {
                     screen.showErrorNotConnection();

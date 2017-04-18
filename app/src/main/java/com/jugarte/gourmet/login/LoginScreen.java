@@ -5,11 +5,14 @@ import com.jugarte.gourmet.beans.Gourmet;
 public interface LoginScreen {
 
     void navigateToMain(Gourmet gourmet);
+
+    void showUser(String user);
+
     void showLoading();
     void hideLoading();
+
     void showErrorNotConnection();
     void showErrorEmptyFields();
     void showErrorNotUserFound();
 
-    void saveCredentials(String user, String password);
 }

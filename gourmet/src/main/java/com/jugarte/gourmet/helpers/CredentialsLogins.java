@@ -3,7 +3,7 @@ package com.jugarte.gourmet.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class CredentialsLogin {
+public class CredentialsLogins {
 
     private static String PREFERENCE_ID = "credentials";
 
@@ -27,9 +27,10 @@ public class CredentialsLogin {
         return getSharedPreferences(context).getString(PASS_KEY, null);
     }
 
-    public static void saveCredential(String user, Context context) {
+    public static void saveCredentials(String user, String password, Context context) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(USER_KEY, user);
+        editor.putString(PASS_KEY, password);
         editor.apply();
     }
 
