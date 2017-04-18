@@ -27,9 +27,7 @@ import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.helpers.CredentialsLogin;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
-import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Tracker;
@@ -101,14 +99,27 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @OnClick(R.id.balance_card_number)
     public void cardNumberClick() {
-        ClipboardUtils.copyToClipboard(getContext(),
-                CredentialsLogin.getUserCredential(getContext()));
+        presenter.clickCardNumber();
+    }
 
+    @Override
+    public void showNumberCardSuccess() {
         Toast.makeText(getContext(),
                 getResources().getString(R.string.copy_to_clipboard),
                 Toast.LENGTH_SHORT).show();
+    }
 
-        Tracker.getInstance().sendMenuEvent("copy_clipboard");
+    @Override
+    public void share(String text) {
+        Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+        startActivity(
+                Intent.createChooser(
+                        intent, getResources().getString(R.string.dialog_share_title)
+                )
+        );
     }
 
     private void showError(String errorCode) {
@@ -128,7 +139,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
                 });
             } else {
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                logout();
+                presenter.logout();
             }
         }
 
@@ -177,7 +188,13 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void navigateToLogin() {
-        logout();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.navigateToLogin();
+    }
+
+    @Override
+    public void navigateToSearch() {
+        startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
     }
 
     @Override
@@ -210,22 +227,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         startActivity(browserIntent);
     }
 
-    public void shareText(String textToShare) {
-        Intent intent = new Intent();
-        intent.setType("text/plain");
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, textToShare);
-        startActivity(Intent.createChooser(intent, getResources().getString(R.string.dialog_share_title)));
-    }
-
-    private void logout() {
-        CredentialsLogin.removeCredentials(getContext());
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.navigateToLogin();
-    }
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!isEqualsVersion) {
@@ -238,28 +239,22 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_update:
-                Tracker.getInstance().sendMenuEvent("download");
-                openUrl(Constants.getUrlHomePage());
+                presenter.clickUpdate();
                 break;
             case R.id.action_search:
-                Tracker.getInstance().sendMenuEvent("search");
-                startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
+                presenter.clickSearch();
                 break;
             case R.id.action_share_app:
-                Tracker.getInstance().sendMenuEvent("share");
-                shareText(Constants.getShareText(getActivity()));
+                presenter.clickShare();
                 break;
             case R.id.action_open_source:
-                Tracker.getInstance().sendMenuEvent("open_source");
-                openUrl(Constants.getUrlGitHubProject());
+                presenter.clickOpenSource();
                 break;
             case R.id.action_web_site:
-                Tracker.getInstance().sendMenuEvent("web_site");
-                openUrl(Constants.getUrlHomePage());
+                presenter.clickOpenWebSite();
                 break;
             case R.id.action_logout:
-                Tracker.getInstance().sendMenuEvent("logout");
-                logout();
+                presenter.clickLogout();
                 break;
             default:
                 return true;

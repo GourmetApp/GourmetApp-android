@@ -5,10 +5,15 @@ import android.widget.Toast;
 
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
+import com.jugarte.gourmet.activities.MainActivity;
+import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
+import com.jugarte.gourmet.internal.Constants;
+import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.utils.ClipboardUtils;
 
 public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
@@ -43,6 +48,11 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
                 new GetGourmet().execute(user, pass, BalancePresenter.this);
             }
         });
+    }
+
+    public void logout() {
+        Tracker.getInstance().sendMenuEvent("logout");
+        screen.navigateToLogin();
     }
 
     @Override
@@ -81,4 +91,42 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     }
 
 
+    public void clickCardNumber() {
+        ClipboardUtils.copyToClipboard(context,
+                getUser.getUser());
+
+        Tracker.getInstance().sendMenuEvent("copy_clipboard");
+
+        screen.showNumberCardSuccess();
+    }
+
+    public void clickUpdate() {
+        Tracker.getInstance().sendMenuEvent("download");
+        screen.openUrl(Constants.getUrlHomePage());
+    }
+
+    public void clickSearch() {
+        Tracker.getInstance().sendMenuEvent("search");
+        screen.navigateToSearch();
+    }
+
+    public void clickShare() {
+        Tracker.getInstance().sendMenuEvent("share");
+        screen.share(Constants.getShareText(context));
+    }
+
+    public void clickOpenSource() {
+        Tracker.getInstance().sendMenuEvent("open_source");
+        screen.openUrl(Constants.getUrlGitHubProject());
+    }
+
+    public void clickOpenWebSite() {
+        Tracker.getInstance().sendMenuEvent("web_site");
+        screen.openUrl(Constants.getUrlHomePage());
+    }
+
+    public void clickLogout() {
+        Tracker.getInstance().sendMenuEvent("logout");
+        logout();
+    }
 }

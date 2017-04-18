@@ -9,17 +9,8 @@ public class Constants {
     /// PARAMS
     public static boolean FAKE_SERVICES = false;
 
-    public static String SERVICE_PARAM_USER_KEY = "usuario";
-    public static String SERVICE_PARAM_PASS_KEY = "contrasena";
-    public static String SERVICE_PARAM_TOKEN_KEY = "token";
-    public static String SERVICE_PARAM_TOKEN_RESPONSE = "xAeSYsTQQTCVyPOGWLpR";
-
     public static String getUrlLastPublishVersion() {
         return "https://api.github.com/repos/gourmetapp/GourmetApp-android/releases";
-    }
-
-    public static String getUrlLoginService() {
-        return "http://tarjetagourmet.chequegourmet.com/processLogin_iphoneApp.jsp";
     }
 
     public static String getUrlGitHubProject() {

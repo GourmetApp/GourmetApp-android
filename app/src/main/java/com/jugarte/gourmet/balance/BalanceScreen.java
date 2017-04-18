@@ -9,6 +9,7 @@ public interface BalanceScreen {
     void showOfflineMode(String modificationDate);
 
     void navigateToLogin();
+    void navigateToSearch();
 
     void showError();
 
@@ -16,6 +17,7 @@ public interface BalanceScreen {
 
     void openUrl(String url);
 
-    void shareText(String text);
+    void showNumberCardSuccess();
+    void share(String text);
 
 }
