@@ -31,7 +31,6 @@ import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.requests.GitHubRequest;
 import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Tracker;
-import com.jugarte.gourmet.utils.ClipboardUtils;
 import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
@@ -55,7 +54,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     private boolean isEqualsVersion = false;
 
     BalancePresenter presenter = new BalancePresenter();
-    Gourmet gourmet = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -80,7 +78,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         // Given data
         if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
             Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
-            showGourmetData(gourmet);
+            presenter.setGourmet(gourmet);
         } else {
             presenter.login();
         }
@@ -120,30 +118,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
                         intent, getResources().getString(R.string.dialog_share_title)
                 )
         );
-    }
-
-    private void showError(String errorCode) {
-        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
-        if (errorCode != null && getView() != null) {
-            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")) {
-                Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                snackbar.show();
-                snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        presenter.login();
-                    }
-                });
-            } else {
-                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                presenter.logout();
-            }
-        }
-
-        Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
     private void checkNewVersion() {
@@ -193,13 +167,34 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     }
 
     @Override
-    public void navigateToSearch() {
+    public void navigateToSearch(Gourmet gourmet) {
         startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
     }
 
     @Override
-    public void showError() {
-
+    public void showError(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+//        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
+//        if (errorCode != null && getView() != null) {
+//            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")) {
+//                Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
+//                View sbView = snackbar.getView();
+//                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+//                textView.setTextColor(Color.WHITE);
+//                snackbar.show();
+//                snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        presenter.login();
+//                    }
+//                });
+//            } else {
+//                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+//                presenter.logout();
+//            }
+//        }
+//
+//        Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
     @Override

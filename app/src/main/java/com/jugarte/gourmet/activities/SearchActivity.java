@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.javierugarte.searchtoolbar.SearchToolbar;
 import com.github.javierugarte.searchtoolbar.SearchToolbarListener;
@@ -45,6 +46,12 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
         }
 
         gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
+
+        // TODO: 18/4/17 Refactor, meter esto en el presenter
+        if (gourmet == null) {
+            Toast.makeText(getApplicationContext(), "No hay resultados", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         OperationsAdapter adapter = new OperationsAdapter(this,
                 gourmet.getOperations(), R.layout.operation_cell);

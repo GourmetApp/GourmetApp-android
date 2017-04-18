@@ -3,14 +3,14 @@ package com.jugarte.gourmet.balance;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
-import com.jugarte.gourmet.activities.MainActivity;
-import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
+import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
@@ -21,12 +21,27 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     private BalanceScreen screen;
 
     private final ThreadManager threadManager = new ThreadManagerImp();
-    GetUser getUser;
+
+    private GetGourmet getGourmet;
+
+    private GetUser getUser;
+    private SaveGourmet saveGourmet;
+    private RemoveUser removeUser;
+
+    private Gourmet gourmet;
 
     public void bind(Context context, BalanceScreen screen) {
         this.context = context;
         this.screen = screen;
         getUser = new GetUser(context);
+        getGourmet = new GetGourmet();
+        saveGourmet = new SaveGourmet();
+        removeUser = new RemoveUser(context);
+    }
+
+    public void setGourmet(Gourmet gourmet) {
+        this.gourmet = gourmet;
+        screen.showGourmetData(gourmet);
     }
 
     public void login() {
@@ -35,9 +50,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
 
         if (user == null || user.length() == 0 ||
                 pass == null || pass.length() == 0) {
-            // TODO: 14/3/17 logout
-            // Crear interactor para hacer el logout este debería eliminar las credenciales
-            screen.navigateToLogin();
+            logout();
             return;
         }
 
@@ -45,12 +58,14 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                new GetGourmet().execute(user, pass, BalancePresenter.this);
+                getGourmet.execute(user, pass, BalancePresenter.this);
             }
         });
     }
 
     public void logout() {
+        removeUser.execute();
+
         Tracker.getInstance().sendMenuEvent("logout");
         screen.navigateToLogin();
     }
@@ -61,8 +76,8 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
             @Override
             public void run() {
                 screen.showLoading(false);
-                screen.showGourmetData(gourmet);
-                new SaveGourmet().execute(gourmet);
+                setGourmet(gourmet);
+                saveGourmet.execute(gourmet);
             }
         });
     }
@@ -90,7 +105,6 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
         });
     }
 
-
     public void clickCardNumber() {
         ClipboardUtils.copyToClipboard(context,
                 getUser.getUser());
@@ -106,8 +120,13 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     }
 
     public void clickSearch() {
+        if (gourmet == null) {
+            screen.showError(context.getString(R.string.search_error));
+            return;
+        }
+
         Tracker.getInstance().sendMenuEvent("search");
-        screen.navigateToSearch();
+        screen.navigateToSearch(gourmet);
     }
 
     public void clickShare() {

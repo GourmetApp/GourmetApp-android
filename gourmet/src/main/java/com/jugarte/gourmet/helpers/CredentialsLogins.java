@@ -16,7 +16,7 @@ public class CredentialsLogins {
     }
 
     public static boolean isCredential(Context context) {
-        return getSharedPreferences(context).getBoolean(CREDENTIAL_KEY, false);
+        return getSharedPreferences(context).getString(PASS_KEY, null) != null;
     }
 
     public static String getUserCredential(Context context) {

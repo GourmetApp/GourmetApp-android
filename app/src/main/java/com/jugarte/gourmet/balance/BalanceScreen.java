@@ -9,9 +9,9 @@ public interface BalanceScreen {
     void showOfflineMode(String modificationDate);
 
     void navigateToLogin();
-    void navigateToSearch();
+    void navigateToSearch(Gourmet gourmet);
 
-    void showError();
+    void showError(String text);
 
     void showLoading(boolean display);
 

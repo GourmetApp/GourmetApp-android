@@ -38,5 +38,6 @@
     <!-- Share -->
     <string name="share_text">Download the Gourmet App if you use ChequeGourmet - %s</string>
 
+    <string name="search_error">No hay resultados para buscar</string>
     <string name="search_hint">Search</string>
 </resources>
