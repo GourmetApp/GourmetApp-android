@@ -2,11 +2,14 @@ package com.jugarte.gourmet.data.chequegourmet;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ChequeGourmetRequest {
 
@@ -17,7 +20,11 @@ public class ChequeGourmetRequest {
             formBuilder.add(entry.getKey(), entry.getValue());
         }
 
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder();
+        OkHttpClient client = httpBuilder.readTimeout(2, SECONDS)
+                .writeTimeout(10, SECONDS)
+                .connectTimeout(10, SECONDS)
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)

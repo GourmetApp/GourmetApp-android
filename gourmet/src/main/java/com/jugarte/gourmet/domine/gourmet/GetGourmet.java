@@ -20,7 +20,7 @@ public class GetGourmet {
     private static final int NO_CONNECTION = 6;
     private static final int NOT_FOUND = 7;
 
-    private int numResponse = 0;
+    private int numResponse;
     private ChequeGourmet resultService;
     private Gourmet resultFirebase;
 
@@ -35,6 +35,7 @@ public class GetGourmet {
     }
 
     public void execute(String user, String password, final OnGourmetResponse response) {
+        numResponse = 0;
         this.response = response;
 
         new GetChequeGourmet().execute(user, password, new GetChequeGourmet.OnChequeGourmetResponse() {
