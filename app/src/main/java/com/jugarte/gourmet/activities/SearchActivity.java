@@ -1,12 +1,13 @@
 package com.jugarte.gourmet.activities;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.javierugarte.searchtoolbar.SearchToolbar;
@@ -16,12 +17,25 @@ import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.Operation;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SearchActivity extends AppCompatActivity implements SearchToolbarListener {
 
     private static final String EXTRA_GOURMET = "extraGourmet";
 
+    @BindView(R.id.search_toolbar)
+    SearchToolbar searchToolbar;
+
+    @BindView(R.id.search_operation_list)
+    ListView operationsList;
+
+    @BindView(R.id.no_result)
+    TextView noResult;
+
+    private OperationsAdapter adapter;
     private Gourmet gourmet;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
@@ -34,7 +48,8 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        SearchToolbar searchToolbar = (SearchToolbar) findViewById(R.id.search_toolbar);
+
+        ButterKnife.bind(this);
 
         setSupportActionBar(searchToolbar);
         searchToolbar.setSearchToolbarListener(this);
@@ -47,41 +62,43 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
 
         gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
 
-        // TODO: 18/4/17 Refactor, meter esto en el presenter
         if (gourmet == null) {
-            Toast.makeText(getApplicationContext(), "No hay resultados", Toast.LENGTH_SHORT).show();
+            showNoResult(true);
             return;
         }
 
-        OperationsAdapter adapter = new OperationsAdapter(this,
+        adapter = new OperationsAdapter(this,
                 gourmet.getOperations(), R.layout.operation_cell);
-        ListView operationsList = (ListView) findViewById(R.id.search_operation_list);
+
         operationsList.setAdapter(adapter);
 
     }
 
     @Override
     public void onSearch(String keyword) {
-        ArrayList<Operation> operations = gourmet.getOperations(keyword);
-        OperationsAdapter adapter = new OperationsAdapter(this,
-                operations, R.layout.operation_cell);
-        ListView operationsList = (ListView) findViewById(R.id.search_operation_list);
-        operationsList.setAdapter(adapter);
+        reloadList(keyword);
     }
 
     @Override
     public void onClear() {
-        OperationsAdapter adapter = new OperationsAdapter(this,
-                gourmet.getOperations(), R.layout.operation_cell);
-        ListView operationsList = (ListView) findViewById(R.id.search_operation_list);
-        operationsList.setAdapter(adapter);
+        reloadList("");
+    }
+
+    private void reloadList(String keyword) {
+        List<Operation> operations = gourmet.getOperations(keyword);
+        showNoResult(operations.isEmpty());
+        adapter.setOperations(operations);
+    }
+
+    private void showNoResult(boolean display) {
+        int visibility = display ? View.VISIBLE : View.GONE;
+        noResult.setVisibility(visibility);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

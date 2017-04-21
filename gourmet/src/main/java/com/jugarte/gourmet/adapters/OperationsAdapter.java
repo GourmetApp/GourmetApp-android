@@ -11,27 +11,33 @@ import com.jugarte.gourmet.beans.Operation;
 import com.jugarte.gourmet.lib.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OperationsAdapter extends BaseAdapter {
 
-    private Context mContext = null;
-    private ArrayList<Operation> mOperations = null;
-    private int mResourceId = 0;
+    private Context context = null;
+    private List<Operation> operations = null;
+    private int resourceId = 0;
 
-    public OperationsAdapter(Context context, ArrayList<Operation> transactions, int resourceId) {
-        this.mContext = context;
-        this.mOperations = transactions;
-        this.mResourceId = resourceId;
+    public OperationsAdapter(Context context, List<Operation> operations, int resourceId) {
+        this.context = context;
+        this.operations = operations;
+        this.resourceId = resourceId;
+    }
+
+    public void setOperations(List<Operation> operations) {
+        this.operations = operations;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return this.mOperations.size();
+        return this.operations.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.mOperations.get(position);
+        return this.operations.get(position);
     }
 
     @Override
@@ -47,8 +53,8 @@ public class OperationsAdapter extends BaseAdapter {
         ContentHolder h = null;
 
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(mResourceId, parent, false);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(resourceId, parent, false);
 
             h = new ContentHolder();
             h.date = (TextView) view.findViewById(R.id.date_operation);
@@ -56,6 +62,7 @@ public class OperationsAdapter extends BaseAdapter {
             h.price = (TextView) view.findViewById(R.id.price_operation);
             this.applyStyles(h);
             view.setTag(h);
+
         } else {
             h = (ContentHolder) view.getTag();
         }
@@ -66,7 +73,7 @@ public class OperationsAdapter extends BaseAdapter {
 
         h.date.setText(operation.getDate() + " " + operation.getHour());
         h.name.setText(operation.getName());
-        String price = String.format(mContext.getString(R.string.price_euro), operation.getPrice());
+        String price = String.format(context.getString(R.string.price_euro), operation.getPrice());
         h.price.setText(price);
 
         return view;

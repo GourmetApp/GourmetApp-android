@@ -15,4 +15,13 @@
         android:layout_height="wrap_content"
         android:listSelector="@android:color/transparent" />
 
+    <TextView
+        android:id="@+id/no_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:text="@string/search_not_result"
+        android:visibility="gone" />
+
 </RelativeLayout>

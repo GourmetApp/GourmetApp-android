@@ -7,7 +7,7 @@
     <string name="login_hint_password">Password</string>
     <string name="login_remember_password">Remember pass</string>
 
-    <!-- Main -->
+    <!-- Balance -->
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Current balance:</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
@@ -38,6 +38,7 @@
     <!-- Share -->
     <string name="share_text">Download the Gourmet App if you use ChequeGourmet - %s</string>
 
-    <string name="search_error">No hay resultados para buscar</string>
+    <string name="search_error">There are not results for the search</string>
     <string name="search_hint">Search</string>
+    <string name="search_not_result">No search results found</string>
 </resources>

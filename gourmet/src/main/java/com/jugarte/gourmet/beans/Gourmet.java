@@ -54,12 +54,13 @@ public class Gourmet implements Parcelable {
         this.offlineMode = offlineMode;
     }
 
-    public ArrayList<Operation> getOperations() {
+    public List<Operation> getOperations() {
         return operations;
     }
 
     public ArrayList<Operation> getOperations(String pattern) {
         ArrayList<Operation> copyOperations = new ArrayList<>();
+
         for (Operation operation : operations) {
             if (operation.getName().toLowerCase().contains(pattern.toLowerCase())) {
                 copyOperations.add(operation);

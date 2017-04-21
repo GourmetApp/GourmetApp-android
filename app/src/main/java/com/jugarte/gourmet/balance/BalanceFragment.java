@@ -201,7 +201,8 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     public void showGourmetData(Gourmet gourmet) {
         currentText.setVisibility(View.VISIBLE);
         offlineTextView.setVisibility(View.GONE);
-        String balance = gourmet.getCurrentBalance() + "€";
+
+        String balance = String.format(getString(R.string.price_euro), gourmet.getCurrentBalance());
         currentBalance.setText(balance);
         String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
         cardNumberTextView.setText(cardNumber);
