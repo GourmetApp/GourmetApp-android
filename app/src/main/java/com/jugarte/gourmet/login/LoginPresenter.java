@@ -66,7 +66,7 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
     }
 
     @Override
-    public void notConnection(Gourmet gourmet) {
+    public void notConnection(Gourmet cacheGourmet) {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {

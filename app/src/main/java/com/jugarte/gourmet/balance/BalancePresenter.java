@@ -83,13 +83,13 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
     }
 
     @Override
-    public void notConnection(final Gourmet gourmet) {
+    public void notConnection(final Gourmet cacheGourmet) {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 screen.showLoading(false);
-                screen.showGourmetData(gourmet);
-                screen.showOfflineMode(gourmet.getModificationDate());
+                screen.showGourmetData(cacheGourmet);
+                screen.showOfflineMode(cacheGourmet.getModificationDate());
             }
         });
     }

@@ -30,7 +30,7 @@ public class GetGourmet {
 
     public interface OnGourmetResponse {
         void success(Gourmet gourmet);
-        void notConnection(Gourmet gourmet);
+        void notConnection(Gourmet cacheGourmet);
         void notUserFound();
     }
 
@@ -76,6 +76,7 @@ public class GetGourmet {
     private void checkMerge() {
         if (numResponse == ALL_OK) {
             merge();
+            finalGourmet.setModificationDate(DateHelper.getCurrentDateTime());
             response.success(finalGourmet);
         } else if (numResponse == NOT_FOUND) {
             response.notUserFound();
@@ -94,8 +95,9 @@ public class GetGourmet {
             serviceResult();
         }
 
-        finalGourmet.setModificationDate(DateHelper.getCurrentDateTime());
-        finalGourmet.orderOperations();
+        if (finalGourmet != null && finalGourmet.getOperations() != null) {
+            finalGourmet.orderOperations();
+        }
     }
 
     private void twoResults() {
