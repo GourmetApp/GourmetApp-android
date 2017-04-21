@@ -2,8 +2,6 @@ package com.jugarte.gourmet.domine.user;
 
 import android.content.Context;
 
-import com.jugarte.gourmet.helpers.CredentialsLogins;
-
 public class GetUser {
 
     private final Context context;
@@ -13,14 +11,14 @@ public class GetUser {
     }
 
     public String getUser() {
-        return CredentialsLogins.getUserCredential(context);
+        return CredentialsLogin.getUserCredential(context);
     }
 
     public String getPassword() {
-        return CredentialsLogins.getPasswordCredential(context);
+        return CredentialsLogin.getPasswordCredential(context);
     }
 
     public boolean isLogged() {
-        return CredentialsLogins.isCredential(context);
+        return CredentialsLogin.getPasswordCredential(context) != null;
     }
 }

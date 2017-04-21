@@ -6,22 +6,25 @@ import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
+import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
 
 public class LoginPresenter implements GetGourmet.OnGourmetResponse {
 
-    private Context context;
     private LoginScreen screen;
 
     private String user, password;
-    SaveUser saveUser;
+    private SaveUser saveUser;
+    private GetUser getUser;
 
     private final ThreadManager threadManager = new ThreadManagerImp();
 
     void bind(Context context, LoginScreen screen) {
-        this.context = context;
         this.screen = screen;
+        this.getUser = new GetUser(context);
         this.saveUser = new SaveUser(context);
+
+        screen.showUser(getUser.getUser());
     }
 
     void login(final String user, final String password) {

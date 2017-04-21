@@ -26,8 +26,6 @@ public class LoginFragment extends Fragment implements LoginScreen {
     EditText userEditText;
     @BindView(R.id.login_pass)
     EditText passEditText;
-    @BindView(R.id.login_remember_password)
-    CheckBox passRemember;
 
     LoginPresenter presenter = new LoginPresenter();
 
@@ -37,9 +35,10 @@ public class LoginFragment extends Fragment implements LoginScreen {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.login_fragment, null);
 
         ButterKnife.bind(this, view);
-        presenter.bind(getContext(), this);
 
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+
+        presenter.bind(getContext(), this);
 
         return view;
     }

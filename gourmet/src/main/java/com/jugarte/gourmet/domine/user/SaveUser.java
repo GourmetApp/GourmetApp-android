@@ -2,9 +2,6 @@ package com.jugarte.gourmet.domine.user;
 
 import android.content.Context;
 
-import com.jugarte.gourmet.helpers.CredentialsLogins;
-
-
 public class SaveUser {
 
     private final Context context;
@@ -14,6 +11,6 @@ public class SaveUser {
     }
 
     public void saveUser(String user, String password) {
-        CredentialsLogins.saveCredentials(user, password, context);
+        CredentialsLogin.saveCredentials(user, password, context);
     }
 }
