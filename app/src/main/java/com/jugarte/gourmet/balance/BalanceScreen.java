@@ -1,6 +1,7 @@
 package com.jugarte.gourmet.balance;
 
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
 
 public interface BalanceScreen {
 
@@ -20,4 +21,7 @@ public interface BalanceScreen {
     void showNumberCardSuccess();
     void share(String text);
 
+    void showDialogNewVersion(LastVersion lastVersion);
+
+    void showUpdateIcon(boolean display);
 }

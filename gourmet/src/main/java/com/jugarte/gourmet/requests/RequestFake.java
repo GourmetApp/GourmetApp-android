@@ -33,8 +33,8 @@ public class RequestFake {
         LastVersion lastVersion = new LastVersion();
 
         lastVersion.setIdVersion("1603617");
-        lastVersion.setNameTagVersion("v1.0.2");
-        lastVersion.setNameVersion("Release v1.0.2");
+        lastVersion.setNameTagVersion("v1.4.3");
+        lastVersion.setNameVersion("Release v1.4.1");
         lastVersion.setIdDownload("753792");
         lastVersion.setNameDownload("GourmetApp-v1.0.1.apk");
         lastVersion.setUrlDownload("https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk");

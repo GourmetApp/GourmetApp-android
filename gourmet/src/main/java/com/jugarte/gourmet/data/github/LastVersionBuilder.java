@@ -1,44 +1,43 @@
-package com.jugarte.gourmet.builders;
+package com.jugarte.gourmet.data.github;
 
 import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.internal.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LastVersionBuilder extends BaseBuilder {
+public class LastVersionBuilder {
 
     private static final String ID_KEY = "id";
     private static final String NAME_KEY = "name";
     private static final String TAG_NAME_KEY = "tag_name";
     private static final String HTML_URL_KEY = "html_url";
-    private static final String ASSSETS_KEY = "assets";
+    private static final String ASSETS_KEY = "assets";
     private static final String URL_KEY = "browser_download_url";
     private static final String CHANGELOG_KEY = "body";
 
-    private String _data = "";
 
     private String getChangelogWithHtmlCode(String text) {
         return text.replace("\r\n", "<br>");
     }
 
-    @Override
-    public Object build() throws Exception {
-        if (_data == null || _data.trim().length() == 0) {
+    public LastVersion build(String response) throws JSONException, ConnectionException {
+        if (response == null || response.trim().length() == 0) {
             return null;
         }
 
         LastVersion lastVersion = null;
-        JSONArray lastVersionJSONArray = null;
+        JSONArray lastVersionJSONArray;
 
         try {
-            lastVersionJSONArray = new JSONArray(this._data);
+            lastVersionJSONArray = new JSONArray(response);
         } catch (JSONException e) {
-            return null;
+            throw new ConnectionException();
         }
 
-        if (lastVersionJSONArray != null && lastVersionJSONArray.length() > 0) {
+        if (lastVersionJSONArray.length() > 0) {
             JSONObject releaseObject = (JSONObject) lastVersionJSONArray.get(0);
             if (releaseObject != null) {
                 lastVersion = new LastVersion();
@@ -49,9 +48,9 @@ public class LastVersionBuilder extends BaseBuilder {
                 lastVersion.setUrlHomePage(Constants.getUrlHomePage());
                 lastVersion.setChangelog(getChangelogWithHtmlCode(releaseObject.getString(CHANGELOG_KEY)));
 
-                if (releaseObject.getJSONArray(ASSSETS_KEY) != null &&
-                        releaseObject.getJSONArray(ASSSETS_KEY).length() > 0) {
-                    JSONObject assetObject = (JSONObject) releaseObject.getJSONArray(ASSSETS_KEY).get(0);
+                if (releaseObject.getJSONArray(ASSETS_KEY) != null &&
+                        releaseObject.getJSONArray(ASSETS_KEY).length() > 0) {
+                    JSONObject assetObject = (JSONObject) releaseObject.getJSONArray(ASSETS_KEY).get(0);
                     if (assetObject != null) {
                         lastVersion.setUrlDownload(assetObject.getString(URL_KEY));
                         lastVersion.setIdDownload("" + assetObject.getInt(ID_KEY));
@@ -64,10 +63,4 @@ public class LastVersionBuilder extends BaseBuilder {
         return lastVersion;
     }
 
-    @Override
-    public void append(String type, Object data) {
-        if (type.equals(BaseBuilder.DATA_JSON)) {
-            this._data = (String) data;
-        }
-    }
 }

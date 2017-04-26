@@ -7,15 +7,18 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
+import com.jugarte.gourmet.domine.newversion.CheckNewVersion;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
+import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 
-public class BalancePresenter implements GetGourmet.OnGourmetResponse {
+public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
 
     private Context context;
     private BalanceScreen screen;
@@ -37,6 +40,8 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
         getGourmet = new GetGourmet();
         saveGourmet = new SaveGourmet();
         removeUser = new RemoveUser(context);
+
+        checkNewVersion();
     }
 
     public void setGourmet(Gourmet gourmet) {
@@ -105,6 +110,49 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
         });
     }
 
+    private void checkNewVersion() {
+        threadManager.runOnBackground(new Runnable() {
+            @Override
+            public void run() {
+                new CheckNewVersion().execute(BalancePresenter.this);
+            }
+        });
+    }
+
+    @Override
+    public void newVersion(final LastVersion lastVersion) {
+        if (lastVersion != null && lastVersion.getNameTagVersion() != null) {
+
+            final boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(
+                    lastVersion.getNameTagVersion(),
+                    LastVersionHelper.getCurrentVersion(context));
+
+            boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
+                    lastVersion.getNameTagVersion(), context);
+
+            if (!isEqualsVersion && shouldShowDialog) {
+                threadManager.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        screen.showDialogNewVersion(lastVersion);
+                    }
+                });
+            }
+
+            threadManager.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    screen.showUpdateIcon(!isEqualsVersion);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void error() {
+
+    }
+
     public void clickCardNumber() {
         ClipboardUtils.copyToClipboard(context,
                 getUser.getUser());
@@ -148,4 +196,5 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse {
         Tracker.getInstance().sendMenuEvent("logout");
         logout();
     }
+
 }

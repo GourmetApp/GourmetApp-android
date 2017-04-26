@@ -1,11 +1,9 @@
 package com.jugarte.gourmet.balance;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +26,8 @@ import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
-import com.jugarte.gourmet.requests.GitHubRequest;
-import com.jugarte.gourmet.requests.ServiceRequest;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.DisplayUtils;
-import com.jugarte.gourmet.utils.ErrorMessageUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import butterknife.BindView;
@@ -51,7 +46,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     @BindView(R.id.balance_offline_text_view) TextView offlineTextView;
     @BindView(R.id.all_container) RelativeLayout balanceRL;
 
-    private boolean isEqualsVersion = false;
+    private boolean displayUpdateIcon;
 
     BalancePresenter presenter = new BalancePresenter();
 
@@ -82,8 +77,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         } else {
             presenter.login();
         }
-
-        checkNewVersion();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,33 +113,15 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         );
     }
 
-    private void checkNewVersion() {
-        GitHubRequest gitHubRequest = new GitHubRequest();
-        gitHubRequest.setContext(getContext());
-        gitHubRequest.setResponseListener(new ServiceRequest.Listener<LastVersion>() {
-            @Override
-            public void onResponse(LastVersion lastVersion) {
+    @Override
+    public void showDialogNewVersion(LastVersion lastVersion) {
+        LastVersionHelper.showDialog(getActivity(), lastVersion);
+    }
 
-                if (lastVersion != null && lastVersion.getNameTagVersion() != null) {
-
-                    isEqualsVersion = LastVersionHelper.isEqualsVersion(
-                            lastVersion.getNameTagVersion(),
-                            LastVersionHelper.getCurrentVersion(getContext()));
-
-                    boolean shouldShowDialog = LastVersionHelper.shouldShowDialog(
-                            lastVersion.getNameTagVersion(), getContext());
-
-                    if (!isEqualsVersion && shouldShowDialog) {
-                        LastVersionHelper.showDialog(getActivity(), lastVersion);
-                    }
-
-                    setHasOptionsMenu(true);
-
-                }
-            }
-        });
-
-        gitHubRequest.launchConnection();
+    @Override
+    public void showUpdateIcon(boolean displayUpdateIcon) {
+        this.displayUpdateIcon = displayUpdateIcon;
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -225,9 +200,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isEqualsVersion) {
-            menu.findItem(R.id.action_update).setVisible(true);
-        }
+        menu.findItem(R.id.action_update).setVisible(displayUpdateIcon);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

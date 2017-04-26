@@ -1,5 +1,4 @@
 import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.builders.LastVersionBuilder;
 
 import org.junit.Before;
 import org.junit.Test;

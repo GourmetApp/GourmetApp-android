@@ -9,10 +9,6 @@ public class Constants {
     /// PARAMS
     public static boolean FAKE_SERVICES = false;
 
-    public static String getUrlLastPublishVersion() {
-        return "https://api.github.com/repos/gourmetapp/GourmetApp-android/releases";
-    }
-
     public static String getUrlGitHubProject() {
         return "https://www.github.com/gourmetapp/GourmetApp-android";
     }
