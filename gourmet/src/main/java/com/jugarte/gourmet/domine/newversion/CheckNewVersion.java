@@ -12,8 +12,6 @@ public class CheckNewVersion {
 
     public interface OnCheckNewVersion {
         void newVersion(LastVersion lastVersion);
-
-        void error();
     }
 
     public void execute(OnCheckNewVersion onCheckNewVersion) {
@@ -21,7 +19,7 @@ public class CheckNewVersion {
             LastVersion lastVersion = new GitHubDataManager().getLastVersion();
             onCheckNewVersion.newVersion(lastVersion);
         } catch (ConnectionException | JSONException | IOException e) {
-            onCheckNewVersion.error();
+            e.printStackTrace();
         }
     }
 

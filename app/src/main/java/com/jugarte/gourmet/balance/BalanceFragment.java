@@ -64,6 +64,8 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         ButterKnife.bind(this, view);
         presenter.bind(getContext(), this);
 
+        setHasOptionsMenu(true);
+
         // Set 16:9 the view
         ViewGroup.LayoutParams lp = balanceRL.getLayoutParams();
         Point displayPoint = DisplayUtils.getScreenSize(getActivity());

@@ -46,7 +46,9 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
 
     public void setGourmet(Gourmet gourmet) {
         this.gourmet = gourmet;
-        screen.showGourmetData(gourmet);
+        if (gourmet != null) {
+            screen.showGourmetData(gourmet);
+        }
     }
 
     public void login() {
@@ -93,7 +95,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
             @Override
             public void run() {
                 screen.showLoading(false);
-                screen.showGourmetData(cacheGourmet);
+                setGourmet(cacheGourmet);
                 screen.showOfflineMode(cacheGourmet.getModificationDate());
             }
         });
@@ -146,11 +148,6 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
                 }
             });
         }
-    }
-
-    @Override
-    public void error() {
-
     }
 
     public void clickCardNumber() {
