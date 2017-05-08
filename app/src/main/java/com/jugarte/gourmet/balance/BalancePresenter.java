@@ -1,7 +1,6 @@
 package com.jugarte.gourmet.balance;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
@@ -107,7 +106,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
             @Override
             public void run() {
                 screen.showLoading(false);
-                Toast.makeText(context, "notUserFound", Toast.LENGTH_SHORT).show();
+                screen.showError(context.getString(R.string.error_user_or_password_incorrect_code2));
             }
         });
     }

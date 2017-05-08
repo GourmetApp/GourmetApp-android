@@ -151,27 +151,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     @Override
     public void showError(String text) {
         Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-//        String errorMessage = ErrorMessageUtils.getErrorMessageWithCode(getContext(), errorCode);
-//        if (errorCode != null && getView() != null) {
-//            if (errorCode.equalsIgnoreCase("1") || errorCode.equalsIgnoreCase("3")) {
-//                Snackbar snackbar = Snackbar.make(getView(), errorMessage, Snackbar.LENGTH_INDEFINITE);
-//                View sbView = snackbar.getView();
-//                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-//                textView.setTextColor(Color.WHITE);
-//                snackbar.show();
-//                snackbar.setAction(R.string.button_retry, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        presenter.login();
-//                    }
-//                });
-//            } else {
-//                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-//                presenter.logout();
-//            }
-//        }
-//
-//        Tracker.getInstance().sendLoginResult(Tracker.Param.ERROR, errorMessage);
     }
 
     @Override
