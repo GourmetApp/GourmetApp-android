@@ -6,9 +6,6 @@ import com.jugarte.gourmet.lib.R;
 
 public class Constants {
 
-    /// PARAMS
-    public static boolean FAKE_SERVICES = false;
-
     public static String getUrlGitHubProject() {
         return "https://www.github.com/gourmetapp/GourmetApp-android";
     }
