@@ -1,7 +1,6 @@
 package com.jugarte.gourmet.balance;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,7 +26,6 @@ import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.tracker.Tracker;
-import com.jugarte.gourmet.utils.DisplayUtils;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import butterknife.BindView;
@@ -44,7 +42,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     @BindView(R.id.balance_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.balance_card_number) TextView cardNumberTextView;
     @BindView(R.id.balance_offline_text_view) TextView offlineTextView;
-    @BindView(R.id.all_container) RelativeLayout balanceRL;
 
     private boolean displayUpdateIcon;
 
@@ -65,12 +62,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         presenter.bind(getContext(), this);
 
         setHasOptionsMenu(true);
-
-        // Set 16:9 the view
-        ViewGroup.LayoutParams lp = balanceRL.getLayoutParams();
-        Point displayPoint = DisplayUtils.getScreenSize(getActivity());
-        lp.height = (int) ((float) displayPoint.x) * 9 / 16;
-        balanceRL.setLayoutParams(lp);
 
         // Given data
         if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
