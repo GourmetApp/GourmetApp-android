@@ -1,11 +1,13 @@
 package com.jugarte.gourmet.login;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,8 +15,8 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
-import com.jugarte.gourmet.utils.LogUtils;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +28,8 @@ public class LoginFragment extends Fragment implements LoginScreen {
     EditText userEditText;
     @BindView(R.id.login_pass)
     EditText passEditText;
+    @BindView(R.id.btn_circular_progress_button)
+    CircularProgressButton btnLogin;
 
     LoginPresenter presenter = new LoginPresenter();
 
@@ -47,12 +51,23 @@ public class LoginFragment extends Fragment implements LoginScreen {
         String user = userEditText.getText().toString().replaceAll(" ", "");
         String pass = passEditText.getText().toString();
         presenter.login(user, pass);
+
     }
 
     @Override
-    public void navigateToMain(Gourmet gourmet) {
-        MainActivity activity = (MainActivity) getActivity();
-        activity.navigateToMain(gourmet);
+    public void navigateToMain(final Gourmet gourmet) {
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_done));
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.navigateToMain(gourmet);
+            }
+        }, 1000);
+
     }
 
     @Override
@@ -63,30 +78,43 @@ public class LoginFragment extends Fragment implements LoginScreen {
 
     @Override
     public void showLoading() {
-        showLoading(getView(), true);
+        btnLogin.startAnimation();
     }
 
     @Override
     public void hideLoading() {
-        showLoading(getView(), false);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btnLogin.revertAnimation();
+            }
+        }, 1000);
     }
 
     @Override
     public void showErrorNotConnection() {
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
         Toast.makeText(getContext(), R.string.error_connection_code3, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showErrorEmptyFields() {
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
         Toast.makeText(getContext(), R.string.error_not_user_or_pass_code1, Toast.LENGTH_SHORT).show();
     }
 
     @Override
+
     public void showErrorNotUserFound() {
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
         Toast.makeText(getContext(), R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.login_button)
+    @OnClick(R.id.btn_circular_progress_button)
     public void loginClick() {
         launchLogin();
     }
@@ -95,20 +123,6 @@ public class LoginFragment extends Fragment implements LoginScreen {
     public boolean loginAction() {
         launchLogin();
         return false;
-    }
-
-    private void showLoading(View view, boolean display) {
-        if (view != null) {
-            View loadingView = view.findViewById(com.jugarte.gourmet.lib.R.id.loading_view);
-            int displayView = (display) ? View.VISIBLE : View.GONE;
-            if (loadingView != null) {
-                loadingView.setVisibility(displayView);
-            } else {
-                LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
-            }
-        } else {
-            LogUtils.LOGE(this.getClass().getCanonicalName(), "View not found");
-        }
     }
 
 }

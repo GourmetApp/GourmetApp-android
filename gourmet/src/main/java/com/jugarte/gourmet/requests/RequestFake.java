@@ -6,7 +6,7 @@ import com.jugarte.gourmet.beans.Operation;
 
 public class RequestFake {
 
-    public Gourmet login(String user, String pass) {
+    public Gourmet login() {
         Gourmet gourmet = new Gourmet();
         gourmet.setCurrentBalance("83,45");
         gourmet.setCardNumber("0000004815162342");
