@@ -53,7 +53,6 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
         Intent intent = new Intent(context, BalanceActivity.class);
         intent.putExtra(EXTRA_GOURMET, gourmet);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
 
@@ -138,6 +137,7 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
     @Override
     public void navigateToLogin() {
         startActivity(LoginActivity.newStartIntent(this));
+        finish();
     }
 
     @Override

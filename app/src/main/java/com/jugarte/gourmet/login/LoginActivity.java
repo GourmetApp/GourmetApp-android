@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
 
     public static Intent newStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
