@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.data.github;
 
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 
 import org.json.JSONException;

@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.domine.newversion;
 
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.data.github.GitHubDataManager;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 

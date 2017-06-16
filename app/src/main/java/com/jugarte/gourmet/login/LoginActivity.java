@@ -12,10 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.balance.BalanceActivity;
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
+import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import butterknife.BindView;
@@ -54,7 +54,8 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
     }
 
     private void launchLogin() {
-        String user = userEditText.getText().toString().replaceAll(" ", "");
+
+        String user = TextFormatUtils.formatRemoveSpaces(userEditText.getText().toString());
         String pass = passEditText.getText().toString();
         presenter.login(user, pass);
 

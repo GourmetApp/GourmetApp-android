@@ -1,4 +1,5 @@
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.LastVersion;
+import com.jugarte.gourmet.data.github.LastVersionBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,9 +9,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-/**
- * Created by javiergon on 30/07/15.
- */
 public class LastVersionBuilderTest {
 
     public TestUtils utils = null;
@@ -25,8 +23,7 @@ public class LastVersionBuilderTest {
         String data = this.utils.getResourceToString("lastversion_ok.json");
 
         LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        LastVersion lastVersion = (LastVersion) lastVersionBuilder.build();
+        LastVersion lastVersion = lastVersionBuilder.build(data);
 
         assertNotNull(lastVersion);
         assertEquals(lastVersion.getIdVersion(), "1603617");
@@ -45,8 +42,7 @@ public class LastVersionBuilderTest {
     public void testResponseWithoutAssets() throws Exception {
         String data = this.utils.getResourceToString("lastversion_without_assets.json");
         LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        LastVersion lastVersion = (LastVersion) lastVersionBuilder.build();
+        LastVersion lastVersion = lastVersionBuilder.build(data);
 
         assertNotNull(lastVersion);
         assertEquals(lastVersion.getIdVersion(), "1603617");
@@ -65,8 +61,7 @@ public class LastVersionBuilderTest {
     public void testResponseWithoutReleases() throws Exception {
         String data = this.utils.getResourceToString("lastversion_without_releases.json");
         LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        LastVersion lastVersion = (LastVersion) lastVersionBuilder.build();
+        LastVersion lastVersion = lastVersionBuilder.build(data);
 
         assertNull(lastVersion);
     }
@@ -75,24 +70,21 @@ public class LastVersionBuilderTest {
     public void testResponseEmptyAndNull() throws Exception {
         String data = "";
         LastVersionBuilder lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        LastVersion lastVersion = (LastVersion) lastVersionBuilder.build();
+        LastVersion lastVersion = lastVersionBuilder.build(data);
 
         assertNull(lastVersion);
 
 
         data = null;
         lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        lastVersion = (LastVersion) lastVersionBuilder.build();
+        lastVersion = lastVersionBuilder.build(data);
 
         assertNull(lastVersion);
 
 
         data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
         lastVersionBuilder = new LastVersionBuilder();
-        lastVersionBuilder.append(LastVersionBuilder.DATA_JSON, data);
-        lastVersion = (LastVersion) lastVersionBuilder.build();
+        lastVersion = lastVersionBuilder.build(data);
 
         assertNull(lastVersion);
 

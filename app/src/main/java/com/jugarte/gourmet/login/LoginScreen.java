@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.login;
 
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 
 public interface LoginScreen {
 

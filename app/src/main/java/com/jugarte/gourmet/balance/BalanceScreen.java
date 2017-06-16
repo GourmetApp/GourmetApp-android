@@ -1,7 +1,7 @@
 package com.jugarte.gourmet.balance;
 
-import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.LastVersion;
 
 public interface BalanceScreen {
 

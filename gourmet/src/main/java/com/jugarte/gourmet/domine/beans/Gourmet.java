@@ -1,9 +1,7 @@
-package com.jugarte.gourmet.beans;
+package com.jugarte.gourmet.domine.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +16,6 @@ public class Gourmet implements Parcelable {
     private String currentBalance = null;
     private String modificationDate = null;
     private ArrayList<Operation> operations = null;
-    private boolean offlineMode;
-    private String errorCode = null;
 
     public String getCardNumber() {
         return cardNumber;
@@ -43,15 +39,6 @@ public class Gourmet implements Parcelable {
 
     public void setModificationDate(String modificationDate) {
         this.modificationDate = modificationDate;
-    }
-
-    @Exclude
-    public boolean isOfflineMode() {
-        return offlineMode;
-    }
-
-    public void setOfflineMode(boolean offlineMode) {
-        this.offlineMode = offlineMode;
     }
 
     public List<Operation> getOperations() {
@@ -81,15 +68,6 @@ public class Gourmet implements Parcelable {
         this.operations.add(operation);
     }
 
-    @Exclude
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -100,19 +78,15 @@ public class Gourmet implements Parcelable {
         dest.writeString(this.cardNumber);
         dest.writeString(this.currentBalance);
         dest.writeString(this.modificationDate);
-        dest.writeByte(this.offlineMode ? (byte) 1 : (byte) 0);
         dest.writeList(this.operations);
-        dest.writeString(this.errorCode);
     }
 
     protected Gourmet(Parcel in) {
         this.cardNumber = in.readString();
         this.currentBalance = in.readString();
         this.modificationDate = in.readString();
-        this.offlineMode = in.readByte() != 0;
         this.operations = new ArrayList<>();
         in.readList(this.operations, Operation.class.getClassLoader());
-        this.errorCode = in.readString();
     }
 
     public static final Parcelable.Creator<Gourmet> CREATOR = new Parcelable.Creator<Gourmet>() {

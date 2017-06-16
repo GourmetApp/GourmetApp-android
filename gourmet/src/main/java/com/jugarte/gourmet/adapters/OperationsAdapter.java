@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.lib.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OperationsAdapter extends BaseAdapter {

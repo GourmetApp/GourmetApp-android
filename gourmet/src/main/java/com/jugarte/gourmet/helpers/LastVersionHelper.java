@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
 
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.lib.R;
 import com.jugarte.gourmet.tracker.Tracker;
 

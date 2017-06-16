@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.SaveUser;

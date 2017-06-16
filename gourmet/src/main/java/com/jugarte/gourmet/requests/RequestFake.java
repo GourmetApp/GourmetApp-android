@@ -1,8 +1,8 @@
 package com.jugarte.gourmet.requests;
 
-import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.beans.LastVersion;
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.Operation;
 
 public class RequestFake {
 
@@ -10,14 +10,13 @@ public class RequestFake {
         Gourmet gourmet = new Gourmet();
         gourmet.setCurrentBalance("83,45");
         gourmet.setCardNumber("0000004815162342");
-        gourmet.setErrorCode("0");
 
         String[] names = {"Central Perk", "Los Pollos Hermanos", "Moe's Bar", "MacLaren's Pub", "Bada Bing", "Casi K No", "La Almeja Borracha"};
         String[] prices = {"11,23", "5,8", "13,21", "34,55", "89,14", "23,33", "37,7"};
         String[] dates = {"22/09/1994", "20/01/2008", "17/12/1989", "19/09/2005", "10/01/1999", "17/01/1999", "31/01/1999"};
         String[] hours = {"22:00", "14:22", "21:56", "03:20", "20:45", "21:30", "22:50"};
 
-        Operation operation = null;
+        Operation operation;
         for (int i = 0; i < names.length; i++) {
             operation = new Operation();
             operation.setName(names[i]);

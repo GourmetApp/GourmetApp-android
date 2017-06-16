@@ -2,7 +2,7 @@ package com.jugarte.gourmet.domine.gourmet;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 
 public class SaveGourmet {
 

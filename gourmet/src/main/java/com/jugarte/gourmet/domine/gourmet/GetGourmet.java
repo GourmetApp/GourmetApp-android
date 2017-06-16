@@ -1,7 +1,7 @@
 package com.jugarte.gourmet.domine.gourmet;
 
-import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.NotFoundException;

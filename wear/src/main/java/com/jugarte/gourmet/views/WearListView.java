@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Operation;
 
 import java.util.ArrayList;
 

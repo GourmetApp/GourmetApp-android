@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.data.chequegourmet;
 
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Operation;
 
 import java.util.List;
 

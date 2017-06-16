@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.beans;
+package com.jugarte.gourmet.domine.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.data.chequegourmet;
 
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.EmptyException;
 import com.jugarte.gourmet.exceptions.NotFoundException;
@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-class ChequeGourmetBuilder {
+public class ChequeGourmetBuilder {
 
     public ChequeGourmet build(String response, String cardNumber)
             throws NotFoundException, ConnectionException, EmptyException {
@@ -57,13 +57,13 @@ class ChequeGourmetBuilder {
         return new ChequeGourmet(cardNumber, balance, operationArrayList);
     }
 
-    private String removeLastWord(String text) {
+    public String removeLastWord(String text) {
         String regex = "((\\s\\w)\\b)+$";
         text = text.replaceAll(regex, "");
         return cleanString(text);
     }
 
-    private String cleanString(String text) {
+    public String cleanString(String text) {
         text = text.replace("\n", "");
         text = text.replace("\t", "");
         text = text.replace("\r", "");

@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.exceptions.NotFoundException;
 
 class GetGourmetFirebase {
