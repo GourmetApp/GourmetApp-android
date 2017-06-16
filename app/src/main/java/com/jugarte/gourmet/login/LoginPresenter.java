@@ -24,6 +24,10 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
         this.getUser = new GetUser(context);
         this.saveUser = new SaveUser(context);
 
+        if (getUser.isLogged()) {
+            screen.navigateToBalance(null);
+        }
+
         screen.showUser(getUser.getUser());
     }
 
@@ -57,7 +61,7 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
                 screen.hideLoading();
                 if (gourmet != null) {
                     saveUser.saveUser(user, password);
-                    screen.navigateToMain(gourmet);
+                    screen.navigateToBalanceWithAnimation(gourmet);
                 } else {
                     screen.showErrorNotConnection();
                 }

@@ -1,30 +1,27 @@
 package com.jugarte.gourmet.balance;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.activities.MainActivity;
 import com.jugarte.gourmet.activities.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
+import com.jugarte.gourmet.login.LoginActivity;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 
@@ -32,40 +29,52 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BalanceFragment extends Fragment implements BalanceScreen {
+public class BalanceActivity extends AppCompatActivity implements BalanceScreen {
 
-    public static final String ARG_GOURMET = "ARG_GOURMET";
+    public static final String EXTRA_GOURMET = "EXTRA_GOURMET";
 
-    @BindView(R.id.balance_current_balance) TextView currentBalance;
-    @BindView(R.id.balance_current_text) TextView currentText;
-    @BindView(R.id.balance_operations_list) ListView operationsList;
-    @BindView(R.id.balance_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.balance_card_number) TextView cardNumberTextView;
-    @BindView(R.id.balance_offline_text_view) TextView offlineTextView;
+    @BindView(R.id.balance_current_balance)
+    TextView currentBalance;
+    @BindView(R.id.balance_current_text)
+    TextView currentText;
+    @BindView(R.id.balance_operations_list)
+    ListView operationsList;
+    @BindView(R.id.balance_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.balance_card_number)
+    TextView cardNumberTextView;
+    @BindView(R.id.balance_offline_text_view)
+    TextView offlineTextView;
 
     private boolean displayUpdateIcon;
 
     BalancePresenter presenter = new BalancePresenter();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
+    public static Intent newStartIntent(Context context, Gourmet gourmet) {
+        Intent intent = new Intent(context, BalanceActivity.class);
+        intent.putExtra(EXTRA_GOURMET, gourmet);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        return intent;
+    }
 
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.balance_fragment, null);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.balance_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
-        ButterKnife.bind(this, view);
-        presenter.bind(getContext(), this);
-
-        setHasOptionsMenu(true);
+        ButterKnife.bind(this);
+        presenter.bind(getApplicationContext(), this);
 
         // Given data
-        if (getArguments() != null && getArguments().getParcelable(ARG_GOURMET) != null) {
-            Gourmet gourmet = getArguments().getParcelable(ARG_GOURMET);
+        if (getIntent() != null &&
+                getIntent().getExtras() != null &&
+                getIntent().getExtras().getParcelable(EXTRA_GOURMET) != null) {
+            Gourmet gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
             presenter.setGourmet(gourmet);
         } else {
             presenter.login();
@@ -78,7 +87,6 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
             }
         });
 
-        return view;
     }
 
     @OnClick(R.id.balance_card_number)
@@ -88,7 +96,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void showNumberCardSuccess() {
-        Toast.makeText(getContext(),
+        Toast.makeText(getApplicationContext(),
                 getResources().getString(R.string.copy_to_clipboard),
                 Toast.LENGTH_SHORT).show();
     }
@@ -108,13 +116,12 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void showDialogNewVersion(LastVersion lastVersion) {
-        LastVersionHelper.showDialog(getActivity(), lastVersion);
+        LastVersionHelper.showDialog(this, lastVersion);
     }
 
     @Override
     public void showUpdateIcon(boolean displayUpdateIcon) {
         this.displayUpdateIcon = displayUpdateIcon;
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -130,18 +137,17 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
 
     @Override
     public void navigateToLogin() {
-        MainActivity activity = (MainActivity) getActivity();
-        activity.navigateToLogin();
+        startActivity(LoginActivity.newStartIntent(this));
     }
 
     @Override
     public void navigateToSearch(Gourmet gourmet) {
-        startActivity(SearchActivity.newStartIntent(getContext(), gourmet));
+        startActivity(SearchActivity.newStartIntent(this, gourmet));
     }
 
     @Override
     public void showError(String text) {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -154,7 +160,7 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        OperationsAdapter adapter = new OperationsAdapter(getActivity(), gourmet.getOperations(), R.layout.operation_cell);
+        OperationsAdapter adapter = new OperationsAdapter(this, gourmet.getOperations(), R.layout.operation_cell);
         operationsList.setAdapter(adapter);
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
@@ -171,10 +177,14 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.findItem(R.id.action_update).setVisible(displayUpdateIcon);
-        super.onCreateOptionsMenu(menu, inflater);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        if (menu.findItem(R.id.action_update) != null) {
+            menu.findItem(R.id.action_update).setVisible(displayUpdateIcon);
+        }
+        return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -202,5 +212,4 @@ public class BalanceFragment extends Fragment implements BalanceScreen {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

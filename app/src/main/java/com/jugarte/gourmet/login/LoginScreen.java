@@ -4,7 +4,8 @@ import com.jugarte.gourmet.beans.Gourmet;
 
 public interface LoginScreen {
 
-    void navigateToMain(Gourmet gourmet);
+    void navigateToBalanceWithAnimation(Gourmet gourmet);
+    void navigateToBalance(Gourmet gourmet);
 
     void showUser(String user);
 

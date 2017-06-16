@@ -1,18 +1,19 @@
 package com.jugarte.gourmet.login;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.activities.MainActivity;
+import com.jugarte.gourmet.activities.SearchActivity;
+import com.jugarte.gourmet.balance.BalanceActivity;
 import com.jugarte.gourmet.beans.Gourmet;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
 
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class LoginFragment extends Fragment implements LoginScreen {
+public class LoginActivity extends AppCompatActivity implements LoginScreen {
 
     @BindView(R.id.login_user)
     EditText userEditText;
@@ -33,18 +34,24 @@ public class LoginFragment extends Fragment implements LoginScreen {
 
     LoginPresenter presenter = new LoginPresenter();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.login_fragment, null);
+    public static Intent newStartIntent(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_activity);
+
+        ButterKnife.bind(this);
 
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
 
-        presenter.bind(getContext(), this);
+        presenter.bind(this, this);
 
-        return view;
     }
 
     private void launchLogin() {
@@ -55,19 +62,23 @@ public class LoginFragment extends Fragment implements LoginScreen {
     }
 
     @Override
-    public void navigateToMain(final Gourmet gourmet) {
-        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+    public void navigateToBalanceWithAnimation(final Gourmet gourmet) {
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
                 BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_done));
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.navigateToMain(gourmet);
+                navigateToBalance(gourmet);
             }
         }, 1000);
 
+    }
+
+    @Override
+    public void navigateToBalance(Gourmet gourmet) {
+        startActivity(BalanceActivity.newStartIntent(this, gourmet));
     }
 
     @Override
@@ -94,24 +105,24 @@ public class LoginFragment extends Fragment implements LoginScreen {
 
     @Override
     public void showErrorNotConnection() {
-        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
                 BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
-        Toast.makeText(getContext(), R.string.error_connection_code3, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.error_connection_code3, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showErrorEmptyFields() {
-        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
                 BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
-        Toast.makeText(getContext(), R.string.error_not_user_or_pass_code1, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.error_not_user_or_pass_code1, Toast.LENGTH_SHORT).show();
     }
 
     @Override
 
     public void showErrorNotUserFound() {
-        btnLogin.doneLoadingAnimation(ContextCompat.getColor(getContext(), R.color.accent),
+        btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
                 BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
-        Toast.makeText(getContext(), R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_circular_progress_button)

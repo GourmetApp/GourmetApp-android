@@ -16,5 +16,6 @@ public class Application extends android.app.Application {
         Fabric.with(this, new Crashlytics.Builder().core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build());
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
+
     }
 }

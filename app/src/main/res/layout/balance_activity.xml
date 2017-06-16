@@ -1,11 +1,10 @@
-<android.support.percent.PercentRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".activities.MainActivity">
+    tools:context=".balance.BalanceActivity">
 
     <RelativeLayout
         android:id="@+id/all_container"
