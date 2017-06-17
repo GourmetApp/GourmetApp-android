@@ -1,7 +1,4 @@
 language: android
-branches:
-  only:
-    - master
 android:
   components:
   - tools
