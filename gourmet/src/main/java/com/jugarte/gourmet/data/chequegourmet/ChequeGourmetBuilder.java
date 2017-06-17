@@ -17,8 +17,12 @@ public class ChequeGourmetBuilder {
     public ChequeGourmet build(String response, String cardNumber)
             throws NotFoundException, ConnectionException, EmptyException {
 
-        if (response == null || response.length() == 0) {
+        if (response == null) {
             throw new ConnectionException();
+        }
+
+        if (response.isEmpty()) {
+            throw new EmptyException();
         }
 
         Document doc = Jsoup.parse(response);
@@ -33,19 +37,23 @@ public class ChequeGourmetBuilder {
         }
         String balance = cleanString(currentBalanceElement.text());
 
-        ArrayList<Operation> operationArrayList = new ArrayList<>();
+        ArrayList<Operation> operationArrayList = null;
         Elements operationsElement = doc.getElementsByTag("tr");
 
-        for (Element operationElement : operationsElement) {
-            Operation operation = new Operation();
-            operation.setName(removeLastWord(operationElement.getElementById("operacion").text()));
-            operation.setPrice(operationElement.getElementById("importe").text());
-            operation.setDate(operationElement.getElementById("fecha").text());
-            operation.setHour(operationElement.getElementById("horaOperacion").text());
-            operationArrayList.add(operation);
+        if (operationsElement != null && !operationsElement.isEmpty()) {
+            operationArrayList = new ArrayList<>();
+
+            for (Element operationElement : operationsElement) {
+                Operation operation = new Operation();
+                operation.setName(removeLastWord(operationElement.getElementById("operacion").text()));
+                operation.setPrice(operationElement.getElementById("importe").text());
+                operation.setDate(operationElement.getElementById("fecha").text());
+                operation.setHour(operationElement.getElementById("horaOperacion").text());
+                operationArrayList.add(operation);
+            }
         }
 
-        if (operationArrayList.size() > 0) {
+        if (operationArrayList != null && operationArrayList.size() > 0) {
             Operation lastOperation = operationArrayList.get(operationArrayList.size() - 1);
 
             if (lastOperation.getPrice().equalsIgnoreCase("fin")) {

@@ -1,6 +1,8 @@
 
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmetBuilder;
+import com.jugarte.gourmet.exceptions.ConnectionException;
+import com.jugarte.gourmet.exceptions.EmptyException;
 import com.jugarte.gourmet.exceptions.NotFoundException;
 
 import org.junit.Before;
@@ -15,32 +17,54 @@ import static org.junit.Assert.assertTrue;
 public class GourmetBuilderTest {
 
     private TestUtils utils = null;
+    ChequeGourmetBuilder gourmetBuilder;
 
     @Before
     public void setUp() {
         this.utils = new TestUtils();
+        this.gourmetBuilder = new ChequeGourmetBuilder();
     }
 
     @Test
-    public void testResponseOk() throws Exception {
+    public void testBalanceIsOk() throws Exception {
         String data = this.utils.getResourceToString("response_ok.html");
 
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
+        gourmetBuilder = new ChequeGourmetBuilder();
         ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
 
         assertEquals(gourmet.getBalance(), "34,56");
-        assertNotNull(gourmet.getOperations());
-        assertTrue(gourmet.getOperations().size() == 9);
+    }
+
+    @Test
+    public void testHaveNineOperations() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
+
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
+
+        assertEquals(gourmet.getOperations().size(), 9);
+    }
+
+    @Test
+    public void testFirstOperationIsOk() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
+
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
+
         assertEquals(gourmet.getOperations().get(0).getName(), "BURGER KING QUEVEDO");
         assertEquals(gourmet.getOperations().get(0).getPrice(), "7,45");
         assertEquals(gourmet.getOperations().get(0).getDate(), "05/07/2015");
         assertEquals(gourmet.getOperations().get(0).getHour(), "22:58");
+    }
 
-        assertEquals(gourmet.getOperations().get(1).getName(), "COECOE HOSTELEROS");
+    @Test
+    public void testLastOperationIsOk() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
 
-        assertEquals(gourmet.getOperations().get(3).getName(), "DI BOCCA RESTAURACIO");
-        assertEquals(gourmet.getOperations().get(3).getPrice(), "11,95");
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertEquals(gourmet.getOperations().get(8).getName(), "BURGER KING QUEVEDO");
         assertEquals(gourmet.getOperations().get(8).getPrice(), "1,49");
@@ -49,10 +73,10 @@ public class GourmetBuilderTest {
     }
 
     @Test
-    public void testResponseOk2() throws Exception {
+    public void testResponseOkWithOtherResponse() throws Exception {
         String data = this.utils.getResourceToString("response_ok2.html");
 
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
+        gourmetBuilder = new ChequeGourmetBuilder();
         ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertEquals(gourmet.getBalance(), "101,89");
@@ -71,10 +95,10 @@ public class GourmetBuilderTest {
     }
 
     @Test
-    public void testResponseWithoutOperations() throws Exception {
+    public void testResponseIsNullWhenWithoutOperations() throws Exception {
         String data = this.utils.getResourceToString("response_okwithoutops.html");
 
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
+        gourmetBuilder = new ChequeGourmetBuilder();
         ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNotNull(gourmet.getBalance());
@@ -85,51 +109,78 @@ public class GourmetBuilderTest {
     public void testResponseFail() throws Exception {
         String data = this.utils.getResourceToString("response_fail.html");
 
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
+        gourmetBuilder = new ChequeGourmetBuilder();
         ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNull(gourmet.getBalance());
         assertNull(gourmet.getOperations());
     }
 
-    @Test
-    public void testResponseEmptyAndNull() throws Exception {
+    @Test(expected = EmptyException.class)
+    public void testResultIsNullWhenResponseIsEmpty() throws Exception {
         String data = "";
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
+
+        gourmetBuilder = new ChequeGourmetBuilder();
         ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNull(gourmet);
+    }
 
-        data = null;
-
-        gourmetBuilder = new ChequeGourmetBuilder();
-        gourmet = gourmetBuilder.build(data, "0000000000000");
+    @Test(expected = ConnectionException.class)
+    public void testResultIsNullWhenResponseIsNull() throws Exception {
+        ChequeGourmet gourmet = gourmetBuilder.build(null, "0000000000000");
 
         assertNull(gourmet);
+    }
 
-        data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
-        gourmetBuilder = new ChequeGourmetBuilder();
-        gourmet = gourmetBuilder.build(data, "0000000000000");
+    @Test(expected = EmptyException.class)
+    public void testResultIsNullWhenResponseIsStrange() throws Exception {
+        String data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
+
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNull(gourmet);
     }
 
     @Test
-    public void testHelperClass() throws Exception {
-
-        ChequeGourmetBuilder gourmetBuilder = new ChequeGourmetBuilder();
-
+    public void testCleanTextWhenHaveSpaces() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola "), "hola");
+    }
+
+    @Test
+    public void testCleanTextWhenHaveTabs() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola    "), "hola");
+    }
+
+    @Test
+    public void testCleanTextWhenHaveTabsSymbols() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola  \n  \t  "), "hola");
         assertEquals(gourmetBuilder.cleanString(" hola paco  \n  \t  "), "hola paco");
+    }
 
+    @Test
+    public void testNotRemoveLastWord() throws Exception {
         assertEquals(gourmetBuilder.removeLastWord("Hola"), "Hola");
-        assertEquals(gourmetBuilder.removeLastWord("Hola d"), "Hola");
-        assertEquals(gourmetBuilder.removeLastWord("Actualizacion de saldo"), "Actualizacion de saldo");
-        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
-        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
+    }
 
+    @Test
+    public void testRemoveLastWord() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Hola d"), "Hola");
+    }
+
+    @Test
+    public void testNotRemoveLastWordWhenIsUpdate() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Actualizacion de saldo"), "Actualizacion de saldo");
+    }
+
+    @Test
+    public void testRemoveLastWordWhenIsACountry() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
+    }
+
+    @Test
+    public void testRemoveLastWordAndCleanSpaces() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
     }
 
 }
