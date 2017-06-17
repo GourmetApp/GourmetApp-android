@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
     @Override
     public void navigateToBalance(Gourmet gourmet) {
         startActivity(BalanceActivity.newStartIntent(this, gourmet));
+        finish();
     }
 
     @Override
