@@ -1,7 +1,6 @@
 package com.jugarte.gourmet;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jugarte.gourmet.tracker.Tracker;
 
@@ -13,7 +12,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Tracker.getInstance(getApplicationContext());
-        Fabric.with(this, new Crashlytics.Builder().core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build());
+        Fabric.with(this, new Crashlytics());
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
 

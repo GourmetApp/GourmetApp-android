@@ -45,10 +45,9 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+
         ButterKnife.bind(this);
-
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
-
         presenter.bind(this, this);
 
     }
