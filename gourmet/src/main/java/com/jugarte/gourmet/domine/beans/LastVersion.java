@@ -2,22 +2,12 @@ package com.jugarte.gourmet.domine.beans;
 
 public class LastVersion {
 
-    private String idVersion = null;
     private String nameTagVersion = null;
     private String nameVersion = null;
-    private String idDownload = null;
     private String nameDownload = null;
     private String urlDownload = null;
     private String changelog = null;
     private String urlHomePage = null;
-
-    public String getIdVersion() {
-        return idVersion;
-    }
-
-    public void setIdVersion(String idVersion) {
-        this.idVersion = idVersion;
-    }
 
     public String getNameTagVersion() {
         return nameTagVersion;
@@ -33,14 +23,6 @@ public class LastVersion {
 
     public void setNameVersion(String nameVersion) {
         this.nameVersion = nameVersion;
-    }
-
-    public String getIdDownload() {
-        return idDownload;
-    }
-
-    public void setIdDownload(String idDownload) {
-        this.idDownload = idDownload;
     }
 
     public String getNameDownload() {

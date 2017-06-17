@@ -3,6 +3,7 @@ package com.jugarte.gourmet.requests;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.beans.Operation;
+import com.jugarte.gourmet.internal.Constants;
 
 public class RequestFake {
 
@@ -31,11 +32,10 @@ public class RequestFake {
     public LastVersion getLastPublishVersion() {
         LastVersion lastVersion = new LastVersion();
 
-        lastVersion.setIdVersion("1603617");
-        lastVersion.setNameTagVersion("v1.4.3");
+        lastVersion.setNameTagVersion("v1.4.1");
         lastVersion.setNameVersion("Release v1.4.1");
-        lastVersion.setIdDownload("753792");
         lastVersion.setNameDownload("GourmetApp-v1.0.1.apk");
+        lastVersion.setUrlHomePage(Constants.getUrlHomePage());
         lastVersion.setUrlDownload("https://github.com/javierugarte/GourmetApp-android/releases/download/v1.0.1/GourmetApp-v1.0.1.apk");
         lastVersion.setChangelog("* Spanish translation<br>* Exit login when the user has changed the password<br>* Fixed fonts of EditText");
 

@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 public class LastVersionBuilder {
 
-    private static final String ID_KEY = "id";
     private static final String NAME_KEY = "name";
     private static final String TAG_NAME_KEY = "tag_name";
     private static final String HTML_URL_KEY = "html_url";
@@ -25,23 +24,18 @@ public class LastVersionBuilder {
 
     public LastVersion build(String response) throws JSONException, ConnectionException {
         if (response == null || response.trim().length() == 0) {
-            return null;
+            throw new ConnectionException();
         }
 
         LastVersion lastVersion = null;
         JSONArray lastVersionJSONArray;
 
-        try {
-            lastVersionJSONArray = new JSONArray(response);
-        } catch (JSONException e) {
-            throw new ConnectionException();
-        }
+        lastVersionJSONArray = new JSONArray(response);
 
         if (lastVersionJSONArray.length() > 0) {
             JSONObject releaseObject = (JSONObject) lastVersionJSONArray.get(0);
             if (releaseObject != null) {
                 lastVersion = new LastVersion();
-                lastVersion.setIdVersion("" + releaseObject.getInt(ID_KEY));
                 lastVersion.setNameTagVersion(releaseObject.getString(TAG_NAME_KEY));
                 lastVersion.setNameVersion(releaseObject.getString(NAME_KEY));
                 lastVersion.setUrlDownload(releaseObject.getString(HTML_URL_KEY));
@@ -53,7 +47,6 @@ public class LastVersionBuilder {
                     JSONObject assetObject = (JSONObject) releaseObject.getJSONArray(ASSETS_KEY).get(0);
                     if (assetObject != null) {
                         lastVersion.setUrlDownload(assetObject.getString(URL_KEY));
-                        lastVersion.setIdDownload("" + assetObject.getInt(ID_KEY));
                         lastVersion.setNameDownload(assetObject.getString(NAME_KEY));
                     }
                 }

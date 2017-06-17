@@ -121,6 +121,7 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
     @Override
     public void showUpdateIcon(boolean displayUpdateIcon) {
         this.displayUpdateIcon = displayUpdateIcon;
+        invalidateOptionsMenu();
     }
 
     @Override
