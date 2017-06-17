@@ -1,4 +1,3 @@
-
 language: android
 branches:
   only:
