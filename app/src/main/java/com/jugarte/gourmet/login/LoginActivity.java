@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
     @Override
     public void showUser(String user) {
         userEditText.setText(user);
-        passEditText.requestFocus();
+        (user == null ? userEditText : passEditText).requestFocus();
     }
 
     @Override
