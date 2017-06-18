@@ -76,7 +76,7 @@ public class LastVersionHelper {
         setShowDialog(lastVersion.getNameTagVersion(), activity.getApplicationContext());
     }
 
-    public static void openUrlInBrowser(Context context, String url) {
+    private static void openUrlInBrowser(Context context, String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(browserIntent);
     }

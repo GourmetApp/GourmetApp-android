@@ -12,6 +12,8 @@ public interface LoginScreen {
     void showLoading();
     void hideLoading();
 
+    void hideKeyboard();
+
     void showErrorNotConnection();
     void showErrorEmptyFields();
     void showErrorNotUserFound();

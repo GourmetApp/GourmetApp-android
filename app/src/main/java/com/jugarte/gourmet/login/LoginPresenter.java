@@ -41,6 +41,7 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
             return;
         }
 
+        screen.hideKeyboard();
         saveUser.saveUser(user, null);
 
         screen.showLoading();
