@@ -72,10 +72,16 @@ public class OperationsAdapter extends BaseAdapter {
 
         h.date.setText(operation.getDate() + " " + operation.getHour());
         h.name.setText(operation.getName());
+        String symbol = isPositiveOperation(operation.getName()) ? "%s" : "-%s";
+
         String price = String.format(context.getString(R.string.price_euro), operation.getPrice());
-        h.price.setText(price);
+        h.price.setText(String.format(symbol, price));
 
         return view;
+    }
+
+    private boolean isPositiveOperation(String name) {
+        return name.contains(" de saldo");
     }
 
     /// Content Holder
