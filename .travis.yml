@@ -15,6 +15,7 @@ jobs:
       before_cache:
         - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
       script: ./gradlew assembleDebug
-    - stage: check
+      
+    - stage: test
       jdk: oraclejdk8
-      script: ./gradlew check
+      script: ./gradlew test
