@@ -66,7 +66,7 @@ public class ChequeGourmetBuilder {
     }
 
     public String removeLastWord(String text) {
-        String regex = "((\\s\\w)\\b)+$";
+        String regex = "((\\s\\w)\\b)?+$";
         text = text.replaceAll(regex, "");
         return cleanString(text);
     }

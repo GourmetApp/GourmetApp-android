@@ -179,6 +179,11 @@ public class GourmetBuilderTest {
     }
 
     @Test
+    public void testRemoveLastWordWhenThereIsALetter() {
+        assertEquals(gourmetBuilder.removeLastWord("R QUE R M"), "R QUE R");
+    }
+
+    @Test
     public void testRemoveLastWordAndCleanSpaces() throws Exception {
         assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
     }
