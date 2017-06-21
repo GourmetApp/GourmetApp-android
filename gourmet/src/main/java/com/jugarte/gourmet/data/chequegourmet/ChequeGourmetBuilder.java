@@ -1,5 +1,7 @@
 package com.jugarte.gourmet.data.chequegourmet;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.EmptyException;
@@ -65,12 +67,14 @@ public class ChequeGourmetBuilder {
         return new ChequeGourmet(cardNumber, balance, operationArrayList);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     public String removeLastWord(String text) {
         String regex = "((\\s\\w)\\b)?+$";
         text = text.replaceAll(regex, "");
         return cleanString(text);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     public String cleanString(String text) {
         text = text.replace("\n", "");
         text = text.replace("\t", "");
