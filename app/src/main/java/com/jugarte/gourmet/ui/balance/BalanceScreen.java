@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.balance;
+package com.jugarte.gourmet.ui.balance;
 
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;

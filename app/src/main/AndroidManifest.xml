@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait">
@@ -24,12 +24,12 @@
         </activity>
 
         <activity
-            android:name=".activities.SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".balance.BalanceActivity"
+            android:name=".ui.balance.BalanceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

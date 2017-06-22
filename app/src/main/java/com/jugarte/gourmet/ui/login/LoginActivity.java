@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.login;
+package com.jugarte.gourmet.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.balance.BalanceActivity;
+import com.jugarte.gourmet.ui.balance.BalanceActivity;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
 import com.jugarte.gourmet.utils.TextFormatUtils;

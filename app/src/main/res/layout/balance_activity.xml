@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".balance.BalanceActivity">
+    tools:context=".ui.balance.BalanceActivity">
 
     <RelativeLayout
         android:id="@+id/all_container"

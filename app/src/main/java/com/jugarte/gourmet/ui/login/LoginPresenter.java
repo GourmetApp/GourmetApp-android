@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.login;
+package com.jugarte.gourmet.ui.login;
 
 import android.content.Context;
 

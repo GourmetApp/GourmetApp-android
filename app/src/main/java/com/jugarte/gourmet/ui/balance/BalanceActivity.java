@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.balance;
+package com.jugarte.gourmet.ui.balance;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.activities.SearchActivity;
+import com.jugarte.gourmet.ui.search.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
-import com.jugarte.gourmet.login.LoginActivity;
+import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.utils.TextFormatUtils;
 

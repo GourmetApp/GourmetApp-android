@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.activities;
+package com.jugarte.gourmet.ui.search;
 
 import android.content.Context;
 import android.content.Intent;
