@@ -5,6 +5,8 @@ import android.content.Context;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImp;
+import com.jugarte.gourmet.data.prefs.AppPreferencesHelper;
+import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
@@ -35,10 +37,10 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
     public void bind(Context context, BalanceScreen screen) {
         this.context = context;
         this.screen = screen;
-        getUser = new GetUser(context);
+        getUser = new GetUser(new AppPreferencesHelper(context));
         getGourmet = new GetGourmet();
         saveGourmet = new SaveGourmet();
-        removeUser = new RemoveUser(context);
+        removeUser = new RemoveUser(new AppPreferencesHelper(context));
 
         checkNewVersion();
     }
@@ -70,7 +72,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
     }
 
     public void logout() {
-        removeUser.execute();
+        removeUser.removeUser();
 
         Tracker.getInstance().sendMenuEvent("logout");
         screen.navigateToLogin();

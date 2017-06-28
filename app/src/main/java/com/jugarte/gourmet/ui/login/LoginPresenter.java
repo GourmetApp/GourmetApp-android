@@ -1,34 +1,40 @@
 package com.jugarte.gourmet.ui.login;
 
-import android.content.Context;
-
 import com.jugarte.gourmet.ThreadManager;
-import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
+import com.jugarte.gourmet.ui.base.BasePresenter;
 
-public class LoginPresenter implements GetGourmet.OnGourmetResponse {
+import javax.inject.Inject;
 
-    private LoginScreen screen;
+public class LoginPresenter<V extends LoginScreen> extends BasePresenter<V>
+        implements GetGourmet.OnGourmetResponse {
 
     private String user, password;
-    private SaveUser saveUser;
-    private GetUser getUser;
 
-    private final ThreadManager threadManager = new ThreadManagerImp();
+    private final SaveUser saveUser;
+    private final GetUser getUser;
 
-    void bind(Context context, LoginScreen screen) {
-        this.screen = screen;
-        this.getUser = new GetUser(context);
-        this.saveUser = new SaveUser(context);
+    private final ThreadManager threadManager;
+
+    @Inject
+    public LoginPresenter(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
+        this.getUser = getUser;
+        this.saveUser = saveUser;
+        this.threadManager = threadManager;
+    }
+
+    @Override
+    public void onAttach(V screen) {
+        super.onAttach(screen);
 
         if (getUser.isLogged()) {
-            screen.navigateToBalance(null);
+            getScreen().navigateToBalance(null);
         }
 
-        screen.showUser(getUser.getUser());
+        getScreen().showUser(getUser.getUser());
     }
 
     void login(final String user, final String password) {
@@ -37,14 +43,14 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
 
         if (user == null || user.length() == 0
                 || password == null || password.length() == 0) {
-            screen.showErrorEmptyFields();
+            getScreen().showErrorEmptyFields();
             return;
         }
 
-        screen.hideKeyboard();
+        getScreen().hideKeyboard();
         saveUser.saveUser(user, null);
 
-        screen.showLoading();
+        getScreen().showLoading();
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
@@ -59,12 +65,12 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.hideLoading();
+                getScreen().hideLoading();
                 if (gourmet != null) {
                     saveUser.saveUser(user, password);
-                    screen.navigateToBalanceWithAnimation(gourmet);
+                    getScreen().navigateToBalanceWithAnimation(gourmet);
                 } else {
-                    screen.showErrorNotConnection();
+                    getScreen().showErrorNotConnection();
                 }
             }
         });
@@ -75,8 +81,8 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.hideLoading();
-                screen.showErrorNotConnection();
+                getScreen().hideLoading();
+                getScreen().showErrorNotConnection();
             }
         });
     }
@@ -86,9 +92,10 @@ public class LoginPresenter implements GetGourmet.OnGourmetResponse {
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.hideLoading();
-                screen.showErrorNotUserFound();
+                getScreen().hideLoading();
+                getScreen().showErrorNotUserFound();
             }
         });
     }
+
 }

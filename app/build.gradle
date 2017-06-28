@@ -62,6 +62,10 @@ dependencies {
 
     compile 'br.com.simplepass:loading-button-android:1.7.1'
 
+    def dagger2Version = '2.8'
+    compile "com.google.dagger:dagger:$dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }

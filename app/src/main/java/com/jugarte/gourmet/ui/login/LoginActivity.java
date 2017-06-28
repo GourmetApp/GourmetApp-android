@@ -16,8 +16,11 @@ import android.widget.Toast;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ui.balance.BalanceActivity;
 import com.jugarte.gourmet.domine.beans.Gourmet;
+import com.jugarte.gourmet.ui.base.BaseActivity;
 import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
 import com.jugarte.gourmet.utils.TextFormatUtils;
+
+import javax.inject.Inject;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import butterknife.BindView;
@@ -25,16 +28,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class LoginActivity extends AppCompatActivity implements LoginScreen {
+public class LoginActivity extends BaseActivity implements LoginScreen {
 
     @BindView(R.id.login_user)
     EditText userEditText;
+
     @BindView(R.id.login_pass)
     EditText passEditText;
+
     @BindView(R.id.btn_circular_progress_button)
     CircularProgressButton btnLogin;
 
-    LoginPresenter presenter = new LoginPresenter();
+    @Inject
+    LoginPresenter presenter;
 
     public static Intent newStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -47,10 +53,24 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        ButterKnife.bind(this);
-        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
-        presenter.bind(this, this);
+        getActivityComponent().inject(this);
 
+        setUnBinder(ButterKnife.bind(this));
+
+        presenter.onAttach(this);
+
+        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+    }
+
+    @OnClick(R.id.btn_circular_progress_button)
+    public void loginClick() {
+        launchLogin();
+    }
+
+    @OnEditorAction(R.id.login_pass)
+    public boolean loginAction() {
+        launchLogin();
+        return false;
     }
 
     private void launchLogin() {
@@ -129,17 +149,6 @@ public class LoginActivity extends AppCompatActivity implements LoginScreen {
         btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
                 BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
         Toast.makeText(this, R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
-    }
-
-    @OnClick(R.id.btn_circular_progress_button)
-    public void loginClick() {
-        launchLogin();
-    }
-
-    @OnEditorAction(R.id.login_pass)
-    public boolean loginAction() {
-        launchLogin();
-        return false;
     }
 
 }
