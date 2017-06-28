@@ -13,6 +13,7 @@ import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
 import com.jugarte.gourmet.ui.balance.BalancePresenter;
+import com.jugarte.gourmet.ui.balance.BalancePresenterImp;
 import com.jugarte.gourmet.ui.login.LoginPresenter;
 import com.jugarte.gourmet.ui.login.LoginPresenterImp;
 
@@ -47,7 +48,7 @@ public class ActivityModule {
     BalancePresenter provideBalancePresenter(GetGourmet getGourmet, SaveGourmet saveGourmet,
                                              GetUser getUser, RemoveUser removeUser,
                                              ThreadManager threadManager) {
-        return new BalancePresenter(getGourmet, saveGourmet, getUser, removeUser, threadManager);
+        return new BalancePresenterImp(getGourmet, saveGourmet, getUser, removeUser, threadManager);
     }
 
     @Provides

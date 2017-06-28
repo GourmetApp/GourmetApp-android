@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
     CircularProgressButton btnLogin;
 
     @Inject
-    LoginPresenter presenter;
+    LoginPresenter<LoginScreen> presenter;
 
     public static Intent newStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -149,4 +149,9 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
         Toast.makeText(this, R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

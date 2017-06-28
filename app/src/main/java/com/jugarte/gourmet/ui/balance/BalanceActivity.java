@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +51,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
     private boolean displayUpdateIcon;
 
     @Inject
-    BalancePresenter presenter;
+    BalancePresenter<BalanceScreen> presenter;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
         Intent intent = new Intent(context, BalanceActivity.class);
@@ -193,7 +192,6 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -219,5 +217,11 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }
