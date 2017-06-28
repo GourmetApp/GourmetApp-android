@@ -23,8 +23,7 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
         implements BalancePresenter<V>, GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
 
     private final ThreadManager threadManager;
-
-    private Context context;
+    private final Context context;
 
     private GetGourmet getGourmet;
 
@@ -35,18 +34,16 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
     private Gourmet gourmet;
 
     @Inject
-    public BalancePresenterImp(GetGourmet getGourmet, SaveGourmet saveGourmet,
+    public BalancePresenterImp(Context context,
+                               GetGourmet getGourmet, SaveGourmet saveGourmet,
                                GetUser getUser, RemoveUser removeUser,
                                ThreadManager threadManager) {
+        this.context = context;
         this.getGourmet = getGourmet;
         this.getUser = getUser;
         this.saveGourmet = saveGourmet;
         this.removeUser = removeUser;
         this.threadManager = threadManager;
-    }
-
-    public void bind(Context context) {
-        this.context = context;
     }
 
     @Override

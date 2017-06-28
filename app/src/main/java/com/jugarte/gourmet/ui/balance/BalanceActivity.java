@@ -73,8 +73,6 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
         setSupportActionBar(toolbar);
 
-        presenter.bind(getApplicationContext());
-
         // Given data
         if (getIntent() != null &&
                 getIntent().getExtras() != null &&
