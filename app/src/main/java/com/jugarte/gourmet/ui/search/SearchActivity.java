@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -11,11 +13,14 @@ import android.widget.TextView;
 
 import com.github.javierugarte.searchtoolbar.SearchToolbar;
 import com.github.javierugarte.searchtoolbar.SearchToolbarListener;
+import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,10 +36,12 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     @BindView(R.id.search_operation_list)
     ListView operationsList;
 
+    private RecyclerView recList;
+
     @BindView(R.id.no_result)
     TextView noResult;
 
-    private OperationsAdapter adapter;
+    private SearchAdapter searchAdapter;
     private Gourmet gourmet;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
@@ -66,11 +73,38 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
             return;
         }
 
-        adapter = new OperationsAdapter(this,
-                gourmet.getOperations(), R.layout.operation_cell);
+        recList = (RecyclerView) findViewById(R.id.rv_search);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
 
-        operationsList.setAdapter(adapter);
 
+        Comparator<GourmetViewModel> comparator = new Comparator<GourmetViewModel>() {
+            @Override
+            public int compare(GourmetViewModel a, GourmetViewModel b) {
+                return b.getDateObject().compareTo(a.getDateObject());
+            }
+        };
+
+        searchAdapter = new SearchAdapter(getApplicationContext(), comparator);
+
+        List<GourmetViewModel> operations = getModel(gourmet.getOperations());
+
+        searchAdapter.edit().add(operations).commit();
+
+        recList.setAdapter(searchAdapter);
+    }
+
+    private List<GourmetViewModel> getModel(List<Operation> operations) {
+        ArrayList<GourmetViewModel> rOperations = new ArrayList<>();
+        for (Operation operation : operations) {
+            rOperations.add(new GourmetViewModel(operation.getId(),
+                    operation.getName(),
+                    operation.getDate() + " " + operation.getHour(),
+                    operation.getPrice()));
+        }
+        return rOperations;
     }
 
     @Override
@@ -84,9 +118,15 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     }
 
     private void reloadList(String keyword) {
+        if (keyword.equals("")) {
+            recList.smoothScrollToPosition(0);
+        }
+
         List<Operation> operations = gourmet.getOperations(keyword);
         showNoResult(operations.isEmpty());
-        adapter.setOperations(operations);
+
+        List<GourmetViewModel> gourmetViewModels= getModel(operations);
+        searchAdapter.edit().replaceAll(gourmetViewModels).commit();
     }
 
     private void showNoResult(boolean display) {
