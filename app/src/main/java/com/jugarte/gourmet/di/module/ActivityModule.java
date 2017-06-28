@@ -14,8 +14,10 @@ import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
 import com.jugarte.gourmet.ui.balance.BalancePresenter;
 import com.jugarte.gourmet.ui.balance.BalancePresenterImp;
+import com.jugarte.gourmet.ui.balance.BalanceScreen;
 import com.jugarte.gourmet.ui.login.LoginPresenter;
 import com.jugarte.gourmet.ui.login.LoginPresenterImp;
+import com.jugarte.gourmet.ui.login.LoginScreen;
 
 import dagger.Module;
 import dagger.Provides;
@@ -40,14 +42,14 @@ public class ActivityModule {
     }
 
     @Provides
-    LoginPresenter provideLoginPresenter(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
+    LoginPresenter<LoginScreen> provideLoginPresenter(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
         return new LoginPresenterImp(getUser, saveUser, threadManager);
     }
 
     @Provides
-    BalancePresenter provideBalancePresenter(GetGourmet getGourmet, SaveGourmet saveGourmet,
-                                             GetUser getUser, RemoveUser removeUser,
-                                             ThreadManager threadManager) {
+    BalancePresenter<BalanceScreen> provideBalancePresenter(GetGourmet getGourmet, SaveGourmet saveGourmet,
+                                                            GetUser getUser, RemoveUser removeUser,
+                                                            ThreadManager threadManager) {
         return new BalancePresenterImp(getGourmet, saveGourmet, getUser, removeUser, threadManager);
     }
 
