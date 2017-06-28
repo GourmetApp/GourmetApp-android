@@ -10,6 +10,7 @@ import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
 import com.jugarte.gourmet.ui.login.LoginPresenter;
+import com.jugarte.gourmet.ui.login.LoginPresenterImp;
 
 import dagger.Module;
 import dagger.Provides;
@@ -35,7 +36,7 @@ public class ActivityModule {
 
     @Provides
     LoginPresenter provideLoginPresenter(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
-        return new LoginPresenter(getUser, saveUser, threadManager);
+        return new LoginPresenterImp(getUser, saveUser, threadManager);
     }
 
     @Provides
