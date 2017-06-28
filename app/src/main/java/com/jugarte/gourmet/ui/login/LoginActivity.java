@@ -53,7 +53,6 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
         setContentView(R.layout.login_activity);
 
         getActivityComponent().inject(this);
-
         setUnBinder(ButterKnife.bind(this));
 
         presenter.onAttach(this);

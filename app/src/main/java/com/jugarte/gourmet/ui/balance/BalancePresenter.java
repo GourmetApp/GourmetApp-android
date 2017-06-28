@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
-import com.jugarte.gourmet.ThreadManagerImp;
-import com.jugarte.gourmet.data.prefs.AppPreferencesHelper;
-import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
@@ -17,14 +14,14 @@ import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.base.BasePresenter;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 
-public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
+public class BalancePresenter<V extends BalanceScreen> extends BasePresenter<V> implements GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
+
+    private final ThreadManager threadManager;
 
     private Context context;
-    private BalanceScreen screen;
-
-    private final ThreadManager threadManager = new ThreadManagerImp();
 
     private GetGourmet getGourmet;
 
@@ -34,21 +31,30 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
 
     private Gourmet gourmet;
 
-    public void bind(Context context, BalanceScreen screen) {
-        this.context = context;
-        this.screen = screen;
-        getUser = new GetUser(new AppPreferencesHelper(context));
-        getGourmet = new GetGourmet();
-        saveGourmet = new SaveGourmet();
-        removeUser = new RemoveUser(new AppPreferencesHelper(context));
+    public BalancePresenter(GetGourmet getGourmet, SaveGourmet saveGourmet,
+                            GetUser getUser, RemoveUser removeUser,
+                            ThreadManager threadManager) {
+        this.getGourmet = getGourmet;
+        this.getUser = getUser;
+        this.saveGourmet = saveGourmet;
+        this.removeUser = removeUser;
+        this.threadManager = threadManager;
+    }
 
+    public void bind(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void onAttach(V screen) {
+        super.onAttach(screen);
         checkNewVersion();
     }
 
     public void setGourmet(Gourmet gourmet) {
         this.gourmet = gourmet;
         if (gourmet != null) {
-            screen.showGourmetData(gourmet);
+            getScreen().showGourmetData(gourmet);
         }
     }
 
@@ -62,7 +68,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
             return;
         }
 
-        screen.showLoading(true);
+        getScreen().showLoading(true);
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
@@ -75,7 +81,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
         removeUser.removeUser();
 
         Tracker.getInstance().sendMenuEvent("logout");
-        screen.navigateToLogin();
+        getScreen().navigateToLogin();
     }
 
     @Override
@@ -83,7 +89,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.showLoading(false);
+                getScreen().showLoading(false);
                 setGourmet(gourmet);
                 saveGourmet.execute(gourmet);
             }
@@ -95,9 +101,9 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.showLoading(false);
+                getScreen().showLoading(false);
                 setGourmet(cacheGourmet);
-                screen.showOfflineMode(cacheGourmet.getModificationDate());
+                getScreen().showOfflineMode(cacheGourmet.getModificationDate());
             }
         });
     }
@@ -107,8 +113,8 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
         threadManager.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                screen.showLoading(false);
-                screen.showError(context.getString(R.string.error_user_or_password_incorrect_code2));
+                getScreen().showLoading(false);
+                getScreen().showError(context.getString(R.string.error_user_or_password_incorrect_code2));
             }
         });
     }
@@ -137,7 +143,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
                 threadManager.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        screen.showDialogNewVersion(lastVersion);
+                        getScreen().showDialogNewVersion(lastVersion);
                     }
                 });
             }
@@ -145,7 +151,7 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
             threadManager.runOnUIThread(new Runnable() {
                 @Override
                 public void run() {
-                    screen.showUpdateIcon(!isEqualsVersion);
+                    getScreen().showUpdateIcon(!isEqualsVersion);
                 }
             });
         }
@@ -157,37 +163,37 @@ public class BalancePresenter implements GetGourmet.OnGourmetResponse, CheckNewV
 
         Tracker.getInstance().sendMenuEvent("copy_clipboard");
 
-        screen.showNumberCardSuccess();
+        getScreen().showNumberCardSuccess();
     }
 
     public void clickUpdate() {
         Tracker.getInstance().sendMenuEvent("download");
-        screen.openUrl(Constants.getUrlHomePage());
+        getScreen().openUrl(Constants.getUrlHomePage());
     }
 
     public void clickSearch() {
         if (gourmet == null) {
-            screen.showError(context.getString(R.string.search_error));
+            getScreen().showError(context.getString(R.string.search_error));
             return;
         }
 
         Tracker.getInstance().sendMenuEvent("search");
-        screen.navigateToSearch(gourmet);
+        getScreen().navigateToSearch(gourmet);
     }
 
     public void clickShare() {
         Tracker.getInstance().sendMenuEvent("share");
-        screen.share(Constants.getShareText(context));
+        getScreen().share(Constants.getShareText(context));
     }
 
     public void clickOpenSource() {
         Tracker.getInstance().sendMenuEvent("open_source");
-        screen.openUrl(Constants.getUrlGitHubProject());
+        getScreen().openUrl(Constants.getUrlGitHubProject());
     }
 
     public void clickOpenWebSite() {
         Tracker.getInstance().sendMenuEvent("web_site");
-        screen.openUrl(Constants.getUrlHomePage());
+        getScreen().openUrl(Constants.getUrlHomePage());
     }
 
     public void clickLogout() {

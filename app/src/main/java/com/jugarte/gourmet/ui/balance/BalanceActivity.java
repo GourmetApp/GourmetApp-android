@@ -16,20 +16,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.ui.search.SearchActivity;
 import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
-import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.base.BaseActivity;
+import com.jugarte.gourmet.ui.login.LoginActivity;
+import com.jugarte.gourmet.ui.search.SearchActivity;
 import com.jugarte.gourmet.utils.TextFormatUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BalanceActivity extends AppCompatActivity implements BalanceScreen {
+public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     public static final String EXTRA_GOURMET = "EXTRA_GOURMET";
 
@@ -48,7 +51,8 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
 
     private boolean displayUpdateIcon;
 
-    BalancePresenter presenter = new BalancePresenter();
+    @Inject
+    BalancePresenter presenter;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
         Intent intent = new Intent(context, BalanceActivity.class);
@@ -61,13 +65,16 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balance_activity);
 
+        getActivityComponent().inject(this);
+        setUnBinder(ButterKnife.bind(this));
+        presenter.onAttach(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);
 
-        ButterKnife.bind(this);
-        presenter.bind(getApplicationContext(), this);
+        presenter.bind(getApplicationContext());
 
         // Given data
         if (getIntent() != null &&
