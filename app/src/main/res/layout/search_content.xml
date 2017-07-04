@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.search.SearchActivity"
-    tools:showIn="@layout/activity_search">
+    tools:showIn="@layout/search_activity">
 
     <ListView
         android:id="@+id/search_operation_list"

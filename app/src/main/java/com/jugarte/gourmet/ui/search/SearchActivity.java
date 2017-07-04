@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.github.javierugarte.searchtoolbar.SearchToolbar;
 import com.github.javierugarte.searchtoolbar.SearchToolbarListener;
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
 
@@ -34,7 +33,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     @BindView(R.id.no_result)
     TextView noResult;
 
-    private OperationsAdapter adapter;
+    private SearchAdapter adapter;
     private Gourmet gourmet;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
@@ -46,7 +45,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.search_activity);
 
         ButterKnife.bind(this);
 
@@ -66,8 +65,8 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
             return;
         }
 
-        adapter = new OperationsAdapter(this,
-                gourmet.getOperations(), R.layout.operation_cell);
+        adapter = new SearchAdapter(this,
+                gourmet.getOperations(), R.layout.operation_item);
 
         operationsList.setAdapter(adapter);
 
