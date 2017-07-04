@@ -1,4 +1,4 @@
-package com.jugarte.gourmet.adapters;
+package com.jugarte.gourmet.ui.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,24 +7,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.domine.beans.Operation;
-import com.jugarte.gourmet.lib.R;
 
 import java.util.List;
 
-public class OperationsAdapter extends BaseAdapter {
+class SearchAdapter extends BaseAdapter {
 
     private Context context = null;
     private List<Operation> operations = null;
     private int resourceId = 0;
 
-    public OperationsAdapter(Context context, List<Operation> operations, int resourceId) {
+    SearchAdapter(Context context, List<Operation> operations, int resourceId) {
         this.context = context;
         this.operations = operations;
         this.resourceId = resourceId;
     }
 
-    public void setOperations(List<Operation> operations) {
+    void setOperations(List<Operation> operations) {
         this.operations = operations;
         notifyDataSetChanged();
     }
@@ -44,22 +44,18 @@ public class OperationsAdapter extends BaseAdapter {
         return 0;
     }
 
-    private void applyStyles(ContentHolder holder) {
-    }
-
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ContentHolder h = null;
+        ContentHolder h;
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(resourceId, parent, false);
 
             h = new ContentHolder();
-            h.date = (TextView) view.findViewById(R.id.date_operation);
-            h.name = (TextView) view.findViewById(R.id.name_operation);
-            h.price = (TextView) view.findViewById(R.id.price_operation);
-            this.applyStyles(h);
+            h.date = (TextView) view.findViewById(R.id.operation_date);
+            h.name = (TextView) view.findViewById(R.id.operation_name);
+            h.price = (TextView) view.findViewById(R.id.operation_price);
             view.setTag(h);
 
         } else {

@@ -6,16 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
@@ -37,14 +36,19 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     @BindView(R.id.balance_current_balance)
     TextView currentBalance;
+
     @BindView(R.id.balance_current_text)
     TextView currentText;
+
     @BindView(R.id.balance_operations_list)
-    ListView operationsList;
+    RecyclerView operationsList;
+
     @BindView(R.id.balance_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+
     @BindView(R.id.balance_card_number)
     TextView cardNumberTextView;
+
     @BindView(R.id.balance_offline_text_view)
     TextView offlineTextView;
 
@@ -165,7 +169,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
         String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        OperationsAdapter adapter = new OperationsAdapter(this, gourmet.getOperations(), R.layout.operation_cell);
+        BalanceAdapter adapter = new BalanceAdapter(gourmet.getOperations());
         operationsList.setAdapter(adapter);
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
