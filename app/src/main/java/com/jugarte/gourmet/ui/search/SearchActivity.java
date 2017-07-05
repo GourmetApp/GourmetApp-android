@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.javierugarte.searchtoolbar.SearchToolbar;
 import com.github.javierugarte.searchtoolbar.SearchToolbarListener;
-import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
@@ -105,14 +102,10 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     }
 
     private void reloadList(String keyword) {
-        if (keyword.equals("")) {
-            searchRecyclerView.smoothScrollToPosition(0);
-        }
-
         List<Operation> operations = gourmet.getOperations(keyword);
         showNoResult(operations.isEmpty());
 
-        List<GourmetViewModel> gourmetViewModels= getModel(operations);
+        List<GourmetViewModel> gourmetViewModels = getModel(operations);
         searchAdapter.edit().replaceAll(gourmetViewModels).commit();
     }
 
