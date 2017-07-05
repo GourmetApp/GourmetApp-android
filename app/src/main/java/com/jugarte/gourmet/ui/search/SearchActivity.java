@@ -67,23 +67,23 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
             return;
         }
 
-        Comparator<GourmetViewModel> comparator = new Comparator<GourmetViewModel>() {
+        Comparator<SearchViewModel> comparator = new Comparator<SearchViewModel>() {
             @Override
-            public int compare(GourmetViewModel a, GourmetViewModel b) {
+            public int compare(SearchViewModel a, SearchViewModel b) {
                 return b.getDateObject().compareTo(a.getDateObject());
             }
         };
 
         searchAdapter = new SearchAdapter(getApplicationContext(), comparator);
-        List<GourmetViewModel> operations = getModel(gourmet.getOperations());
+        List<SearchViewModel> operations = getModel(gourmet.getOperations());
         searchAdapter.edit().add(operations).commit();
         searchRecyclerView.setAdapter(searchAdapter);
     }
 
-    private List<GourmetViewModel> getModel(List<Operation> operations) {
-        ArrayList<GourmetViewModel> rOperations = new ArrayList<>();
+    private List<SearchViewModel> getModel(List<Operation> operations) {
+        ArrayList<SearchViewModel> rOperations = new ArrayList<>();
         for (Operation operation : operations) {
-            rOperations.add(new GourmetViewModel(operation.getId(),
+            rOperations.add(new SearchViewModel(operation.getId(),
                     operation.getName(),
                     operation.getDate() + " " + operation.getHour(),
                     operation.getPrice()));
@@ -105,7 +105,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
         List<Operation> operations = gourmet.getOperations(keyword);
         showNoResult(operations.isEmpty());
 
-        List<GourmetViewModel> gourmetViewModels = getModel(operations);
+        List<SearchViewModel> gourmetViewModels = getModel(operations);
         searchAdapter.edit().replaceAll(gourmetViewModels).commit();
     }
 

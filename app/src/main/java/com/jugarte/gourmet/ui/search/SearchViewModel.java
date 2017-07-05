@@ -9,14 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-class GourmetViewModel implements SortedListAdapter.ViewModel {
+class SearchViewModel implements SortedListAdapter.ViewModel {
 
     private String id;
     private String name;
     private String date;
     private String price;
 
-    public GourmetViewModel(String id, String name, String date, String price) {
+    SearchViewModel(String id, String name, String date, String price) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -31,15 +31,15 @@ class GourmetViewModel implements SortedListAdapter.ViewModel {
         return name;
     }
 
-    public String getDate() {
+    String getDate() {
         return date;
     }
 
-    public String getPrice() {
+    String getPrice() {
         return price;
     }
 
-    public Date getDateObject() {
+    Date getDateObject() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         try {
@@ -51,8 +51,8 @@ class GourmetViewModel implements SortedListAdapter.ViewModel {
 
     @Override
     public <T> boolean isSameModelAs(@NonNull T item) {
-        if (item instanceof GourmetViewModel) {
-            final GourmetViewModel other = (GourmetViewModel) item;
+        if (item instanceof SearchViewModel) {
+            final SearchViewModel other = (SearchViewModel) item;
             return other.getId().equals(this.id);
         }
         return false;
@@ -60,8 +60,8 @@ class GourmetViewModel implements SortedListAdapter.ViewModel {
 
     @Override
     public <T> boolean isContentTheSameAs(@NonNull T item) {
-        if (item instanceof GourmetViewModel) {
-            final GourmetViewModel other = (GourmetViewModel) item;
+        if (item instanceof SearchViewModel) {
+            final SearchViewModel other = (SearchViewModel) item;
             return name != null ? name.equals(other.name) : other.name == null;
         }
         return false;

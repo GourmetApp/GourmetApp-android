@@ -11,17 +11,17 @@ import com.jugarte.gourmet.R;
 
 import java.util.Comparator;
 
-public class SearchAdapter extends SortedListAdapter<GourmetViewModel> {
+class SearchAdapter extends SortedListAdapter<SearchViewModel> {
 
-    public SearchAdapter(Context context, Comparator<GourmetViewModel> comparator) {
-        super(context, GourmetViewModel.class, comparator);
+    SearchAdapter(Context context, Comparator<SearchViewModel> comparator) {
+        super(context, SearchViewModel.class, comparator);
     }
 
     @NonNull
     @Override
-    protected ViewHolder<GourmetViewModel> onCreateViewHolder(@NonNull LayoutInflater inflater,
-                                                              @NonNull ViewGroup viewGroup, int i) {
-        final View itemView = inflater.inflate(R.layout.row_search, viewGroup, false);
-        return new GourmetViewHolder(itemView);
+    protected ViewHolder<SearchViewModel> onCreateViewHolder(@NonNull LayoutInflater inflater,
+                                                             @NonNull ViewGroup viewGroup, int i) {
+        final View itemView = inflater.inflate(R.layout.operation_item, viewGroup, false);
+        return new SearchViewHolder(itemView);
     }
 }

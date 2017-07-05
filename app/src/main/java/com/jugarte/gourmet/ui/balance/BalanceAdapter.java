@@ -40,13 +40,13 @@ class BalanceAdapter extends RecyclerView.Adapter<BalanceAdapter.OperationViewHo
 
     class OperationViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.operation_name)
+        @BindView(R.id.tv_operation_name)
         TextView nameTextView;
 
-        @BindView(R.id.operation_date)
+        @BindView(R.id.tv_operation_date)
         TextView dateTextView;
 
-        @BindView(R.id.operation_price)
+        @BindView(R.id.tv_operation_price)
         TextView priceTextView;
 
         OperationViewHolder(View itemView) {
