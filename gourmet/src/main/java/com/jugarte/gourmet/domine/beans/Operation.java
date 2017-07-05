@@ -47,7 +47,7 @@ public class Operation implements Parcelable, Comparable<Operation> {
     }
 
     @Exclude
-    public Date getDateObject() {
+    private Date getDateObject() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         try {

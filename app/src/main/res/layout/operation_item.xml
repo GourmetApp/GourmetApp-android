@@ -5,23 +5,23 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/operation_name"
+        android:id="@+id/tv_operation_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_text"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/operation_date"
+        android:id="@+id/tv_operation_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/operation_name"
+        android:layout_below="@id/tv_operation_name"
         android:textColor="@color/primary_text"
         android:textSize="14sp" />
 
 
     <TextView
-        android:id="@+id/operation_price"
+        android:id="@+id/tv_operation_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
