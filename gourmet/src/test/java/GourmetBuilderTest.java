@@ -1,10 +1,9 @@
 
-import android.app.Activity;
-import android.content.Context;
-import android.test.mock.MockContext;
-
-import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.builders.GourmetBuilder;
+import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
+import com.jugarte.gourmet.data.chequegourmet.ChequeGourmetBuilder;
+import com.jugarte.gourmet.exceptions.ConnectionException;
+import com.jugarte.gourmet.exceptions.EmptyException;
+import com.jugarte.gourmet.exceptions.NotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,45 +14,57 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 
-/**
- * Created by javiergon on 30/07/15.
- */
 public class GourmetBuilderTest {
 
     private TestUtils utils = null;
-    private Context context = null;
-    private Activity activity;
+    ChequeGourmetBuilder gourmetBuilder;
 
     @Before
     public void setUp() {
         this.utils = new TestUtils();
-        context = new MockContext();
+        this.gourmetBuilder = new ChequeGourmetBuilder();
     }
 
     @Test
-    public void testResponseOk() throws Exception {
+    public void testBalanceIsOk() throws Exception {
         String data = this.utils.getResourceToString("response_ok.html");
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
-        assertEquals(gourmet.getErrorCode(), "0");
 
-        assertEquals(gourmet.getCurrentBalance(), "34,56");
-        assertNotNull(gourmet.getOperations());
-        assertTrue(gourmet.getOperations().size() == 9);
+        assertEquals(gourmet.getBalance(), "34,56");
+    }
+
+    @Test
+    public void testHaveNineOperations() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
+
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
+
+        assertEquals(gourmet.getOperations().size(), 9);
+    }
+
+    @Test
+    public void testFirstOperationIsOk() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
+
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
+
         assertEquals(gourmet.getOperations().get(0).getName(), "BURGER KING QUEVEDO");
         assertEquals(gourmet.getOperations().get(0).getPrice(), "7,45");
         assertEquals(gourmet.getOperations().get(0).getDate(), "05/07/2015");
         assertEquals(gourmet.getOperations().get(0).getHour(), "22:58");
+    }
 
-        assertEquals(gourmet.getOperations().get(1).getName(), "COECOE HOSTELEROS");
+    @Test
+    public void testLastOperationIsOk() throws Exception {
+        String data = this.utils.getResourceToString("response_ok.html");
 
-        assertEquals(gourmet.getOperations().get(3).getName(), "DI BOCCA RESTAURACIO");
-        assertEquals(gourmet.getOperations().get(3).getPrice(), "11,95");
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertEquals(gourmet.getOperations().get(8).getName(), "BURGER KING QUEVEDO");
         assertEquals(gourmet.getOperations().get(8).getPrice(), "1,49");
@@ -62,18 +73,13 @@ public class GourmetBuilderTest {
     }
 
     @Test
-    public void testResponseOk2() throws Exception {
+    public void testResponseOkWithOtherResponse() throws Exception {
         String data = this.utils.getResourceToString("response_ok2.html");
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
-        assertEquals(gourmet.getErrorCode(), "0");
-
-        assertEquals(gourmet.getCurrentBalance(), "101,89");
+        assertEquals(gourmet.getBalance(), "101,89");
         assertNotNull(gourmet.getOperations());
         assertTrue(gourmet.getOperations().size() == 9);
         assertEquals(gourmet.getOperations().get(0).getName(), "DI BOCCA RESTAURACIO");
@@ -89,83 +95,97 @@ public class GourmetBuilderTest {
     }
 
     @Test
-    public void testResponseWithoutOperations() throws Exception {
+    public void testResponseIsNullWhenWithoutOperations() throws Exception {
         String data = this.utils.getResourceToString("response_okwithoutops.html");
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
-        assertEquals(gourmet.getErrorCode(), "0");
-
-        assertNotNull(gourmet.getCurrentBalance());
+        assertNotNull(gourmet.getBalance());
         assertNull(gourmet.getOperations());
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testResponseFail() throws Exception {
         String data = this.utils.getResourceToString("response_fail.html");
 
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
-        assertEquals(gourmet.getErrorCode(), "2");
-
-        assertNull(gourmet.getCurrentBalance());
+        assertNull(gourmet.getBalance());
         assertNull(gourmet.getOperations());
     }
 
-    @Test
-    public void testResponseEmptyAndNull() throws Exception {
+    @Test(expected = EmptyException.class)
+    public void testResultIsNullWhenResponseIsEmpty() throws Exception {
         String data = "";
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        Gourmet gourmet = (Gourmet) gourmetBuilder.build();
+
+        gourmetBuilder = new ChequeGourmetBuilder();
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNull(gourmet);
+    }
 
-        data = null;
-        gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        gourmet = (Gourmet) gourmetBuilder.build();
+    @Test(expected = ConnectionException.class)
+    public void testResultIsNullWhenResponseIsNull() throws Exception {
+        ChequeGourmet gourmet = gourmetBuilder.build(null, "0000000000000");
 
         assertNull(gourmet);
+    }
 
-        data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
-        gourmetBuilder = new GourmetBuilder(context);
-        gourmetBuilder.append(GourmetBuilder.DATA_JSON, data);
-        gourmetBuilder.append(GourmetBuilder.DATA_CARD_NUMBER, "0000000000000");
-        gourmetBuilder.append(GourmetBuilder.DATA_MODIFICATION_DATE, "20/09/2015");
-        gourmet = (Gourmet) gourmetBuilder.build();
+    @Test(expected = EmptyException.class)
+    public void testResultIsNullWhenResponseIsStrange() throws Exception {
+        String data = "ldkjfalkdjfoasdjfalkdjfalñkdjfañldkjfalñkdjf";
+
+        ChequeGourmet gourmet = gourmetBuilder.build(data, "0000000000000");
 
         assertNull(gourmet);
     }
 
     @Test
-    public void testHelperClass() throws Exception {
-
-        GourmetBuilder gourmetBuilder = new GourmetBuilder(context);
-
+    public void testCleanTextWhenHaveSpaces() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola "), "hola");
+    }
+
+    @Test
+    public void testCleanTextWhenHaveTabs() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola    "), "hola");
+    }
+
+    @Test
+    public void testCleanTextWhenHaveTabsSymbols() throws Exception {
         assertEquals(gourmetBuilder.cleanString(" hola  \n  \t  "), "hola");
         assertEquals(gourmetBuilder.cleanString(" hola paco  \n  \t  "), "hola paco");
+    }
 
+    @Test
+    public void testNotRemoveLastWord() throws Exception {
         assertEquals(gourmetBuilder.removeLastWord("Hola"), "Hola");
-        assertEquals(gourmetBuilder.removeLastWord("Hola d"), "Hola");
-        assertEquals(gourmetBuilder.removeLastWord("Actualizacion de saldo"), "Actualizacion de saldo");
-        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
-        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
+    }
 
+    @Test
+    public void testRemoveLastWord() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Hola d"), "Hola");
+    }
+
+    @Test
+    public void testNotRemoveLastWordWhenIsUpdate() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Actualizacion de saldo"), "Actualizacion de saldo");
+    }
+
+    @Test
+    public void testRemoveLastWordWhenIsACountry() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
+    }
+
+    @Test
+    public void testRemoveLastWordWhenThereIsALetter() {
+        assertEquals(gourmetBuilder.removeLastWord("R QUE R M"), "R QUE R");
+    }
+
+    @Test
+    public void testRemoveLastWordAndCleanSpaces() throws Exception {
+        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
     }
 
 }

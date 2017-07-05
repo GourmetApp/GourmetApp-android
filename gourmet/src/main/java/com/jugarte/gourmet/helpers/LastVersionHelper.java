@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
 
-import com.jugarte.gourmet.beans.LastVersion;
+import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.lib.R;
 import com.jugarte.gourmet.tracker.Tracker;
 
@@ -76,7 +76,7 @@ public class LastVersionHelper {
         setShowDialog(lastVersion.getNameTagVersion(), activity.getApplicationContext());
     }
 
-    public static void openUrlInBrowser(Context context, String url) {
+    private static void openUrlInBrowser(Context context, String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(browserIntent);
     }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.views.WearListView;
 import com.google.gson.Gson;
 import com.kogitune.wearhttp.WearGetText;

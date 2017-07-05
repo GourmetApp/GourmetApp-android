@@ -9,8 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.beans.Gourmet;
-import com.jugarte.gourmet.beans.Operation;
+import com.jugarte.gourmet.domine.beans.Gourmet;
+import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.requests.RequestFake;
 import com.google.gson.Gson;
 

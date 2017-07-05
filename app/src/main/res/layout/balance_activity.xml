@@ -1,0 +1,91 @@
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.balance.BalanceActivity">
+
+    <RelativeLayout
+        android:id="@+id/all_container"
+        android:background="@color/action_bar_background"
+        android:orientation="vertical"
+        app:layout_aspectRatio="178%"
+        app:layout_widthPercent="100%">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/AppToolbar">
+
+            <TextView
+                android:id="@+id/balance_card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/action_bar_text"
+                android:textSize="18sp" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout
+            android:id="@+id/balance_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/balance_current_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_text"
+                android:textColor="@color/action_bar_text"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/balance_current_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/balance_current_text"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/balance_current_text"
+                android:textColor="@color/action_bar_text"
+                android:textSize="34sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/balance_offline_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/all_container"
+        android:background="@color/primary_dark"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/balance_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/balance_offline_text_view">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/balance_operations_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.percent.PercentRelativeLayout>

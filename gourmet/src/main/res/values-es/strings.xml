@@ -7,11 +7,12 @@
     <string name="login_hint_password">Contraseña</string>
     <string name="login_remember_password">Recordar contraseña</string>
 
-    <!-- Main -->
+    <!-- Balance -->
     <string name="logout_button">LOGOUT</string>
     <string name="current_text">Saldo actual:</string>
     <string name="copy_to_clipboard">Copiado al portapapeles</string>
     <string name="offline_modification">Offline, última actualización: %s</string>
+    <string name="price_euro">%s€</string>
 
     <!-- Errors -->
     <string name="button_retry">Reintentar</string>
@@ -38,6 +39,7 @@
     <string name="share_text">Descargarte la aplicación Gourmet App si usas una ChequeGourmet - %s</string>
 
     <string name="search_hint">Buscar</string>
-    <string name="price_euro">%s€</string>
+    <string name="search_error">No hay resultados para buscar</string>
+    <string name="search_not_result">No se han encontrado resultados</string>
 
 </resources>
