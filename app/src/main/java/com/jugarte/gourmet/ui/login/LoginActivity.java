@@ -55,9 +55,9 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
         getActivityComponent().inject(this);
         setUnBinder(ButterKnife.bind(this));
 
-        presenter.onAttach(this);
-
         userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
+
+        presenter.onAttach(this);
     }
 
     @OnClick(R.id.btn_circular_progress_button)
