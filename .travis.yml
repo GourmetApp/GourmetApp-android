@@ -1,4 +1,5 @@
 language: android
+
 android:
   components:
   - tools
@@ -10,12 +11,35 @@ android:
 
 jobs:
   include:
-    - stage: build
-      jdk: oraclejdk8
-      before_cache:
-        - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-      script: ./gradlew assembleDebug
-      
-    - stage: test
-      jdk: oraclejdk8
-      script: ./gradlew test
+  - stage: build
+    jdk: oraclejdk8
+    before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    script: ./gradlew assembleDebug
+
+before_install:
+- chmod +x gradlew
+
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+after_success:
+- bash createTag.sh
+
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
+deploy:
+  provider: releases
+  api_key:
+    secure: tNF1vlDiy+XExMWq26Tnnff0H8PBfZd7Zci+D+hllNbe5CUJE24lKsczLswZay5O9eIeVzsGMtiqSGXZNbJYLcOeBi4/8Jr+/ISLHT5443SRUesWS8XPrAP5dFX3D2jUwYEUOfbh6cghfZ/HCVfN1YwD1CLZ+zVHRLCaYkYI2sFWfrL4++k97P87TJbUTeE30IhLDvSMKlxNPxXz7biNhx8AEwpxDS5IAyGPnUafpsh6rCZUDOQ758FybAqX4+VsIEGCF+DePhxG9WWi1+pEDb4ov/qBPm5ZmIxfIQODsQ0/bKOSuadB6FyOfBbCVWdWD2HI+nddzRaBMXuBp+aqaWZ5Uq1t9uzwZH4Odpp+uobEllA3M5AB+S7KYYIfy3Jh90rEUklvGY73pvm0K/6eZiRGawKV8CLJNdL+P5HrSOAq3yWIcazq7Br54UqR1uxAbumlefOK4qFJJ+/MFIzqwio8eCJWBCOl4RFmTpTrGbSVBat5qlc3sdsBxiwn78+E85wEXzqVC4HIc2n1m+JAO1hUp0IXza54cIedVxoPqO3N8WRw6AWo8X1/xBU1nyBvbVpYXTaV0XqJxTElQ1Pjwsy8JBAWELF5tWtH3oV2RBPqnbi7rlEVK6yt5pkPfWaPcZe4qaF8IDhnyGb4Cllqpsr0lop3uuyGILGoJupGW/c=
+  file: app/build/outputs/apk/GourmetApp-v*.apk
+  file_glob: "true"
+  skip_cleanup: true
+  on:
+    branch: master
+    repo: GourmetApp/GourmetApp-TravisTest

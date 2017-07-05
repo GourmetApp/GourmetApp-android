@@ -17,7 +17,6 @@ android {
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
             }
-
         }
     }
 
@@ -42,6 +41,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def apk = output.outputFile;
+                    def newName = "GourmetApp" + "-v" + defaultConfig.versionName + ".apk";
+                    output.outputFile = new File(apk.parentFile, newName);
+                }
+            }
         }
     }
 }
