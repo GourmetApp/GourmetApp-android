@@ -79,16 +79,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/balance_offline_text_view">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/balance_operations_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:listSelector="@android:color/transparent" />
+            android:listSelector="@android:color/transparent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <include
-        android:id="@+id/loading_view"
-        layout="@layout/loading_view" />
 
 </android.support.percent.PercentRelativeLayout>

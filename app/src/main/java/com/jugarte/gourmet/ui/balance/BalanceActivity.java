@@ -6,49 +6,56 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.ui.search.SearchActivity;
-import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
-import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.base.BaseActivity;
+import com.jugarte.gourmet.ui.login.LoginActivity;
+import com.jugarte.gourmet.ui.search.SearchActivity;
 import com.jugarte.gourmet.utils.TextFormatUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BalanceActivity extends AppCompatActivity implements BalanceScreen {
+public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     public static final String EXTRA_GOURMET = "EXTRA_GOURMET";
 
     @BindView(R.id.balance_current_balance)
     TextView currentBalance;
+
     @BindView(R.id.balance_current_text)
     TextView currentText;
+
     @BindView(R.id.balance_operations_list)
-    ListView operationsList;
+    RecyclerView operationsList;
+
     @BindView(R.id.balance_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+
     @BindView(R.id.balance_card_number)
     TextView cardNumberTextView;
+
     @BindView(R.id.balance_offline_text_view)
     TextView offlineTextView;
 
     private boolean displayUpdateIcon;
 
-    BalancePresenter presenter = new BalancePresenter();
+    @Inject
+    BalancePresenter<BalanceScreen> presenter;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
         Intent intent = new Intent(context, BalanceActivity.class);
@@ -61,13 +68,14 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balance_activity);
 
+        getActivityComponent().inject(this);
+        setUnBinder(ButterKnife.bind(this));
+        presenter.onAttach(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);
-
-        ButterKnife.bind(this);
-        presenter.bind(getApplicationContext(), this);
 
         // Given data
         if (getIntent() != null &&
@@ -161,7 +169,7 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
         String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        OperationsAdapter adapter = new OperationsAdapter(this, gourmet.getOperations(), R.layout.operation_cell);
+        BalanceAdapter adapter = new BalanceAdapter(gourmet.getOperations());
         operationsList.setAdapter(adapter);
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
@@ -185,7 +193,6 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
         }
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -212,5 +219,11 @@ public class BalanceActivity extends AppCompatActivity implements BalanceScreen 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }

@@ -1,4 +1,6 @@
 # GourmetApp
+[![Build Status](https://travis-ci.org/GourmetApp/GourmetApp-android.svg?branch=develop)](https://travis-ci.org/GourmetApp/GourmetApp-android)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/03b998425b82462f942016465cf1e3ce)](https://www.codacy.com/app/javierugarte/GourmetApp-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GourmetApp/GourmetApp-android&amp;utm_campaign=Badge_Grade)
 
 This GitHub repository hosts the code for the Android app Gourmet.
 

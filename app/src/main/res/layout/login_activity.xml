@@ -72,8 +72,4 @@
 
     </RelativeLayout>
 
-    <include
-        android:id="@+id/loading_view"
-        layout="@layout/loading_view" />
-
 </LinearLayout>

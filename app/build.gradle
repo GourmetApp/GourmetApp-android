@@ -17,7 +17,6 @@ android {
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
             }
-
         }
     }
 
@@ -42,6 +41,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def apk = output.outputFile;
+                    def newName = "GourmetApp" + "-v" + defaultConfig.versionName + ".apk";
+                    output.outputFile = new File(apk.parentFile, newName);
+                }
+            }
         }
     }
 }
@@ -63,6 +69,10 @@ dependencies {
     compile 'br.com.simplepass:loading-button-android:1.7.1'
 
     compile 'com.github.wrdlbrnft:sorted-list-adapter:0.2.0.19'
+
+    def dagger2Version = '2.8'
+    compile "com.google.dagger:dagger:$dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;

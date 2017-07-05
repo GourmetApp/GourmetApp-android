@@ -15,7 +15,6 @@ import com.github.javierugarte.searchtoolbar.SearchToolbar;
 import com.github.javierugarte.searchtoolbar.SearchToolbarListener;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.adapters.OperationsAdapter;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
 
@@ -33,12 +32,10 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     @BindView(R.id.search_toolbar)
     SearchToolbar searchToolbar;
 
-    @BindView(R.id.search_operation_list)
-    ListView operationsList;
+    @BindView(R.id.rv_search)
+    RecyclerView searchRecyclerView;
 
-    private RecyclerView recList;
-
-    @BindView(R.id.no_result)
+    @BindView(R.id.tv_no_results)
     TextView noResult;
 
     private SearchAdapter searchAdapter;
@@ -53,7 +50,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.search_activity);
 
         ButterKnife.bind(this);
 
@@ -73,13 +70,6 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
             return;
         }
 
-        recList = (RecyclerView) findViewById(R.id.rv_search);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-
         Comparator<GourmetViewModel> comparator = new Comparator<GourmetViewModel>() {
             @Override
             public int compare(GourmetViewModel a, GourmetViewModel b) {
@@ -88,12 +78,9 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
         };
 
         searchAdapter = new SearchAdapter(getApplicationContext(), comparator);
-
         List<GourmetViewModel> operations = getModel(gourmet.getOperations());
-
         searchAdapter.edit().add(operations).commit();
-
-        recList.setAdapter(searchAdapter);
+        searchRecyclerView.setAdapter(searchAdapter);
     }
 
     private List<GourmetViewModel> getModel(List<Operation> operations) {
@@ -119,7 +106,7 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
 
     private void reloadList(String keyword) {
         if (keyword.equals("")) {
-            recList.smoothScrollToPosition(0);
+            searchRecyclerView.smoothScrollToPosition(0);
         }
 
         List<Operation> operations = gourmet.getOperations(keyword);

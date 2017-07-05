@@ -1,17 +1,17 @@
 package com.jugarte.gourmet.domine.user;
 
-import android.content.Context;
+import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 
 public class RemoveUser {
 
-    private final Context context;
+    private final PreferencesHelper preferencesHelper;
 
-    public RemoveUser(Context context) {
-        this.context = context;
+    public RemoveUser(PreferencesHelper preferencesHelper) {
+        this.preferencesHelper = preferencesHelper;
     }
 
-    public void execute() {
-        CredentialsLogin.removeCredentials(context);
+    public void removeUser() {
+        preferencesHelper.removeUser();
     }
 
 }
