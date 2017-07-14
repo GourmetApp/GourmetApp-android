@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 
-public class SaveGourmet {
+class SaveGourmet {
 
     public void execute(Gourmet gourmet) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

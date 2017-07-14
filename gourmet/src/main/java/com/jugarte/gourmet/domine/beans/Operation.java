@@ -13,13 +13,20 @@ import java.util.Locale;
 
 public class Operation implements Parcelable, Comparable<Operation> {
 
-    public Operation() {
-    }
-
     private String name = null;
     private String price = null;
     private String date = null;
     private String hour = null;
+
+    public Operation() {
+    }
+
+    private Operation(Parcel in) {
+        this.name = in.readString();
+        this.price = in.readString();
+        this.date = in.readString();
+        this.hour = in.readString();
+    }
 
     public String getId() {
         return date + hour;
@@ -46,6 +53,10 @@ public class Operation implements Parcelable, Comparable<Operation> {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Exclude
     private Date getDateObject() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -55,10 +66,6 @@ public class Operation implements Parcelable, Comparable<Operation> {
         } catch (ParseException e) {
             return null;
         }
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getHour() {
@@ -80,13 +87,6 @@ public class Operation implements Parcelable, Comparable<Operation> {
         dest.writeString(this.price);
         dest.writeString(this.date);
         dest.writeString(this.hour);
-    }
-
-    protected Operation(Parcel in) {
-        this.name = in.readString();
-        this.price = in.readString();
-        this.date = in.readString();
-        this.hour = in.readString();
     }
 
     public static final Parcelable.Creator<Operation> CREATOR = new Parcelable.Creator<Operation>() {

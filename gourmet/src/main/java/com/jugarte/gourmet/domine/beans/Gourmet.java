@@ -12,10 +12,18 @@ public class Gourmet implements Parcelable {
     public Gourmet() {
     }
 
+    public Gourmet(Parcel in) {
+        this.cardNumber = in.readString();
+        this.currentBalance = in.readString();
+        this.modificationDate = in.readString();
+        this.operations = new ArrayList<>();
+        in.readList(this.operations, Operation.class.getClassLoader());
+    }
+
     private String cardNumber = null;
     private String currentBalance = null;
     private String modificationDate = null;
-    private ArrayList<Operation> operations = null;
+    private List<Operation> operations = null;
 
     public String getCardNumber() {
         return cardNumber;
@@ -45,8 +53,8 @@ public class Gourmet implements Parcelable {
         return operations;
     }
 
-    public ArrayList<Operation> getOperations(String pattern) {
-        ArrayList<Operation> copyOperations = new ArrayList<>();
+    public List<Operation> getOperations(String pattern) {
+        List<Operation> copyOperations = new ArrayList<>();
 
         for (Operation operation : operations) {
             if (operation.getName().toLowerCase().contains(pattern.toLowerCase())) {
@@ -57,15 +65,7 @@ public class Gourmet implements Parcelable {
     }
 
     public void setOperations(List<Operation> operations) {
-        this.operations = (ArrayList<Operation>) operations;
-    }
-
-    public void addOperation(Operation operation) {
-        if (operations == null) {
-            operations = new ArrayList<>();
-        }
-
-        this.operations.add(operation);
+        this.operations = operations;
     }
 
     @Override
@@ -79,14 +79,6 @@ public class Gourmet implements Parcelable {
         dest.writeString(this.currentBalance);
         dest.writeString(this.modificationDate);
         dest.writeList(this.operations);
-    }
-
-    protected Gourmet(Parcel in) {
-        this.cardNumber = in.readString();
-        this.currentBalance = in.readString();
-        this.modificationDate = in.readString();
-        this.operations = new ArrayList<>();
-        in.readList(this.operations, Operation.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Gourmet> CREATOR = new Parcelable.Creator<Gourmet>() {

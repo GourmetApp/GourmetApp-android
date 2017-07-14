@@ -7,7 +7,6 @@ import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
-import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.domine.newversion.CheckNewVersion;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
@@ -28,20 +27,18 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
     private GetGourmet getGourmet;
 
     private GetUser getUser;
-    private SaveGourmet saveGourmet;
     private RemoveUser removeUser;
 
     private Gourmet gourmet;
 
     @Inject
     public BalancePresenterImp(Context context,
-                               GetGourmet getGourmet, SaveGourmet saveGourmet,
+                               GetGourmet getGourmet,
                                GetUser getUser, RemoveUser removeUser,
                                ThreadManager threadManager) {
         this.context = context;
         this.getGourmet = getGourmet;
         this.getUser = getUser;
-        this.saveGourmet = saveGourmet;
         this.removeUser = removeUser;
         this.threadManager = threadManager;
     }
@@ -95,7 +92,6 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
             public void run() {
                 getScreen().showLoading(false);
                 setGourmet(gourmet);
-                saveGourmet.execute(gourmet);
             }
         });
     }

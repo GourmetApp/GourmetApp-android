@@ -8,11 +8,9 @@ import com.jugarte.gourmet.ThreadManagerImp;
 import com.jugarte.gourmet.data.prefs.AppPreferencesHelper;
 import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
-import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
-import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.ui.balance.BalancePresenter;
 import com.jugarte.gourmet.ui.balance.BalancePresenterImp;
 import com.jugarte.gourmet.ui.balance.BalanceScreen;
@@ -49,20 +47,15 @@ public class ActivityModule {
 
     @Provides
     BalancePresenter<BalanceScreen> provideBalancePresenter(Context context,
-                                                            GetGourmet getGourmet, SaveGourmet saveGourmet,
+                                                            GetGourmet getGourmet,
                                                             GetUser getUser, RemoveUser removeUser,
                                                             ThreadManager threadManager) {
-        return new BalancePresenterImp(context, getGourmet, saveGourmet, getUser, removeUser, threadManager);
+        return new BalancePresenterImp(context, getGourmet, getUser, removeUser, threadManager);
     }
 
     @Provides
     GetGourmet provideGetGourmet() {
         return new GetGourmet();
-    }
-
-    @Provides
-    SaveGourmet provideSaveGourmet() {
-        return new SaveGourmet();
     }
 
     @Provides

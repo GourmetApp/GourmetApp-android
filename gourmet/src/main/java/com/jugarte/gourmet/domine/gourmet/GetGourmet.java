@@ -77,6 +77,7 @@ public class GetGourmet {
         if (numResponse == ALL_OK) {
             merge();
             finalGourmet.setModificationDate(DateHelper.getCurrentDateTime());
+            new SaveGourmet().execute(finalGourmet);
             response.success(finalGourmet);
         } else if (numResponse == NOT_FOUND) {
             response.notUserFound();
