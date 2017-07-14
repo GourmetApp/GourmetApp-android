@@ -21,6 +21,10 @@ jobs:
     jdk: oraclejdk8
     script: ./gradlew test
 
+    - stage: deploy
+      jdk: oraclejdk8
+      script: ./gradlew assembleRelease
+
 
 before_install:
 - chmod +x gradlew

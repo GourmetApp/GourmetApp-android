@@ -16,6 +16,11 @@ android {
                 storePassword = props['storePassword']
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
+            } else {
+                storeFile = file($TRAVIS_STORE_FILE)
+                storePassword = $TRAVIS_STORE_PASSWORD
+                keyAlias = $TRAVIS_ALIAS_KEY
+                keyPassword = $TRAVIS_ALIAS_PASSWORD
             }
         }
     }
