@@ -1,8 +1,8 @@
 package com.jugarte.gourmet.domine.gourmet;
 
+import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
-import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.NotFoundException;
 import com.jugarte.gourmet.helpers.DateHelper;
@@ -13,12 +13,15 @@ public class GetGourmet {
 
     private static final int SERVICE_OK = 1;
     private static final int SERVICE_NOT_CONNECTION = 2;
-    private static final int SERVICE_USER_NOT_FOUND= 3;
+    private static final int SERVICE_USER_NOT_FOUND = 3;
     private static final int FIREBASE = 4;
 
     private static final int ALL_OK = 5;
     private static final int NO_CONNECTION = 6;
     private static final int NOT_FOUND = 7;
+
+    private final GetChequeGourmet getChequeGourmet;
+    private final GetGourmetFirebase getGourmetFirebase;
 
     private int numResponse;
     private ChequeGourmet resultService;
@@ -27,18 +30,24 @@ public class GetGourmet {
     private OnGourmetResponse response;
     private Gourmet finalGourmet;
 
-
     public interface OnGourmetResponse {
         void success(Gourmet gourmet);
+
         void notConnection(Gourmet cacheGourmet);
+
         void notUserFound();
+    }
+
+    public GetGourmet() {
+        this.getChequeGourmet = new GetChequeGourmetImpl();
+        this.getGourmetFirebase = new GetGourmetFirebase();
     }
 
     public void execute(String user, String password, final OnGourmetResponse response) {
         numResponse = 0;
         this.response = response;
 
-        new GetChequeGourmet().execute(user, password, new GetChequeGourmet.OnChequeGourmetResponse() {
+        getChequeGourmet.execute(user, password, new GetChequeGourmet.OnChequeGourmetResponse() {
             @Override
             public void success(ChequeGourmet chequeGourmet) {
                 resultService = chequeGourmet;
@@ -57,7 +66,7 @@ public class GetGourmet {
             }
         });
 
-        new GetGourmetFirebase().execute(user, new GetGourmetFirebase.OnFirebaseResponse() {
+        getGourmetFirebase.execute(user, new GetGourmetFirebase.OnFirebaseResponse() {
             @Override
             public void success(Gourmet gourmet) {
                 resultFirebase = gourmet;

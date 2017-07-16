@@ -21,6 +21,13 @@ public class Operation implements Parcelable, Comparable<Operation> {
     public Operation() {
     }
 
+    public Operation(String name, String price, String date, String hour) {
+        this.name = name;
+        this.price= price;
+        this.date = date;
+        this.hour = hour;
+    }
+
     private Operation(Parcel in) {
         this.name = in.readString();
         this.price = in.readString();
