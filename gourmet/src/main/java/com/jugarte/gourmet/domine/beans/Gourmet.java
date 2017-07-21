@@ -9,6 +9,12 @@ import java.util.List;
 
 public class Gourmet implements Parcelable {
 
+    private String cardNumber = null;
+    private String currentBalance = null;
+    private String modificationDate = null;
+    private int newOperations;
+    private List<Operation> operations = null;
+
     public Gourmet() {
     }
 
@@ -16,14 +22,10 @@ public class Gourmet implements Parcelable {
         this.cardNumber = in.readString();
         this.currentBalance = in.readString();
         this.modificationDate = in.readString();
+        this.newOperations = in.readInt();
         this.operations = new ArrayList<>();
         in.readList(this.operations, Operation.class.getClassLoader());
     }
-
-    private String cardNumber = null;
-    private String currentBalance = null;
-    private String modificationDate = null;
-    private List<Operation> operations = null;
 
     public String getCardNumber() {
         return cardNumber;
@@ -47,6 +49,14 @@ public class Gourmet implements Parcelable {
 
     public void setModificationDate(String modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    public int getNewOperations() {
+        return newOperations;
+    }
+
+    public void setNewOperations(int newOperations) {
+        this.newOperations = newOperations;
     }
 
     public List<Operation> getOperations() {
@@ -78,6 +88,7 @@ public class Gourmet implements Parcelable {
         dest.writeString(this.cardNumber);
         dest.writeString(this.currentBalance);
         dest.writeString(this.modificationDate);
+        dest.writeInt(this.newOperations);
         dest.writeList(this.operations);
     }
 

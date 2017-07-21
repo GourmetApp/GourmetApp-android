@@ -114,12 +114,14 @@ public class GetGourmet {
         finalGourmet = resultFirebase;
         finalGourmet.setCurrentBalance(resultService.getBalance());
         List<Operation> operations = finalGourmet.getOperations();
+        int numOperations = finalGourmet.getOperations().size();
 
         for (Operation operation : resultService.getOperations()) {
             if (!containsId(finalGourmet.getOperations(), operation.getId())) {
                 operations.add(0, operation);
             }
         }
+        finalGourmet.setNewOperations(operations.size() - numOperations);
         finalGourmet.setOperations(operations);
     }
 

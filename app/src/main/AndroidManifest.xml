@@ -33,6 +33,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <service android:name=".services.GourmetService" />
+        <receiver android:name=".services.GourmetReceiver" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c15957853e81d15876bf5b3453e50c11b0049798" />

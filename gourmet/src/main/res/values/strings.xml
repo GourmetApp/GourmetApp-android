@@ -14,6 +14,13 @@
     <string name="offline_modification">Offline, last update: %s</string>
     <string name="price_euro">%s€</string>
 
+    <!-- Notifications -->
+    <plurals name="new_operations">
+        <item quantity="one">You have %d new movement without consulting</item>
+        <item quantity="other">You have %d new movements without consulting</item>
+    </plurals>
+    <string name="new_update_balance">They updated the card of diets!</string>
+
     <!-- Errors -->
     <string name="button_retry">Retry</string>
     <string name="error_session_expired">The session has expired.</string>
