@@ -15,7 +15,11 @@
     <string name="price_euro">%s€</string>
 
     <!-- Notifications -->
-    <plurals name="new_operations">
+    <plurals name="new_operations_title">
+        <item quantity="one">New movement available</item>
+        <item quantity="other">New movements available</item>
+    </plurals>
+    <plurals name="new_operations_text">
         <item quantity="one">You have %d new movement without consulting</item>
         <item quantity="other">You have %d new movements without consulting</item>
     </plurals>

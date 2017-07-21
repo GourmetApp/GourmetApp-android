@@ -115,12 +115,17 @@ public class GetGourmet {
         finalGourmet.setCurrentBalance(resultService.getBalance());
         List<Operation> operations = finalGourmet.getOperations();
         int numOperations = finalGourmet.getOperations().size();
+        boolean increaseOfBalance = false;
 
         for (Operation operation : resultService.getOperations()) {
             if (!containsId(finalGourmet.getOperations(), operation.getId())) {
+                if (isIncreaseOfBalance(operation)) {
+                    increaseOfBalance = true;
+                }
                 operations.add(0, operation);
             }
         }
+        finalGourmet.setIncreaseOfBalance(increaseOfBalance);
         finalGourmet.setNewOperations(operations.size() - numOperations);
         finalGourmet.setOperations(operations);
     }
@@ -142,6 +147,10 @@ public class GetGourmet {
 
     private boolean checkResultFirebase() {
         return resultFirebase != null && resultFirebase.getOperations() != null;
+    }
+
+    private boolean isIncreaseOfBalance(Operation operation) {
+        return operation.getName().equalsIgnoreCase("actualización de saldo");
     }
 
     private static boolean containsId(List<Operation> operations, String id) {

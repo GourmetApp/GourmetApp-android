@@ -15,11 +15,15 @@
     <string name="price_euro">%s€</string>
 
     <!-- Notifications -->
+    <plurals name="new_operations_title">
+        <item quantity="one">Nuevo movimiento disponible</item>
+        <item quantity="other">Nuevos movimientos disponibles</item>
+    </plurals>
     <plurals name="new_operations">
         <item quantity="one">Tienes %d nuevo movimiento sin consultar</item>
         <item quantity="other">Tienes %d nuevos movimientos sin consultar</item>
     </plurals>
-    <string name="new_update_balance">¡Te han actualizado la tarjeta de dietas!</string>
+    <string name="new_update_balance">¡Te han actualizado la tarjeta Gourmet!</string>
 
     <!-- Errors -->
     <string name="button_retry">Reintentar</string>

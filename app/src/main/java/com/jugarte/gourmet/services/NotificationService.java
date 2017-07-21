@@ -89,9 +89,17 @@ public class NotificationService extends Service implements GetGourmet.OnGourmet
             return;
         }
 
-        String text = String.format(getResources().getQuantityString(R.plurals.new_operations,
-                gourmet.getNewOperations()),
+        String title = getResources().getQuantityString(R.plurals.new_operations_title,
                 gourmet.getNewOperations());
+
+        String text;
+        if (gourmet.isIncreaseOfBalance()) {
+            text = getString(R.string.new_update_balance);
+        } else {
+            text = String.format(getResources().getQuantityString(R.plurals.new_operations,
+                    gourmet.getNewOperations()),
+                    gourmet.getNewOperations());
+        }
 
         Intent intent = new Intent(this, BalanceActivity.class);
         intent.putExtra(BalanceActivity.EXTRA_GOURMET, gourmet);
@@ -102,8 +110,8 @@ public class NotificationService extends Service implements GetGourmet.OnGourmet
                 new NotificationCompat.Builder(this)
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setTicker("Nuevas operaciones")
-                        .setContentTitle("Nuevas operaciones")
+                        .setTicker(title)
+                        .setContentTitle(title)
                         .setContentText(text)
                         .setColor(ContextCompat.getColor(getApplicationContext(), R.color.accent))
                         .setAutoCancel(true)
