@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".Application"
@@ -31,24 +31,25 @@
 
         <activity
             android:name=".ui.balance.BalanceActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".services.NotificationService"/>
+        <service android:name=".services.NotificationService" />
 
         <receiver
-            android:enabled="true"
-            android:name=".services.BootReceiver">
+            android:name=".services.BootReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:enabled="true"
-            android:name=".services.NotificationServiceReceiver">
+            android:name=".services.NotificationServiceReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_START"/>
-                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_STOP"/>
+                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_START" />
+                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_STOP" />
             </intent-filter>
         </receiver>
 

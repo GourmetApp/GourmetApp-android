@@ -77,15 +77,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
         setSupportActionBar(toolbar);
 
-        // Given data
-        if (getIntent() != null &&
-                getIntent().getExtras() != null &&
-                getIntent().getExtras().getParcelable(EXTRA_GOURMET) != null) {
-            Gourmet gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
-            presenter.setGourmet(gourmet);
-        } else {
-            presenter.login();
-        }
+        init(getIntent());
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -94,6 +86,22 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
             }
         });
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        init(intent);
+    }
+
+    private void init(Intent intent) {
+        if (intent != null &&
+                intent.getExtras() != null &&
+                intent.getExtras().getParcelable(EXTRA_GOURMET) != null) {
+            Gourmet gourmet = intent.getExtras().getParcelable(EXTRA_GOURMET);
+            presenter.setGourmet(gourmet);
+        } else {
+            presenter.login();
+        }
     }
 
     @OnClick(R.id.balance_card_number)
