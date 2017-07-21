@@ -21,9 +21,9 @@ jobs:
     jdk: oraclejdk8
     script: ./gradlew test
 
-    - stage: deploy
-      jdk: oraclejdk8
-      script: ./gradlew assembleRelease
+  - stage: deploy
+    jdk: oraclejdk8
+    script: ./gradlew assembleRelease
 
 
 before_install:
