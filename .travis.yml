@@ -24,6 +24,8 @@ jobs:
   - stage: deploy
     jdk: oraclejdk8
     script: ./gradlew assembleRelease
+    on:
+      branch: master
 
 
 before_install:
