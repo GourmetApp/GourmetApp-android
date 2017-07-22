@@ -17,10 +17,10 @@ android {
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
             } else {
-                storeFile = file($TRAVIS_STORE_FILE)
-                storePassword = $TRAVIS_STORE_PASSWORD
-                keyAlias = $TRAVIS_ALIAS_KEY
-                keyPassword = $TRAVIS_ALIAS_PASSWORD
+                storeFile = file(System.getenv('TRAVIS_STORE_FILE'))
+                storePassword = System.getenv('TRAVIS_STORE_PASSWORD')
+                keyAlias System.getenv('TRAVIS_ALIAS_KEY')
+                keyPassword = System.getenv('TRAVIS_ALIAS_PASSWORD')
             }
         }
     }
