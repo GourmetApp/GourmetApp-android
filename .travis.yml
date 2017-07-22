@@ -12,7 +12,7 @@ android:
 
 jobs:
   include:
-    - stage: build
+  - stage: build
     script: ./gradlew clean test assemble --stacktrace
     deploy:
       provider: releases
@@ -25,7 +25,6 @@ jobs:
       on:
         repo: GourmetApp/GourmetApp-android
         tags: true
-
 
 before_install:
   - chmod +x gradlew
