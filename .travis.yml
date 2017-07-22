@@ -17,7 +17,8 @@ jobs:
     deploy:
       provider: releases
       api_key:
-        secure: mZyf26ixtAO/ZkzagTkUVu6J4Y/gOt1pfknaxYFJZsur/OFKTnmNEnDkf09nUyJjU548g9qINawYvO7Ikq+MRIwmytNgWsAbRCVBD2BSaDIYzRImS8UzDjIkTOA+Q6j8rm4MhnrZqWfC+imRjCvIX4RLtV7RYw0IB0R1jH35JvTd7PdxKQRnYSbBUb/lL4w+OUBHi6qaiZxhL1yoRYqb00q+2kD8v6FMwlr0zbmaKfsy7NDVuOe3lGyO9xNZWXW1tOulP80RpLING/B7U9oS4pNwqPy1QYT5hnToKye+Ff8bdjpuVUaT8VfJTXmimRKUnQPll/5hqL5ZCXBIAiFmu6NEnzqSJzF915h7QPsOlb1lb5O5Py+9/A28NWlnpDYixXdN3a2IIz+nppTn5cZjWfncBt1OPY/utjID0mdJOrSR5kNFHTEjmbLH2cWCxmATEEmKewJYDwiDCulOYrzUUd6gYiy0hUGP1L+hxnEzR6YWgGhOS0y6LGe4biqCd/jtOu5bkkZUOnDChpO9f2A8MjAVj4ud86JaEe6BgNUMjIVulrJthR4m92RKeIyXJmVGchWyxXo/W4byo5BqRFKV+z02cSs/26y1DfzrojRSz/aFAMM7GuoUHyLEEu+qW4Re/03ZBXTnveHJjehsvdjaDPs0bOqd40DdpPKQ+bmT9Mo=
+        secure:
+          mZyf26ixtAO/ZkzagTkUVu6J4Y/gOt1pfknaxYFJZsur/OFKTnmNEnDkf09nUyJjU548g9qINawYvO7Ikq+MRIwmytNgWsAbRCVBD2BSaDIYzRImS8UzDjIkTOA+Q6j8rm4MhnrZqWfC+imRjCvIX4RLtV7RYw0IB0R1jH35JvTd7PdxKQRnYSbBUb/lL4w+OUBHi6qaiZxhL1yoRYqb00q+2kD8v6FMwlr0zbmaKfsy7NDVuOe3lGyO9xNZWXW1tOulP80RpLING/B7U9oS4pNwqPy1QYT5hnToKye+Ff8bdjpuVUaT8VfJTXmimRKUnQPll/5hqL5ZCXBIAiFmu6NEnzqSJzF915h7QPsOlb1lb5O5Py+9/A28NWlnpDYixXdN3a2IIz+nppTn5cZjWfncBt1OPY/utjID0mdJOrSR5kNFHTEjmbLH2cWCxmATEEmKewJYDwiDCulOYrzUUd6gYiy0hUGP1L+hxnEzR6YWgGhOS0y6LGe4biqCd/jtOu5bkkZUOnDChpO9f2A8MjAVj4ud86JaEe6BgNUMjIVulrJthR4m92RKeIyXJmVGchWyxXo/W4byo5BqRFKV+z02cSs/26y1DfzrojRSz/aFAMM7GuoUHyLEEu+qW4Re/03ZBXTnveHJjehsvdjaDPs0bOqd40DdpPKQ+bmT9Mo=
       file: app/build/outputs/apk/GourmetApp-v*.apk
       file_glob: "true"
       skip_cleanup: true
@@ -37,7 +38,7 @@ after_success:
 
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+    - $HOME/.m2
+    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
