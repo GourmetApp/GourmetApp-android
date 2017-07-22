@@ -18,7 +18,7 @@ import com.jugarte.gourmet.utils.ClipboardUtils;
 
 import javax.inject.Inject;
 
-public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<V>
+public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter<V>
         implements BalancePresenter<V>, GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
 
     private final ThreadManager threadManager;
@@ -32,10 +32,10 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
     private Gourmet gourmet;
 
     @Inject
-    public BalancePresenterImp(Context context,
-                               GetGourmet getGourmet,
-                               GetUser getUser, RemoveUser removeUser,
-                               ThreadManager threadManager) {
+    public BalancePresenterImpl(Context context,
+                                GetGourmet getGourmet,
+                                GetUser getUser, RemoveUser removeUser,
+                                ThreadManager threadManager) {
         this.context = context;
         this.getGourmet = getGourmet;
         this.getUser = getUser;
@@ -72,7 +72,7 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                getGourmet.execute(user, pass, BalancePresenterImp.this);
+                getGourmet.execute(user, pass, BalancePresenterImpl.this);
             }
         });
     }
@@ -123,7 +123,7 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                new CheckNewVersion().execute(BalancePresenterImp.this);
+                new CheckNewVersion().execute(BalancePresenterImpl.this);
             }
         });
     }

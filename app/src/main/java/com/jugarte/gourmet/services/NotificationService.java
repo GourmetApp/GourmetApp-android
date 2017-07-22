@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 import com.jugarte.gourmet.BuildConfig;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ThreadManager;
-import com.jugarte.gourmet.ThreadManagerImp;
+import com.jugarte.gourmet.ThreadManagerImpl;
 import com.jugarte.gourmet.data.prefs.AppPreferencesHelper;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
@@ -39,7 +39,7 @@ public class NotificationService extends Service implements GetGourmet.OnGourmet
         super.onCreate();
         getGourmet = new GetGourmet();
         getUser = new GetUser(new AppPreferencesHelper(getApplicationContext()));
-        tm = new ThreadManagerImp();
+        tm = new ThreadManagerImpl();
     }
 
     @Override

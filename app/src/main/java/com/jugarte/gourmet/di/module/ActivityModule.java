@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jugarte.gourmet.ThreadManager;
-import com.jugarte.gourmet.ThreadManagerImp;
+import com.jugarte.gourmet.ThreadManagerImpl;
 import com.jugarte.gourmet.data.prefs.AppPreferencesHelper;
 import com.jugarte.gourmet.data.prefs.PreferencesHelper;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
@@ -12,10 +12,10 @@ import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
 import com.jugarte.gourmet.ui.balance.BalancePresenter;
-import com.jugarte.gourmet.ui.balance.BalancePresenterImp;
+import com.jugarte.gourmet.ui.balance.BalancePresenterImpl;
 import com.jugarte.gourmet.ui.balance.BalanceScreen;
 import com.jugarte.gourmet.ui.login.LoginPresenter;
-import com.jugarte.gourmet.ui.login.LoginPresenterImp;
+import com.jugarte.gourmet.ui.login.LoginPresenterImpl;
 import com.jugarte.gourmet.ui.login.LoginScreen;
 
 import dagger.Module;
@@ -42,7 +42,7 @@ public class ActivityModule {
 
     @Provides
     LoginPresenter<LoginScreen> provideLoginPresenter(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
-        return new LoginPresenterImp(getUser, saveUser, threadManager);
+        return new LoginPresenterImpl(getUser, saveUser, threadManager);
     }
 
     @Provides
@@ -50,7 +50,7 @@ public class ActivityModule {
                                                             GetGourmet getGourmet,
                                                             GetUser getUser, RemoveUser removeUser,
                                                             ThreadManager threadManager) {
-        return new BalancePresenterImp(context, getGourmet, getUser, removeUser, threadManager);
+        return new BalancePresenterImpl(context, getGourmet, getUser, removeUser, threadManager);
     }
 
     @Provides
@@ -80,7 +80,7 @@ public class ActivityModule {
 
     @Provides
     ThreadManager provideThreadManager() {
-        return new ThreadManagerImp();
+        return new ThreadManagerImpl();
     }
 
 }

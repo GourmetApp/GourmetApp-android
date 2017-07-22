@@ -9,7 +9,7 @@ import com.jugarte.gourmet.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
-public class LoginPresenterImp<V extends LoginScreen> extends BasePresenter<V>
+public class LoginPresenterImpl<V extends LoginScreen> extends BasePresenter<V>
         implements LoginPresenter<V>, GetGourmet.OnGourmetResponse {
 
     private String user, password;
@@ -20,7 +20,7 @@ public class LoginPresenterImp<V extends LoginScreen> extends BasePresenter<V>
     private final ThreadManager threadManager;
 
     @Inject
-    public LoginPresenterImp(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
+    public LoginPresenterImpl(GetUser getUser, SaveUser saveUser, ThreadManager threadManager) {
         this.getUser = getUser;
         this.saveUser = saveUser;
         this.threadManager = threadManager;
@@ -55,7 +55,7 @@ public class LoginPresenterImp<V extends LoginScreen> extends BasePresenter<V>
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                new GetGourmet().execute(user, password, LoginPresenterImp.this);
+                new GetGourmet().execute(user, password, LoginPresenterImpl.this);
             }
         });
 
