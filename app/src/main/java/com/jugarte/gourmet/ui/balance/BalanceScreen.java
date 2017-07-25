@@ -2,10 +2,11 @@ package com.jugarte.gourmet.ui.balance;
 
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
+import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 
 public interface BalanceScreen {
 
-    void showGourmetData(Gourmet gourmet);
+    void showGourmetData(BalanceVM balance);
 
     void showOfflineMode(String modificationDate);
 

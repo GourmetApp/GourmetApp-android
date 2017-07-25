@@ -13,6 +13,7 @@ import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 import com.jugarte.gourmet.ui.base.BasePresenter;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 
@@ -29,17 +30,21 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
     private GetUser getUser;
     private RemoveUser removeUser;
 
+    private BalanceMapper mapper;
+
     private Gourmet gourmet;
 
     @Inject
     public BalancePresenterImpl(Context context,
                                 GetGourmet getGourmet,
                                 GetUser getUser, RemoveUser removeUser,
+                                BalanceMapper mapper,
                                 ThreadManager threadManager) {
         this.context = context;
         this.getGourmet = getGourmet;
         this.getUser = getUser;
         this.removeUser = removeUser;
+        this.mapper = mapper;
         this.threadManager = threadManager;
     }
 
@@ -53,7 +58,8 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
     public void setGourmet(Gourmet gourmet) {
         this.gourmet = gourmet;
         if (gourmet != null) {
-            getScreen().showGourmetData(gourmet);
+            BalanceVM balanceVM = mapper.map(gourmet);
+            getScreen().showGourmetData(balanceVM);
         }
     }
 

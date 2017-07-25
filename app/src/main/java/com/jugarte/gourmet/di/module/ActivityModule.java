@@ -11,6 +11,7 @@ import com.jugarte.gourmet.domine.gourmet.GetGourmet;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.domine.user.SaveUser;
+import com.jugarte.gourmet.ui.balance.BalanceMapper;
 import com.jugarte.gourmet.ui.balance.BalancePresenter;
 import com.jugarte.gourmet.ui.balance.BalancePresenterImpl;
 import com.jugarte.gourmet.ui.balance.BalanceScreen;
@@ -49,8 +50,9 @@ public class ActivityModule {
     BalancePresenter<BalanceScreen> provideBalancePresenter(Context context,
                                                             GetGourmet getGourmet,
                                                             GetUser getUser, RemoveUser removeUser,
+                                                            BalanceMapper balanceMapper,
                                                             ThreadManager threadManager) {
-        return new BalancePresenterImpl(context, getGourmet, getUser, removeUser, threadManager);
+        return new BalancePresenterImpl(context, getGourmet, getUser, removeUser, balanceMapper, threadManager);
     }
 
     @Provides
@@ -76,6 +78,11 @@ public class ActivityModule {
     @Provides
     PreferencesHelper getPreferenceHelper(Context context) {
         return new AppPreferencesHelper(context);
+    }
+
+    @Provides
+    BalanceMapper provideBalanceMapper() {
+        return new BalanceMapper();
     }
 
     @Provides

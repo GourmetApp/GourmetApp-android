@@ -19,6 +19,7 @@ import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 import com.jugarte.gourmet.ui.base.BaseActivity;
 import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.ui.search.SearchActivity;
@@ -168,16 +169,16 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
     }
 
     @Override
-    public void showGourmetData(Gourmet gourmet) {
+    public void showGourmetData(BalanceVM balance) {
         currentText.setVisibility(View.VISIBLE);
         offlineTextView.setVisibility(View.GONE);
 
-        String balance = String.format(getString(R.string.price_euro), gourmet.getCurrentBalance());
-        currentBalance.setText(balance);
-        String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
+        currentBalance.setText(balance.getCurrent());
+
+        String cardNumber = TextFormatUtils.formatCreditCardNumber(balance.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        BalanceAdapter adapter = new BalanceAdapter(gourmet.getOperations());
+        BalanceAdapter adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
         operationsList.setAdapter(adapter);
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);

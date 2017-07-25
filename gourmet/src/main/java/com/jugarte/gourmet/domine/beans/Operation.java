@@ -65,7 +65,7 @@ public class Operation implements Parcelable, Comparable<Operation> {
     }
 
     @Exclude
-    private Date getDateObject() {
+    public Date getDateObject() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         try {
@@ -117,9 +117,16 @@ public class Operation implements Parcelable, Comparable<Operation> {
     }
 
     private void fixTitle() {
+        name = name.replace("\n", "");
+        name = name.replace("\t", "");
+        name = name.replace("\r", "");
         name = name.replace("¥", "Ñ");
         name = name.replace("#", "Ñ");
         name = name.replace("ï", "'");
+        name = name.replace("WWW.JUST-EAT.ES", "JUST-EAT");
+        name = name.replace("ALCASAL", "Wetaca");
+        name = name.replace("Saldo: ", "");
+        name = name.trim();
     }
 
 }
