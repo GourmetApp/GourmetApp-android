@@ -103,12 +103,16 @@ class BalanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             dateTextView.setText(operation.getDate());
             priceTextView.setText(operation.getPrice());
             int resColor = operation.getState() == OperationVM.State.POSITIVE
-                    ? R.color.positive
-                    : R.color.negative;
+                    ? R.color.text_operation_price_positive
+                    : R.color.text_operation_price_negative;
+
+            int resImage = operation.getState() == OperationVM.State.POSITIVE
+                    ? R.drawable.ic_cash_in
+                    : R.drawable.ic_cash_out;
 
             @ColorInt int color = ContextCompat.getColor(context, resColor);
             priceTextView.setTextColor(color);
-            imageView.setBackgroundColor(color);
+            imageView.setImageResource(resImage);
         }
     }
 }

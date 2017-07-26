@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/im_operation_image"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginBottom="14dp"
             android:layout_marginEnd="19dp"
             android:layout_marginLeft="14dp"
@@ -40,16 +40,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/text_operation_title"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_operation_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_operation_name"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/text_operation_date"
                 android:textSize="14sp" />
         </RelativeLayout>
 
@@ -67,7 +66,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textColor="@color/primary_text"
                 android:textSize="20sp" />
 
         </RelativeLayout>

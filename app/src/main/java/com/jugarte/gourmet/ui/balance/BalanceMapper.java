@@ -44,7 +44,7 @@ public class BalanceMapper {
     }
 
     private String parseCurrent(String currentBalance) {
-        return currentBalance;
+        return currentBalance + "€";
     }
 
     private String parseTitle(String title) {
