@@ -30,7 +30,7 @@ public class BalanceMapper {
                     .setDate(parseDate(operation.getDateObject()))
                     .setMonth(parseMonth(operation.getDateObject()))
                     .setPrice(parsePrice(operation.getPrice(), positive))
-                    .setState(positive ? OperationVM.State.POSITIVE : OperationVM.State.NEGATIVE)
+                    .setPositive(positive)
                     .build();
 
             if (!lastMonth.equalsIgnoreCase(operationVM.getMonth())) {

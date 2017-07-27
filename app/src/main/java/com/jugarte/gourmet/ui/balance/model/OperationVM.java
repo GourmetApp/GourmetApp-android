@@ -2,16 +2,11 @@ package com.jugarte.gourmet.ui.balance.model;
 
 public class OperationVM {
 
-    public enum State {
-        POSITIVE,
-        NEGATIVE
-    }
-
     private String title;
     private String price;
     private String date;
     private String month;
-    private State state;
+    private boolean positive;
 
     public String getTitle() {
         return title;
@@ -29,8 +24,8 @@ public class OperationVM {
         return month;
     }
 
-    public State getState() {
-        return state;
+    public boolean isPositive() {
+        return positive;
     }
 
     public static class Builder {
@@ -38,7 +33,7 @@ public class OperationVM {
         private String price;
         private String date;
         private String month;
-        private State state;
+        private boolean positive;
 
         public Builder setTitle(String title) {
             this.title = title;
@@ -60,8 +55,8 @@ public class OperationVM {
             return this;
         }
 
-        public Builder setState(State state) {
-            this.state = state;
+        public Builder setPositive(boolean positive) {
+            this.positive = positive;
             return this;
         }
 
@@ -71,7 +66,7 @@ public class OperationVM {
             operationVM.price = price;
             operationVM.date = date;
             operationVM.month = month;
-            operationVM.state = state;
+            operationVM.positive = positive;
 
             return operationVM;
         }

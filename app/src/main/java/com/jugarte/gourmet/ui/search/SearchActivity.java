@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +80,9 @@ public class SearchActivity extends AppCompatActivity implements SearchToolbarLi
         List<SearchViewModel> operations = getModel(gourmet.getOperations());
         searchAdapter.edit().add(operations).commit();
         searchRecyclerView.setAdapter(searchAdapter);
+        DividerItemDecoration divider= new DividerItemDecoration(getApplicationContext(),
+                ((LinearLayoutManager) searchRecyclerView.getLayoutManager()).getOrientation());
+        searchRecyclerView.addItemDecoration(divider);
     }
 
     private List<SearchViewModel> getModel(List<Operation> operations) {

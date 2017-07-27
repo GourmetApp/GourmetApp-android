@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,15 +29,19 @@ class SearchViewModel implements SortedListAdapter.ViewModel {
     }
 
     public String getName() {
-        return name;
+        return parseTitle(name);
     }
 
-    String getDate() {
-        return date;
+    public String getDate() {
+        return parseDate(getDateObject());
     }
 
-    String getPrice() {
-        return price;
+    public String getPrice() {
+        return parsePrice(price, isPositive(name));
+    }
+
+    public boolean isPositive() {
+        return isPositive(name);
     }
 
     Date getDateObject() {
@@ -65,5 +70,40 @@ class SearchViewModel implements SortedListAdapter.ViewModel {
             return name != null ? name.equals(other.name) : other.name == null;
         }
         return false;
+    }
+
+    private String parseTitle(String title) {
+        if (isPositive(title))
+            return title;
+        return firstLetterInUpper(title);
+    }
+
+    private String parsePrice(String price, boolean positive) {
+        return ((positive) ? "+" : "-") + price + "€";
+    }
+
+    private String parseDate(Date dateObject) {
+        DateFormat df = new SimpleDateFormat("E dd MMM yyyy HH:mm", Locale.getDefault());
+        return firstLetterInUpper(df.format(dateObject));
+    }
+
+    private boolean isPositive(String name) {
+        return name.equalsIgnoreCase("Actualización de saldo");
+    }
+
+    private String firstLetterInUpper(String text) {
+        text = text.toLowerCase();
+        StringBuilder res = new StringBuilder();
+
+        String[] strArr = text.split(" ");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+
+            res.append(str).append(" ");
+        }
+
+        return res.toString().trim();
     }
 }

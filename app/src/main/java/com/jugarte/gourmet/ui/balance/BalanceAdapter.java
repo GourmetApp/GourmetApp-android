@@ -1,9 +1,7 @@
 package com.jugarte.gourmet.ui.balance;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -106,18 +104,19 @@ class BalanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imple
         }
 
         void bind(OperationVM operation) {
-            nameTextView.setText(operation.getTitle());
-            dateTextView.setText(operation.getDate());
-            priceTextView.setText(operation.getPrice());
-            int resColor = operation.getState() == OperationVM.State.POSITIVE
+            int resColor = operation.isPositive()
                     ? R.color.text_operation_price_positive
                     : R.color.text_operation_price_negative;
 
-            int resImage = operation.getState() == OperationVM.State.POSITIVE
+            int resImage = operation.isPositive()
                     ? R.drawable.ic_cash_in
                     : R.drawable.ic_cash_out;
 
             @ColorInt int color = ContextCompat.getColor(context, resColor);
+
+            nameTextView.setText(operation.getTitle());
+            dateTextView.setText(operation.getDate());
+            priceTextView.setText(operation.getPrice());
             priceTextView.setTextColor(color);
             imageView.setImageResource(resImage);
         }
