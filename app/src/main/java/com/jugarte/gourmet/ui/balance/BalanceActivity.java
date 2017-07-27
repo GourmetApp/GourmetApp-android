@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
@@ -177,9 +178,10 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
         String cardNumber = TextFormatUtils.formatCreditCardNumber(balance.getCardNumber());
         cardNumberTextView.setText(cardNumber);
-
+        
         BalanceAdapter adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
         operationsList.setAdapter(adapter);
+        operationsList.setLayoutManager(new StickyLayoutManager(getApplicationContext(), adapter));
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
     }

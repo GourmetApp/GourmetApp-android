@@ -3,6 +3,7 @@ package com.jugarte.gourmet.ui.balance;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.ui.balance.model.BalanceVM;
+import com.jugarte.gourmet.ui.balance.model.MonthVM;
 import com.jugarte.gourmet.ui.balance.model.OperationVM;
 
 import java.text.DateFormat;
@@ -34,7 +35,7 @@ public class BalanceMapper {
 
             if (!lastMonth.equalsIgnoreCase(operationVM.getMonth())) {
                 lastMonth = operationVM.getMonth();
-                operations.add(operationVM.getMonth());
+                operations.add(new MonthVM(operationVM.getMonth()));
             }
             operations.add(operationVM);
         }

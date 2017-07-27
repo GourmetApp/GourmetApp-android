@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
 import com.jugarte.gourmet.R;
+import com.jugarte.gourmet.ui.balance.model.MonthVM;
 import com.jugarte.gourmet.ui.balance.model.OperationVM;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class BalanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class BalanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
 
     private static final int TYPE_MONTH = 0;
     private static final int TYPE_OPERATION = 1;
@@ -55,13 +57,18 @@ class BalanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof OperationViewHolder) {
             ((OperationViewHolder) holder).bind((OperationVM) operations.get(position));
         } else if (holder instanceof MonthViewHolder) {
-            ((MonthViewHolder) holder).bind((String) operations.get(position));
+            ((MonthViewHolder) holder).bind(((MonthVM) operations.get(position)).getMonth());
         }
     }
 
     @Override
     public int getItemCount() {
         return operations.size();
+    }
+
+    @Override
+    public List<?> getAdapterData() {
+        return operations;
     }
 
     class MonthViewHolder extends RecyclerView.ViewHolder {

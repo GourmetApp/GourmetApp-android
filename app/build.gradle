@@ -71,14 +71,14 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-
     compile 'br.com.simplepass:loading-button-android:1.7.1'
 
     compile 'com.github.wrdlbrnft:sorted-list-adapter:0.2.0.19'
-
     def dagger2Version = '2.8'
     compile "com.google.dagger:dagger:$dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+
+    compile 'com.brandongogetap:stickyheaders:0.4.5'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
