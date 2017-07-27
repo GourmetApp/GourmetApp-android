@@ -9,7 +9,6 @@
 
     <!-- Balance -->
     <string name="logout_button">LOGOUT</string>
-    <string name="current_text">Saldo actual:</string>
     <string name="copy_to_clipboard">Copiado al portapapeles</string>
     <string name="offline_modification">Offline, última actualización: %s</string>
     <string name="price_euro">%s€</string>

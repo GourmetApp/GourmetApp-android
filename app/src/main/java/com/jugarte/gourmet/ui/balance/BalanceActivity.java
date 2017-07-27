@@ -39,9 +39,6 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
     @BindView(R.id.balance_current_balance)
     TextView currentBalance;
 
-    @BindView(R.id.balance_current_text)
-    TextView currentText;
-
     @BindView(R.id.balance_operations_list)
     RecyclerView operationsList;
 
@@ -171,14 +168,13 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     @Override
     public void showGourmetData(BalanceVM balance) {
-        currentText.setVisibility(View.VISIBLE);
         offlineTextView.setVisibility(View.GONE);
 
         currentBalance.setText(balance.getCurrent());
 
         String cardNumber = TextFormatUtils.formatCreditCardNumber(balance.getCardNumber());
         cardNumberTextView.setText(cardNumber);
-        
+
         BalanceAdapter adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
         operationsList.setAdapter(adapter);
         operationsList.setLayoutManager(new StickyLayoutManager(getApplicationContext(), adapter));
