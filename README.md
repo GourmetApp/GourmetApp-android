@@ -12,8 +12,9 @@ This application shows the balance and last operations of http://www.up-spain.es
 (Android 4.0.4 or above)
 
 ## Screenshots
-<img src="https://raw.githubusercontent.com/javierugarte/GourmetApp-android/master/screenshots/login.png" width="250">
-<img src="https://raw.githubusercontent.com/javierugarte/GourmetApp-android/master/screenshots/main.png" width="250">
+
+| <img src="https://github.com/GourmetApp/GourmetApp-android/blob/master/screenshots/3.0-login.png?raw=true" width="200"> | <img src="https://github.com/GourmetApp/GourmetApp-android/blob/master/screenshots/3.0-balance.png?raw=true" width="200"> | <img src="https://github.com/GourmetApp/GourmetApp-android/blob/master/screenshots/3.0-search.png?raw=true" width="200"> |
+|:-:|:-:|:-:|
 
 ## Changelog
 
