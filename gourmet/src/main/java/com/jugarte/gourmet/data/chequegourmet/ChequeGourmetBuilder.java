@@ -82,6 +82,8 @@ public class ChequeGourmetBuilder {
         text = text.replace("¥", "Ñ");
         text = text.replace("#", "Ñ");
         text = text.replace("ï", "'");
+        text = text.replace("WWW.JUST-EAT.ES", "JUST-EAT");
+        text = text.replace("ALCASAL", "Wetaca");
         text = text.replace("Saldo: ", "");
         text = text.trim();
         return text;

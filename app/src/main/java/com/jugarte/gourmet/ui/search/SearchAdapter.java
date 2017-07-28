@@ -21,7 +21,7 @@ class SearchAdapter extends SortedListAdapter<SearchViewModel> {
     @Override
     protected ViewHolder<SearchViewModel> onCreateViewHolder(@NonNull LayoutInflater inflater,
                                                              @NonNull ViewGroup viewGroup, int i) {
-        final View itemView = inflater.inflate(R.layout.operation_item, viewGroup, false);
+        final View itemView = inflater.inflate(R.layout.search_item, viewGroup, false);
         return new SearchViewHolder(itemView);
     }
 }

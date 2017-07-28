@@ -2,11 +2,16 @@ package com.jugarte.gourmet.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -80,7 +85,7 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
     @Override
     public void navigateToBalanceWithAnimation(final Gourmet gourmet) {
         btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_done));
+                getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_action_done));
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -131,21 +136,21 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
     @Override
     public void showErrorNotConnection() {
         btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
+                getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_action_error));
         Toast.makeText(this, R.string.error_connection_code3, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showErrorEmptyFields() {
         btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
+                getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_action_error));
         Toast.makeText(this, R.string.error_not_user_or_pass_code1, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showErrorNotUserFound() {
         btnLogin.doneLoadingAnimation(ContextCompat.getColor(this, R.color.accent),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_error));
+                getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_action_error));
         Toast.makeText(this, R.string.error_user_or_password_incorrect_code2, Toast.LENGTH_SHORT).show();
     }
 
@@ -153,5 +158,20 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+    }
+
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }

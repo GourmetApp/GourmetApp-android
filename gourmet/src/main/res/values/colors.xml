@@ -27,10 +27,16 @@
     <color name="primary_dark">#E64A19</color>
     <color name="accent">#FF5722</color>
 
+    <color name="text_operation_month">#262626</color>
+    <color name="text_operation_title">#272727</color>
+    <color name="text_operation_date">#7a7a7a</color>
+    <color name="text_operation_price_positive">#4bd7b8</color>
+    <color name="text_operation_price_negative">#fe5721</color>
+
     <color name="primary_text">#727272</color>
     <color name="secondary_text">#727272</color>
 
     <color name="divider">#B6B6B6</color>
 
-    <color name="background">#fff3f3f3</color>
+    <color name="background">#fff</color>
 </resources>

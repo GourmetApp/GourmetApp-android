@@ -9,10 +9,20 @@
 
     <!-- Balance -->
     <string name="logout_button">LOGOUT</string>
-    <string name="current_text">Current balance:</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="offline_modification">Offline, last update: %s</string>
     <string name="price_euro">%s€</string>
+
+    <!-- Notifications -->
+    <plurals name="new_operations_title">
+        <item quantity="one">New movement available</item>
+        <item quantity="other">New movements available</item>
+    </plurals>
+    <plurals name="new_operations_text">
+        <item quantity="one">You have %d new movement without consulting</item>
+        <item quantity="other">You have %d new movements without consulting</item>
+    </plurals>
+    <string name="new_update_balance">They updated the card of diets!</string>
 
     <!-- Errors -->
     <string name="button_retry">Retry</string>

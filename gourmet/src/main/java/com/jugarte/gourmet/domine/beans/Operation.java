@@ -13,13 +13,27 @@ import java.util.Locale;
 
 public class Operation implements Parcelable, Comparable<Operation> {
 
-    public Operation() {
-    }
-
     private String name = null;
     private String price = null;
     private String date = null;
     private String hour = null;
+
+    public Operation() {
+    }
+
+    public Operation(String name, String price, String date, String hour) {
+        this.name = name;
+        this.price= price;
+        this.date = date;
+        this.hour = hour;
+    }
+
+    private Operation(Parcel in) {
+        this.name = in.readString();
+        this.price = in.readString();
+        this.date = in.readString();
+        this.hour = in.readString();
+    }
 
     public String getId() {
         return date + hour;
@@ -46,8 +60,12 @@ public class Operation implements Parcelable, Comparable<Operation> {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Exclude
-    private Date getDateObject() {
+    public Date getDateObject() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         try {
@@ -55,10 +73,6 @@ public class Operation implements Parcelable, Comparable<Operation> {
         } catch (ParseException e) {
             return null;
         }
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getHour() {
@@ -82,13 +96,6 @@ public class Operation implements Parcelable, Comparable<Operation> {
         dest.writeString(this.hour);
     }
 
-    protected Operation(Parcel in) {
-        this.name = in.readString();
-        this.price = in.readString();
-        this.date = in.readString();
-        this.hour = in.readString();
-    }
-
     public static final Parcelable.Creator<Operation> CREATOR = new Parcelable.Creator<Operation>() {
         @Override
         public Operation createFromParcel(Parcel source) {
@@ -110,9 +117,16 @@ public class Operation implements Parcelable, Comparable<Operation> {
     }
 
     private void fixTitle() {
+        name = name.replace("\n", "");
+        name = name.replace("\t", "");
+        name = name.replace("\r", "");
         name = name.replace("¥", "Ñ");
         name = name.replace("#", "Ñ");
         name = name.replace("ï", "'");
+        name = name.replace("WWW.JUST-EAT.ES", "JUST-EAT");
+        name = name.replace("ALCASAL", "Wetaca");
+        name = name.replace("Saldo: ", "");
+        name = name.trim();
     }
 
 }

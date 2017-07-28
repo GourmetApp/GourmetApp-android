@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jugarte.gourmet.di.component.ApplicationComponent;
 import com.jugarte.gourmet.di.component.DaggerApplicationComponent;
 import com.jugarte.gourmet.di.module.ApplicationModule;
+import com.jugarte.gourmet.services.NotificationUtils;
 import com.jugarte.gourmet.tracker.Tracker;
 
 import io.fabric.sdk.android.Fabric;
@@ -25,6 +26,7 @@ public class Application extends android.app.Application {
                 .applicationModule(new ApplicationModule(this)).build();
         applicationComponent.inject(this);
 
+        NotificationUtils.startNotificationService(this);
     }
 
     public ApplicationComponent getComponent() {

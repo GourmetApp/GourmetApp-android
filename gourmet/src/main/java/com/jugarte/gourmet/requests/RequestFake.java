@@ -5,6 +5,9 @@ import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.internal.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RequestFake {
 
     public Gourmet login() {
@@ -18,14 +21,17 @@ public class RequestFake {
         String[] hours = {"22:00", "14:22", "21:56", "03:20", "20:45", "21:30", "22:50"};
 
         Operation operation;
+        List<Operation> operations = new ArrayList<>(names.length);
         for (int i = 0; i < names.length; i++) {
             operation = new Operation();
             operation.setName(names[i]);
             operation.setPrice(prices[i]);
             operation.setDate(dates[i]);
             operation.setHour(hours[i]);
-            gourmet.addOperation(operation);
+            operations.add(operation);
         }
+        gourmet.setOperations(operations);
+
         return gourmet;
     }
 

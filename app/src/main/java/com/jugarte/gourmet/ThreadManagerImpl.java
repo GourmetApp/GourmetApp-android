@@ -11,7 +11,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class ThreadManagerImp implements ThreadManager {
+public class ThreadManagerImpl implements ThreadManager {
 
     private static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
     private static final int KEEP_ALIVE_TIME = 10;
@@ -20,7 +20,7 @@ public class ThreadManagerImp implements ThreadManager {
     private final BlockingQueue<Runnable> workQueue; // A queue of Runnables
     private final ThreadPoolExecutor threadPool;
 
-    public ThreadManagerImp() {
+    public ThreadManagerImpl() {
         workQueue = new LinkedBlockingQueue<>();
         threadPool = new ThreadPoolExecutor(
                 NUMBER_OF_CORES,

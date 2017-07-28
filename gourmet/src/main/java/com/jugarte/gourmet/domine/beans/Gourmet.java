@@ -3,19 +3,33 @@ package com.jugarte.gourmet.domine.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Gourmet implements Parcelable {
 
-    public Gourmet() {
-    }
-
     private String cardNumber = null;
     private String currentBalance = null;
     private String modificationDate = null;
-    private ArrayList<Operation> operations = null;
+    private int newOperations;
+    private List<Operation> operations = null;
+    private boolean increaseOfBalance;
+
+    public Gourmet() {
+    }
+
+    public Gourmet(Parcel in) {
+        this.cardNumber = in.readString();
+        this.currentBalance = in.readString();
+        this.modificationDate = in.readString();
+        this.newOperations = in.readInt();
+        this.increaseOfBalance = in.readInt() == 1;
+        this.operations = new ArrayList<>();
+        in.readList(this.operations, Operation.class.getClassLoader());
+    }
 
     public String getCardNumber() {
         return cardNumber;
@@ -41,12 +55,30 @@ public class Gourmet implements Parcelable {
         this.modificationDate = modificationDate;
     }
 
+    @Exclude
+    public int getNewOperations() {
+        return newOperations;
+    }
+
+    public void setNewOperations(int newOperations) {
+        this.newOperations = newOperations;
+    }
+
+    @Exclude
+    public boolean isIncreaseOfBalance() {
+        return increaseOfBalance;
+    }
+
+    public void setIncreaseOfBalance(boolean increaseOfBalance) {
+        this.increaseOfBalance = increaseOfBalance;
+    }
+
     public List<Operation> getOperations() {
         return operations;
     }
 
-    public ArrayList<Operation> getOperations(String pattern) {
-        ArrayList<Operation> copyOperations = new ArrayList<>();
+    public List<Operation> getOperations(String pattern) {
+        List<Operation> copyOperations = new ArrayList<>();
 
         for (Operation operation : operations) {
             if (operation.getName().toLowerCase().contains(pattern.toLowerCase())) {
@@ -57,15 +89,7 @@ public class Gourmet implements Parcelable {
     }
 
     public void setOperations(List<Operation> operations) {
-        this.operations = (ArrayList<Operation>) operations;
-    }
-
-    public void addOperation(Operation operation) {
-        if (operations == null) {
-            operations = new ArrayList<>();
-        }
-
-        this.operations.add(operation);
+        this.operations = operations;
     }
 
     @Override
@@ -78,15 +102,9 @@ public class Gourmet implements Parcelable {
         dest.writeString(this.cardNumber);
         dest.writeString(this.currentBalance);
         dest.writeString(this.modificationDate);
+        dest.writeInt(this.newOperations);
+        dest.writeInt(this.increaseOfBalance ? 1 : 0);
         dest.writeList(this.operations);
-    }
-
-    protected Gourmet(Parcel in) {
-        this.cardNumber = in.readString();
-        this.currentBalance = in.readString();
-        this.modificationDate = in.readString();
-        this.operations = new ArrayList<>();
-        in.readList(this.operations, Operation.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Gourmet> CREATOR = new Parcelable.Creator<Gourmet>() {
@@ -104,4 +122,5 @@ public class Gourmet implements Parcelable {
     public void orderOperations() {
         Collections.sort(operations, Collections.<Operation>reverseOrder());
     }
+
 }

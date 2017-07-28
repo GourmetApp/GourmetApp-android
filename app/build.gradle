@@ -16,6 +16,11 @@ android {
                 storePassword = props['storePassword']
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
+            } else {
+                storeFile = file(System.getenv('TRAVIS_STORE_FILE'))
+                storePassword = System.getenv('TRAVIS_STORE_PASSWORD')
+                keyAlias System.getenv('TRAVIS_ALIAS_KEY')
+                keyPassword = System.getenv('TRAVIS_ALIAS_PASSWORD')
             }
         }
     }
@@ -26,8 +31,8 @@ android {
         applicationId "com.jugarte.gourmet"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 10
-        versionName "1.5.0"
+        versionCode 12
+        versionName "1.6.0"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -58,6 +63,7 @@ dependencies {
     def supportLibVersion = '25.3.1'
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
+    compile "com.android.support:cardview-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
     compile "com.android.support:percent:$supportLibVersion"
 
@@ -65,14 +71,14 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-
     compile 'br.com.simplepass:loading-button-android:1.7.1'
 
     compile 'com.github.wrdlbrnft:sorted-list-adapter:0.2.0.19'
-
     def dagger2Version = '2.8'
     compile "com.google.dagger:dagger:$dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+
+    compile 'com.brandongogetap:stickyheaders:0.4.5'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;

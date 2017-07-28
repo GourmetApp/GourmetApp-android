@@ -7,19 +7,19 @@ import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
-import com.jugarte.gourmet.domine.gourmet.SaveGourmet;
 import com.jugarte.gourmet.domine.newversion.CheckNewVersion;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.internal.Constants;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 import com.jugarte.gourmet.ui.base.BasePresenter;
 import com.jugarte.gourmet.utils.ClipboardUtils;
 
 import javax.inject.Inject;
 
-public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<V>
+public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter<V>
         implements BalancePresenter<V>, GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
 
     private final ThreadManager threadManager;
@@ -28,21 +28,23 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
     private GetGourmet getGourmet;
 
     private GetUser getUser;
-    private SaveGourmet saveGourmet;
     private RemoveUser removeUser;
+
+    private BalanceMapper mapper;
 
     private Gourmet gourmet;
 
     @Inject
-    public BalancePresenterImp(Context context,
-                               GetGourmet getGourmet, SaveGourmet saveGourmet,
-                               GetUser getUser, RemoveUser removeUser,
-                               ThreadManager threadManager) {
+    public BalancePresenterImpl(Context context,
+                                GetGourmet getGourmet,
+                                GetUser getUser, RemoveUser removeUser,
+                                BalanceMapper mapper,
+                                ThreadManager threadManager) {
         this.context = context;
         this.getGourmet = getGourmet;
         this.getUser = getUser;
-        this.saveGourmet = saveGourmet;
         this.removeUser = removeUser;
+        this.mapper = mapper;
         this.threadManager = threadManager;
     }
 
@@ -56,7 +58,8 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
     public void setGourmet(Gourmet gourmet) {
         this.gourmet = gourmet;
         if (gourmet != null) {
-            getScreen().showGourmetData(gourmet);
+            BalanceVM balanceVM = mapper.map(gourmet);
+            getScreen().showGourmetData(balanceVM);
         }
     }
 
@@ -75,7 +78,7 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                getGourmet.execute(user, pass, BalancePresenterImp.this);
+                getGourmet.execute(user, pass, BalancePresenterImpl.this);
             }
         });
     }
@@ -95,7 +98,6 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
             public void run() {
                 getScreen().showLoading(false);
                 setGourmet(gourmet);
-                saveGourmet.execute(gourmet);
             }
         });
     }
@@ -127,7 +129,7 @@ public class BalancePresenterImp<V extends BalanceScreen> extends BasePresenter<
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
-                new CheckNewVersion().execute(BalancePresenterImp.this);
+                new CheckNewVersion().execute(BalancePresenterImpl.this);
             }
         });
     }

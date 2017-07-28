@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.tracker.Tracker;
+import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 import com.jugarte.gourmet.ui.base.BaseActivity;
 import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.ui.search.SearchActivity;
@@ -36,9 +38,6 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     @BindView(R.id.balance_current_balance)
     TextView currentBalance;
-
-    @BindView(R.id.balance_current_text)
-    TextView currentText;
 
     @BindView(R.id.balance_operations_list)
     RecyclerView operationsList;
@@ -77,15 +76,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
         setSupportActionBar(toolbar);
 
-        // Given data
-        if (getIntent() != null &&
-                getIntent().getExtras() != null &&
-                getIntent().getExtras().getParcelable(EXTRA_GOURMET) != null) {
-            Gourmet gourmet = getIntent().getExtras().getParcelable(EXTRA_GOURMET);
-            presenter.setGourmet(gourmet);
-        } else {
-            presenter.login();
-        }
+        init(getIntent());
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -94,6 +85,22 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
             }
         });
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        init(intent);
+    }
+
+    private void init(Intent intent) {
+        if (intent != null &&
+                intent.getExtras() != null &&
+                intent.getExtras().getParcelable(EXTRA_GOURMET) != null) {
+            Gourmet gourmet = intent.getExtras().getParcelable(EXTRA_GOURMET);
+            presenter.setGourmet(gourmet);
+        } else {
+            presenter.login();
+        }
     }
 
     @OnClick(R.id.balance_card_number)
@@ -160,17 +167,17 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
     }
 
     @Override
-    public void showGourmetData(Gourmet gourmet) {
-        currentText.setVisibility(View.VISIBLE);
+    public void showGourmetData(BalanceVM balance) {
         offlineTextView.setVisibility(View.GONE);
 
-        String balance = String.format(getString(R.string.price_euro), gourmet.getCurrentBalance());
-        currentBalance.setText(balance);
-        String cardNumber = TextFormatUtils.formatCreditCardNumber(gourmet.getCardNumber());
+        currentBalance.setText(balance.getCurrent());
+
+        String cardNumber = TextFormatUtils.formatCreditCardNumber(balance.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        BalanceAdapter adapter = new BalanceAdapter(gourmet.getOperations());
+        BalanceAdapter adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
         operationsList.setAdapter(adapter);
+        operationsList.setLayoutManager(new StickyLayoutManager(getApplicationContext(), adapter));
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
     }
