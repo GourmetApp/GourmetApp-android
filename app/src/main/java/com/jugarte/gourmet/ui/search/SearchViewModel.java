@@ -83,8 +83,8 @@ class SearchViewModel implements SortedListAdapter.ViewModel {
     }
 
     private String parseDate(Date dateObject) {
-        DateFormat df = new SimpleDateFormat("E dd MMM yyyy HH:mm", Locale.getDefault());
-        return firstLetterInUpper(df.format(dateObject));
+        DateFormat df = new SimpleDateFormat("E dd MMMM yyyy HH:mm", Locale.getDefault());
+        return firstLetterInUpper(removeDots(df.format(dateObject)));
     }
 
     private boolean isPositive(String name) {
@@ -106,4 +106,9 @@ class SearchViewModel implements SortedListAdapter.ViewModel {
 
         return res.toString().trim();
     }
+
+    private String removeDots(String text) {
+        return text.replace(".", "");
+    }
+
 }

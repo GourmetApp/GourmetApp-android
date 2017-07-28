@@ -55,13 +55,13 @@ public class BalanceMapper {
     }
 
     private String parseDate(Date dateObject) {
-        DateFormat df = new SimpleDateFormat("E dd MMM HH:mm", Locale.getDefault());
-        return firstLetterInUpper(df.format(dateObject));
+        DateFormat df = new SimpleDateFormat("E dd MMMM HH:mm", Locale.getDefault());
+        return firstLetterInUpper(removeDots(df.format(dateObject)));
     }
 
     private String parseMonth(Date dateObject) {
         DateFormat df = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        return firstLetterInUpper(df.format(dateObject));
+        return firstLetterInUpper(removeDots(df.format(dateObject)));
     }
 
     private String parsePrice(String price, boolean positive) {
@@ -86,5 +86,9 @@ public class BalanceMapper {
         }
 
         return res.toString().trim();
+    }
+
+    private String removeDots(String text) {
+        return text.replace(".", "");
     }
 }
