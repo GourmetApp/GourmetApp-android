@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.0
+- Notifications
+- New design
+
 ### v1.5.0
 - Possibility to show the password in the login
 - Search with animation
