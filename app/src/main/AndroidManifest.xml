@@ -48,8 +48,8 @@
             android:name=".services.NotificationServiceReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_START" />
-                <action android:name="com.jugarte.gourmet.NOTIFICATION_SERVICE_STOP" />
+                <action android:name="${applicationId}.NOTIFICATION_SERVICE_START" />
+                <action android:name="${applicationId}.NOTIFICATION_SERVICE_STOP" />
             </intent-filter>
         </receiver>
 

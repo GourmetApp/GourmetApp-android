@@ -6,9 +6,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import static com.jugarte.gourmet.BuildConfig.APPLICATION_ID;
+
 public class NotificationServiceReceiver extends BroadcastReceiver {
-    public static final String ACTION_NOTIFICATION_SERVICE_START = "com.jugarte.gourmet.NOTIFICATION_SERVICE_START";
-    public static final String ACTION_NOTIFICATION_SERVICE_STOP = "com.jugarte.gourmet.NOTIFICATION_SERVICE_STOP";
+    public static final String ACTION_NOTIFICATION_SERVICE_START = APPLICATION_ID + ".NOTIFICATION_SERVICE_START";
+    public static final String ACTION_NOTIFICATION_SERVICE_STOP = APPLICATION_ID + ".NOTIFICATION_SERVICE_STOP";
 
     Context context;
 
