@@ -24,12 +24,10 @@
             android:id="@+id/login_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789 "
             android:fontFamily="sans-serif"
-            android:hint="@string/login_hint_card_number"
-            android:inputType="number"
+            android:hint="@string/login_hint_email"
+            android:inputType="textEmailAddress"
             android:lines="1"
-            android:maxLength="19"
             android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>

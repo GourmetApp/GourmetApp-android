@@ -96,7 +96,7 @@ public class NotificationService extends Service implements GetGourmet.OnGourmet
         if (gourmet.isIncreaseOfBalance()) {
             text = getString(R.string.new_update_balance);
         } else {
-            text = String.format(getResources().getQuantityString(R.plurals.new_operations,
+            text = String.format(getResources().getQuantityString(R.plurals.new_operations_text,
                     gourmet.getNewOperations()),
                     gourmet.getNewOperations());
         }

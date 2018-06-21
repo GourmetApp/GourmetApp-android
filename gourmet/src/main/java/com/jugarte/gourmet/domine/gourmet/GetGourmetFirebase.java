@@ -8,6 +8,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.exceptions.NotFoundException;
 
+import java.util.List;
+
 class GetGourmetFirebase {
 
     interface OnFirebaseResponse {
@@ -15,14 +17,20 @@ class GetGourmetFirebase {
         void error(Exception exception);
     }
 
-    void execute(String user, final OnFirebaseResponse response) {
+    void execute(final String user, final OnFirebaseResponse response) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("users/" + user);
-        ValueEventListener postListener = new ValueEventListener() {
+        final DatabaseReference reference = database.getReference().child("users");
+        final ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Gourmet gourmet = dataSnapshot.getValue(Gourmet.class);
-                response.success(gourmet);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Gourmet gourmet = child.getValue(Gourmet.class);
+                    if (gourmet.getCardNumber().endsWith(user)) {
+                        response.success(gourmet);
+                        return;
+                    }
+                }
+                response.error(new NotFoundException());
             }
 
             @Override

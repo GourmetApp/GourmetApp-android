@@ -3,7 +3,7 @@
 
     <!-- Login -->
     <string name="login_button">LOGIN</string>
-    <string name="login_hint_card_number">Número de tarjeta</string>
+    <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Contraseña</string>
     <string name="login_remember_password">Recordar contraseña</string>
 
@@ -18,7 +18,7 @@
         <item quantity="one">Nuevo movimiento disponible</item>
         <item quantity="other">Nuevos movimientos disponibles</item>
     </plurals>
-    <plurals name="new_operations">
+    <plurals name="new_operations_text">
         <item quantity="one">Tienes %d nuevo movimiento sin consultar</item>
         <item quantity="other">Tienes %d nuevos movimientos sin consultar</item>
     </plurals>
