@@ -10,14 +10,14 @@ import com.jugarte.gourmet.exceptions.NotFoundException;
 
 import java.util.List;
 
-class GetGourmetFirebase {
+public class GetGourmetFirebase {
 
-    interface OnFirebaseResponse {
+    public interface OnFirebaseResponse {
         void success(Gourmet gourmet);
         void error(Exception exception);
     }
 
-    void execute(final String user, final OnFirebaseResponse response) {
+    public void execute(final String user, final OnFirebaseResponse response) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference().child("users");
         final ValueEventListener postListener = new ValueEventListener() {

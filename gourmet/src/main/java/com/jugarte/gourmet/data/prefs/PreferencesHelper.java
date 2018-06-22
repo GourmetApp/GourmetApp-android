@@ -6,7 +6,11 @@ public interface PreferencesHelper {
 
     String getPassword();
 
+    String getCardNumber();
+
     void saveUser(String user, String password);
+
+    void saveCardNumber(String cardNumber);
 
     void removeUser();
 

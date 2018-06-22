@@ -69,6 +69,7 @@ public class LoginPresenterImpl<V extends LoginScreen> extends BasePresenter<V>
                 getScreen().hideLoading();
                 if (gourmet != null) {
                     saveUser.saveUser(user, password);
+                    saveUser.saveCardNumber(gourmet.getCardNumber());
                     getScreen().navigateToBalanceWithAnimation(gourmet);
                 } else {
                     getScreen().showErrorNotConnection();

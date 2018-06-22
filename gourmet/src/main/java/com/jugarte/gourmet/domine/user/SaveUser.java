@@ -13,4 +13,8 @@ public class SaveUser {
     public void saveUser(String user, String password) {
         preferencesHelper.saveUser(user, password);
     }
+
+    public void saveCardNumber(String cardNumber) {
+        preferencesHelper.saveCardNumber(cardNumber);
+    }
 }

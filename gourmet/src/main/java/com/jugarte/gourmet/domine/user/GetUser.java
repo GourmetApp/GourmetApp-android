@@ -21,4 +21,8 @@ public class GetUser {
     public boolean isLogged() {
         return getPassword() != null;
     }
+
+    public String getCardNumber() {
+        return preferencesHelper.getCardNumber();
+    }
 }
