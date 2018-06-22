@@ -152,7 +152,8 @@ public class GetGourmet {
     }
 
     private boolean isIncreaseOfBalance(Operation operation) {
-        return operation.getName().equalsIgnoreCase("actualización de saldo");
+        return operation.getName().equalsIgnoreCase("actualización de saldo") ||
+                operation.getName().equalsIgnoreCase("Recarga Saldo");
     }
 
     private static boolean containsId(List<Operation> operations, String id) {
