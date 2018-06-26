@@ -7,6 +7,7 @@ import com.jugarte.gourmet.ui.balance.model.BalanceVM;
 public interface BalanceScreen {
 
     void showGourmetData(BalanceVM balance);
+    void updateGourmetData(BalanceVM balance);
 
     void showOfflineMode(String modificationDate);
 

@@ -62,10 +62,15 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
 
     @Override
     public void setGourmet(Gourmet gourmet) {
-        this.gourmet = gourmet;
-        if (gourmet != null) {
+        if (this.gourmet != null) {
             BalanceVM balanceVM = mapper.map(gourmet);
-            getScreen().showGourmetData(balanceVM);
+            getScreen().updateGourmetData(balanceVM);
+        } else {
+            this.gourmet = gourmet;
+            if (gourmet != null) {
+                BalanceVM balanceVM = mapper.map(gourmet);
+                getScreen().showGourmetData(balanceVM);
+            }
         }
     }
 

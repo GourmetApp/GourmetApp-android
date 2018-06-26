@@ -21,6 +21,7 @@ import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.helpers.LastVersionHelper;
 import com.jugarte.gourmet.tracker.Tracker;
 import com.jugarte.gourmet.ui.balance.model.BalanceVM;
+import com.jugarte.gourmet.ui.balance.model.OperationVM;
 import com.jugarte.gourmet.ui.base.BaseActivity;
 import com.jugarte.gourmet.ui.login.LoginActivity;
 import com.jugarte.gourmet.ui.search.SearchActivity;
@@ -52,9 +53,12 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
     TextView offlineTextView;
 
     private boolean displayUpdateIcon;
+    private BalanceAdapter adapter;
 
     @Inject
     BalancePresenter<BalanceScreen> presenter;
+
+    private BalanceVM currentBalanceVM;
 
     public static Intent newStartIntent(Context context, Gourmet gourmet) {
         Intent intent = new Intent(context, BalanceActivity.class);
@@ -78,12 +82,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
         init(getIntent());
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.login();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.login());
 
     }
 
@@ -168,6 +167,7 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
 
     @Override
     public void showGourmetData(BalanceVM balance) {
+        currentBalanceVM = balance;
         offlineTextView.setVisibility(View.GONE);
 
         currentBalance.setText(balance.getCurrent());
@@ -175,11 +175,26 @@ public class BalanceActivity extends BaseActivity implements BalanceScreen {
         String cardNumber = TextFormatUtils.formatCreditCardNumber(balance.getCardNumber());
         cardNumberTextView.setText(cardNumber);
 
-        BalanceAdapter adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
+        adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
         operationsList.setAdapter(adapter);
         operationsList.setLayoutManager(new StickyLayoutManager(getApplicationContext(), adapter));
 
         Tracker.getInstance().sendLoginResult(Tracker.Param.OK);
+    }
+
+    @Override
+    public void updateGourmetData(BalanceVM balance) {
+        adapter = new BalanceAdapter(getApplicationContext(), balance.getOperations());
+        operationsList.setAdapter(adapter);
+        operationsList.setLayoutManager(new StickyLayoutManager(getApplicationContext(), adapter));
+        
+        if (currentBalanceVM != null) {
+            int count = balance.getOperations().size() - currentBalanceVM.getOperations().size();
+            if (count > 0) {
+                adapter.notifyItemInserted(count);
+                operationsList.smoothScrollToPosition(0);
+            }
+        }
     }
 
     @Override
