@@ -73,6 +73,7 @@ public class GetGourmet {
 
             @Override
             public void error(Exception exception) {
+                numResponse += FIREBASE;
                 if (exception instanceof ConnectionException) {
                     numResponse += SERVICE_NOT_CONNECTION;
                 } else if (exception instanceof NotFoundException) {

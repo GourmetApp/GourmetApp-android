@@ -21,16 +21,14 @@ public class ChequeGourmetDataManager {
 
         OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder();
         OkHttpClient client = httpBuilder
-                .readTimeout(2, SECONDS)
-                .writeTimeout(10, SECONDS)
-                .connectTimeout(10, SECONDS)
+                .retryOnConnectionFailure(false)
                 .build();
 
         LoginRequest loginRequest = new LoginRequest(client);
         String token = loginRequest.login(username, password);
 
         if (token == null) {
-            throw new ConnectionException();
+            throw new NotFoundException();
         }
 
         CardsRequest cardsRequest = new CardsRequest(client);
