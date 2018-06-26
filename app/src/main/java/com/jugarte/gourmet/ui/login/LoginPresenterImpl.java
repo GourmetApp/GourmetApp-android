@@ -63,39 +63,31 @@ public class LoginPresenterImpl<V extends LoginScreen> extends BasePresenter<V>
 
     @Override
     public void success(final Gourmet gourmet) {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().hideLoading();
-                if (gourmet != null) {
-                    saveUser.saveUser(user, password);
-                    getScreen().navigateToBalanceWithAnimation(gourmet);
-                } else {
-                    getScreen().showErrorNotConnection();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void notConnection(Gourmet cacheGourmet) {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().hideLoading();
+        threadManager.runOnUIThread(() -> {
+            getScreen().hideLoading();
+            if (gourmet != null) {
+                saveUser.saveUser(user, password);
+                saveUser.saveCardNumber(gourmet.getCardNumber());
+                getScreen().navigateToBalanceWithAnimation(gourmet);
+            } else {
                 getScreen().showErrorNotConnection();
             }
         });
     }
 
     @Override
+    public void notConnection(Gourmet cacheGourmet) {
+        threadManager.runOnUIThread(() -> {
+            getScreen().hideLoading();
+            getScreen().showErrorNotConnection();
+        });
+    }
+
+    @Override
     public void notUserFound() {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().hideLoading();
-                getScreen().showErrorNotUserFound();
-            }
+        threadManager.runOnUIThread(() -> {
+            getScreen().hideLoading();
+            getScreen().showErrorNotUserFound();
         });
     }
 

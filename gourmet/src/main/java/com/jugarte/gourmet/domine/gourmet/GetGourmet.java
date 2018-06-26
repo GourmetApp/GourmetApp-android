@@ -53,10 +53,27 @@ public class GetGourmet {
                 resultService = chequeGourmet;
                 numResponse += SERVICE_OK;
                 checkMerge();
+
+                getGourmetFirebase.execute(chequeGourmet.getCardNumber(), new GetGourmetFirebase.OnFirebaseResponse() {
+                    @Override
+                    public void success(Gourmet gourmet) {
+                        resultFirebase = gourmet;
+                        numResponse += FIREBASE;
+                        checkMerge();
+                    }
+
+                    @Override
+                    public void error(Exception exception) {
+                        numResponse += FIREBASE;
+                        checkMerge();
+                    }
+                });
+
             }
 
             @Override
             public void error(Exception exception) {
+                numResponse += FIREBASE;
                 if (exception instanceof ConnectionException) {
                     numResponse += SERVICE_NOT_CONNECTION;
                 } else if (exception instanceof NotFoundException) {
@@ -66,20 +83,6 @@ public class GetGourmet {
             }
         });
 
-        getGourmetFirebase.execute(user, new GetGourmetFirebase.OnFirebaseResponse() {
-            @Override
-            public void success(Gourmet gourmet) {
-                resultFirebase = gourmet;
-                numResponse += FIREBASE;
-                checkMerge();
-            }
-
-            @Override
-            public void error(Exception exception) {
-                numResponse += FIREBASE;
-                checkMerge();
-            }
-        });
     }
 
     private void checkMerge() {
@@ -150,7 +153,8 @@ public class GetGourmet {
     }
 
     private boolean isIncreaseOfBalance(Operation operation) {
-        return operation.getName().equalsIgnoreCase("actualización de saldo");
+        return operation.getName().equalsIgnoreCase("actualización de saldo") ||
+                operation.getName().equalsIgnoreCase("Recarga Saldo");
     }
 
     private static boolean containsId(List<Operation> operations, String id) {

@@ -7,17 +7,34 @@ import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.EmptyException;
 import com.jugarte.gourmet.exceptions.NotFoundException;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class ChequeGourmetBuilder {
 
+    public String buildCards(String response) throws JSONException, EmptyException, ConnectionException {
+        if (response == null) {
+            throw new ConnectionException();
+        }
+
+        if (response.isEmpty()) {
+            throw new EmptyException();
+        }
+
+        JSONArray jsonArray = new JSONArray(response);
+
+        if (jsonArray.length() > 0) {
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            return jsonObject.optString("info", null);
+        }
+        return null;
+    }
+
     public ChequeGourmet build(String response, String cardNumber)
-            throws NotFoundException, ConnectionException, EmptyException {
+            throws NotFoundException, ConnectionException, EmptyException, JSONException {
 
         if (response == null) {
             throw new ConnectionException();
@@ -27,51 +44,27 @@ public class ChequeGourmetBuilder {
             throw new EmptyException();
         }
 
-        Document doc = Jsoup.parse(response);
+        JSONObject json = new JSONObject(response);
 
-        if (doc.getElementById("dato1") != null) {
-            throw new NotFoundException();
-        }
+        String balance = json.getString("saldo");
 
-        Element currentBalanceElement = doc.getElementById("TotalSaldo");
-        if (currentBalanceElement == null) {
-            throw new EmptyException();
-        }
-        String balance = cleanString(currentBalanceElement.text());
+        ArrayList<Operation> operationArrayList = new ArrayList<>();
 
-        ArrayList<Operation> operationArrayList = null;
-        Elements operationsElement = doc.getElementsByTag("tr");
+        JSONArray array = json.getJSONArray("payments").getJSONArray(0);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject payment = array.getJSONObject(i);
 
-        if (operationsElement != null && !operationsElement.isEmpty()) {
-            operationArrayList = new ArrayList<>();
-
-            for (Element operationElement : operationsElement) {
-                Operation operation = new Operation();
-                operation.setName(removeLastWord(operationElement.getElementById("operacion").text()));
-                operation.setPrice(operationElement.getElementById("importe").text());
-                operation.setDate(operationElement.getElementById("fecha").text());
-                operation.setHour(operationElement.getElementById("horaOperacion").text());
-                operationArrayList.add(operation);
-            }
-        }
-
-        if (operationArrayList != null && operationArrayList.size() > 0) {
-            Operation lastOperation = operationArrayList.get(operationArrayList.size() - 1);
-
-            if (lastOperation.getPrice().equalsIgnoreCase("fin")) {
-                operationArrayList.remove(lastOperation);
-            }
-
+            Operation operation = new Operation();
+            String operationName = payment.getJSONObject("restaurant").getString("name");
+            operationName = cleanString(operationName);
+            operation.setName(operationName);
+            operation.setPrice(payment.getString("dsAmount"));
+            operation.setDate(payment.getString("dateCreated").split(" ")[0]);
+            operation.setHour(payment.getString("dateCreated").split(" ")[1]);
+            operationArrayList.add(operation);
         }
 
         return new ChequeGourmet(cardNumber, balance, operationArrayList);
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public String removeLastWord(String text) {
-        String regex = "((\\s\\w)\\b)?+$";
-        text = text.replaceAll(regex, "");
-        return cleanString(text);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

@@ -158,34 +158,4 @@ public class GourmetBuilderTest {
         assertEquals(gourmetBuilder.cleanString(" hola paco  \n  \t  "), "hola paco");
     }
 
-    @Test
-    public void testNotRemoveLastWord() throws Exception {
-        assertEquals(gourmetBuilder.removeLastWord("Hola"), "Hola");
-    }
-
-    @Test
-    public void testRemoveLastWord() throws Exception {
-        assertEquals(gourmetBuilder.removeLastWord("Hola d"), "Hola");
-    }
-
-    @Test
-    public void testNotRemoveLastWordWhenIsUpdate() throws Exception {
-        assertEquals(gourmetBuilder.removeLastWord("Actualizacion de saldo"), "Actualizacion de saldo");
-    }
-
-    @Test
-    public void testRemoveLastWordWhenIsACountry() throws Exception {
-        assertEquals(gourmetBuilder.removeLastWord("Restaurante M"), "Restaurante");
-    }
-
-    @Test
-    public void testRemoveLastWordWhenThereIsALetter() {
-        assertEquals(gourmetBuilder.removeLastWord("R QUE R M"), "R QUE R");
-    }
-
-    @Test
-    public void testRemoveLastWordAndCleanSpaces() throws Exception {
-        assertEquals(gourmetBuilder.removeLastWord(" Restaurante  M"), "Restaurante");
-    }
-
 }

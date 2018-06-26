@@ -7,6 +7,7 @@ import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.domine.gourmet.GetGourmet;
+import com.jugarte.gourmet.domine.gourmet.GetGourmetFirebase;
 import com.jugarte.gourmet.domine.newversion.CheckNewVersion;
 import com.jugarte.gourmet.domine.user.GetUser;
 import com.jugarte.gourmet.domine.user.RemoveUser;
@@ -19,8 +20,12 @@ import com.jugarte.gourmet.utils.ClipboardUtils;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter<V>
-        implements BalancePresenter<V>, GetGourmet.OnGourmetResponse, CheckNewVersion.OnCheckNewVersion {
+        implements BalancePresenter<V>, GetGourmet.OnGourmetResponse {
 
     private final ThreadManager threadManager;
     private final Context context;
@@ -52,14 +57,20 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
     public void onAttach(V screen) {
         super.onAttach(screen);
         checkNewVersion();
+        loadCacheData();
     }
 
     @Override
     public void setGourmet(Gourmet gourmet) {
-        this.gourmet = gourmet;
-        if (gourmet != null) {
+        if (this.gourmet != null) {
             BalanceVM balanceVM = mapper.map(gourmet);
-            getScreen().showGourmetData(balanceVM);
+            getScreen().updateGourmetData(balanceVM);
+        } else {
+            this.gourmet = gourmet;
+            if (gourmet != null) {
+                BalanceVM balanceVM = mapper.map(gourmet);
+                getScreen().showGourmetData(balanceVM);
+            }
         }
     }
 
@@ -75,6 +86,7 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
         }
 
         getScreen().showLoading(true);
+
         threadManager.runOnBackground(new Runnable() {
             @Override
             public void run() {
@@ -126,16 +138,36 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
     }
 
     private void checkNewVersion() {
-        threadManager.runOnBackground(new Runnable() {
-            @Override
-            public void run() {
-                new CheckNewVersion().execute(BalancePresenterImpl.this);
-            }
+
+        Single<LastVersion> lastVersionSingle = Single.create(e -> {
+            new CheckNewVersion().execute(e::onSuccess);
         });
+
+        lastVersionSingle
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::newVersion)
+                .dispose();
     }
 
-    @Override
-    public void newVersion(final LastVersion lastVersion) {
+    private void loadCacheData() {
+        String cardNumber = getUser.getCardNumber();
+        if (cardNumber != null) {
+            new GetGourmetFirebase().execute(cardNumber, new GetGourmetFirebase.OnFirebaseResponse() {
+                @Override
+                public void success(Gourmet gourmet) {
+                    setGourmet(gourmet);
+                }
+
+                @Override
+                public void error(Exception exception) {
+
+                }
+            });
+        }
+    }
+
+    private void newVersion(final LastVersion lastVersion) {
         if (lastVersion != null && lastVersion.getNameTagVersion() != null) {
 
             final boolean isEqualsVersion = LastVersionHelper.isEqualsVersion(

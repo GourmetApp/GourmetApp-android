@@ -3,7 +3,6 @@ package com.jugarte.gourmet.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -21,8 +20,6 @@ import com.jugarte.gourmet.R;
 import com.jugarte.gourmet.ui.balance.BalanceActivity;
 import com.jugarte.gourmet.domine.beans.Gourmet;
 import com.jugarte.gourmet.ui.base.BaseActivity;
-import com.jugarte.gourmet.utils.FourDigitCardFormatWatcher;
-import com.jugarte.gourmet.utils.TextFormatUtils;
 
 import javax.inject.Inject;
 
@@ -60,8 +57,6 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
         getActivityComponent().inject(this);
         setUnBinder(ButterKnife.bind(this));
 
-        userEditText.addTextChangedListener(new FourDigitCardFormatWatcher());
-
         presenter.onAttach(this);
     }
 
@@ -77,7 +72,7 @@ public class LoginActivity extends BaseActivity implements LoginScreen {
     }
 
     private void launchLogin() {
-        String user = TextFormatUtils.formatRemoveSpaces(userEditText.getText().toString());
+        String user = userEditText.getText().toString();
         String pass = passEditText.getText().toString();
         presenter.login(user, pass);
     }

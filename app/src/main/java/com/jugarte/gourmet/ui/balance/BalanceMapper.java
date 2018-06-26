@@ -69,7 +69,8 @@ public class BalanceMapper {
     }
 
     private boolean isPositive(String name) {
-        return name.equalsIgnoreCase("Actualización de saldo");
+        return name.equalsIgnoreCase("Actualización de saldo") ||
+                name.equalsIgnoreCase("Recarga Saldo");
     }
 
     private String firstLetterInUpper(String text) {

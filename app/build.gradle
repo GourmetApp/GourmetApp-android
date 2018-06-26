@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -31,10 +32,11 @@ android {
         applicationId "com.jugarte.gourmet"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 12
-        versionName "1.6.0"
+        versionCode 13
+        versionName "2.0.0"
 
         vectorDrawables.useSupportLibrary = true
+
     }
 
     buildTypes {
@@ -55,6 +57,12 @@ android {
             }
         }
     }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
 }
 
 dependencies {
