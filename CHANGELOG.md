@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.0
+- Use new services
+- Show cache data until load the new
+
 ### v1.6.0
 - Notifications
 - New design
