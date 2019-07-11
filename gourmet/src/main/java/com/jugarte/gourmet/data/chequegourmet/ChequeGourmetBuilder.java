@@ -33,7 +33,26 @@ public class ChequeGourmetBuilder {
         return null;
     }
 
-    public ChequeGourmet build(String response, String cardNumber)
+    public String buildBalance(String response) throws JSONException, EmptyException, ConnectionException {
+        if (response == null) {
+            throw new ConnectionException();
+        }
+
+        if (response.isEmpty()) {
+            throw new EmptyException();
+        }
+
+        JSONObject jsonObject = new JSONObject(response);
+
+        String balance = jsonObject.optString("balance");
+        if (balance != null) {
+            balance = balance.replace(".", ",");
+        }
+
+        return balance;
+    }
+
+    public ChequeGourmet build(String response, String balance, String cardNumber)
             throws NotFoundException, ConnectionException, EmptyException, JSONException {
 
         if (response == null) {
@@ -45,8 +64,6 @@ public class ChequeGourmetBuilder {
         }
 
         JSONObject json = new JSONObject(response);
-
-        String balance = json.getString("saldo");
 
         ArrayList<Operation> operationArrayList = new ArrayList<>();
 

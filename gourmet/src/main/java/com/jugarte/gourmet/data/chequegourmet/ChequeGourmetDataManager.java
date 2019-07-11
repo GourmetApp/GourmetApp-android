@@ -1,5 +1,6 @@
 package com.jugarte.gourmet.data.chequegourmet;
 
+import com.jugarte.gourmet.data.chequegourmet.request.BalanceRequest;
 import com.jugarte.gourmet.data.chequegourmet.request.CardsRequest;
 import com.jugarte.gourmet.data.chequegourmet.request.LoginRequest;
 import com.jugarte.gourmet.data.chequegourmet.request.PaymentsRequest;
@@ -34,8 +35,11 @@ public class ChequeGourmetDataManager {
         CardsRequest cardsRequest = new CardsRequest(client);
         String cardNumber = cardsRequest.getCards(token);
 
+        BalanceRequest balanceRequest = new BalanceRequest(client);
+        String balance = balanceRequest.getBalance(token);
+
         PaymentsRequest paymentsRequest = new PaymentsRequest(client);
-        ChequeGourmet chequeGourmet = paymentsRequest.getPayments(token, cardNumber);
+        ChequeGourmet chequeGourmet = paymentsRequest.getPayments(token, balance, cardNumber);
 
         return chequeGourmet;
     }

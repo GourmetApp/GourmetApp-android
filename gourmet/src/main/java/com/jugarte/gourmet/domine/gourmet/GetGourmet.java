@@ -115,7 +115,9 @@ public class GetGourmet {
 
     private void twoResults() {
         finalGourmet = resultFirebase;
-        finalGourmet.setCurrentBalance(resultService.getBalance());
+        if (resultService.getBalance() != null && !resultService.getBalance().isEmpty()) {
+            finalGourmet.setCurrentBalance(resultService.getBalance());
+        }
         List<Operation> operations = finalGourmet.getOperations();
         int numOperations = finalGourmet.getOperations().size();
         boolean increaseOfBalance = false;
