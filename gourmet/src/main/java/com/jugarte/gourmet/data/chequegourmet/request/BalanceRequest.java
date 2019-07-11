@@ -1,6 +1,5 @@
 package com.jugarte.gourmet.data.chequegourmet.request;
 
-import com.jugarte.gourmet.data.chequegourmet.ChequeGourmet;
 import com.jugarte.gourmet.data.chequegourmet.ChequeGourmetBuilder;
 import com.jugarte.gourmet.exceptions.ConnectionException;
 import com.jugarte.gourmet.exceptions.EmptyException;
@@ -18,16 +17,16 @@ import okhttp3.Response;
  * Copyright 2009-2018 Bitban Technologies, S.L.
  * All rights reserved.
  */
-public class PaymentsRequest {
+public class BalanceRequest {
 
-    private static final String PAYMENTS_URL = "https://gourmetpay.com/api/payments?format=json";
+    private static final String PAYMENTS_URL = "https://gourmetpay.com/api/base/getBalance?format=json";
     private final OkHttpClient client;
 
-    public PaymentsRequest(OkHttpClient client) {
+    public BalanceRequest(OkHttpClient client) {
         this.client = client;
     }
 
-    public ChequeGourmet getPayments(String token, String balance, String cardNumber) throws
+    public String getBalance(String token) throws
             ConnectionException, EmptyException, NotFoundException {
 
         Request request = new Request.Builder()
@@ -37,9 +36,9 @@ public class PaymentsRequest {
 
         try {
             Response response = client.newCall(request).execute();
-            String paymentsResponse = response.body().string();
+            String balanceResponse = response.body().string();
             ChequeGourmetBuilder chequeGourmetBuilder = new ChequeGourmetBuilder();
-            return chequeGourmetBuilder.build(paymentsResponse, balance, cardNumber);
+            return chequeGourmetBuilder.buildBalance(balanceResponse);
         } catch (IOException e) {
             throw new ConnectionException();
         } catch (JSONException e) {
