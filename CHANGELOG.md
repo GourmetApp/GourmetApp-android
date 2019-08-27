@@ -1,5 +1,8 @@
 # Changelog
 
+### v2.0.2
+- Fixed bug when date has not hour
+
 ### v2.0.1
 - Fixed bug when displaying the current balance.
 
