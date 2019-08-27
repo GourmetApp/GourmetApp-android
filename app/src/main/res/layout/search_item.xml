@@ -12,9 +12,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/im_operation_image"
-        android:layout_toRightOf="@id/im_operation_image">
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/tv_operation_name"
