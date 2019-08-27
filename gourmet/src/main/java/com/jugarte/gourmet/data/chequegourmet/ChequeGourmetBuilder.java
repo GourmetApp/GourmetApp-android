@@ -76,8 +76,13 @@ public class ChequeGourmetBuilder {
             operationName = cleanString(operationName);
             operation.setName(operationName);
             operation.setPrice(payment.getString("dsAmount"));
-            operation.setDate(payment.getString("dateCreated").split(" ")[0]);
-            operation.setHour(payment.getString("dateCreated").split(" ")[1]);
+            String[] dateCreated = payment.getString("dateCreated").split(" ");
+            operation.setDate(dateCreated[0]);
+            if (dateCreated.length > 1) {
+                operation.setHour(dateCreated[1]);
+            } else {
+                operation.setHour("00:00");
+            }
             operationArrayList.add(operation);
         }
 
