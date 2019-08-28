@@ -16,7 +16,7 @@ public class Operation implements Parcelable, Comparable<Operation> {
     private String name = null;
     private String price = null;
     private String date = null;
-    private String hour = null;
+    private String hour = "00:00";
 
     public Operation() {
     }
@@ -124,8 +124,11 @@ public class Operation implements Parcelable, Comparable<Operation> {
         name = name.replace("#", "Ñ");
         name = name.replace("ï", "'");
         name = name.replace("WWW.JUST-EAT.ES", "JUST-EAT");
+        name = name.replace("www.just-eat.es", "JUST-EAT");
+        name = name.replace("Www.just-eat.es", "JUST-EAT");
         name = name.replace("ALCASAL", "Wetaca");
         name = name.replace("Saldo: ", "");
+        name = name.replace("RECARGA SALDO", "Recarga Saldo");
         name = name.trim();
     }
 

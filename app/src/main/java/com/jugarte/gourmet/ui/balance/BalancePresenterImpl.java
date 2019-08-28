@@ -105,35 +105,26 @@ public class BalancePresenterImpl<V extends BalanceScreen> extends BasePresenter
 
     @Override
     public void success(final Gourmet gourmet) {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().showLoading(false);
-                setGourmet(gourmet);
-            }
+        threadManager.runOnUIThread(() -> {
+            getScreen().showLoading(false);
+            setGourmet(gourmet);
         });
     }
 
     @Override
     public void notConnection(final Gourmet cacheGourmet) {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().showLoading(false);
-                setGourmet(cacheGourmet);
-                getScreen().showOfflineMode(cacheGourmet.getModificationDate());
-            }
+        threadManager.runOnUIThread(() -> {
+            getScreen().showLoading(false);
+            setGourmet(cacheGourmet);
+            getScreen().showOfflineMode(cacheGourmet.getModificationDate());
         });
     }
 
     @Override
     public void notUserFound() {
-        threadManager.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                getScreen().showLoading(false);
-                getScreen().showError(context.getString(R.string.error_user_or_password_incorrect_code2));
-            }
+        threadManager.runOnUIThread(() -> {
+            getScreen().showLoading(false);
+            getScreen().showError(context.getString(R.string.error_user_or_password_incorrect_code2));
         });
     }
 
