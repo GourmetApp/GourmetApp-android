@@ -97,12 +97,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database:10.2.4'
 
-    // Wear module:
-    //compile project(':wear-http')
-    //compile 'com.kogitune:wear-http:0.0.7'
-    //debugWearApp project(path:':wear', configuration: 'debug')
-    //releaseWearApp project(path:':wear', configuration: 'release')
-
 }
 
 apply plugin: 'com.google.gms.google-services'

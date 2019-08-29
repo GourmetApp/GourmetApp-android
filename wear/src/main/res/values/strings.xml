@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Gourmet app</string>
-
-
-    <string name="error_not_connexion">You need connexion to use application</string>
-</resources>
