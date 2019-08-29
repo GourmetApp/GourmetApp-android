@@ -95,13 +95,11 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
 
     // Third Party
-    implementation 'com.github.javierugarte:searchtoolbar:1.0.2'
-    implementation 'br.com.simplepass:loading-button-android:1.7.1'
-    implementation 'com.github.wrdlbrnft:sorted-list-adapter:0.2.0.19'
-    implementation 'com.brandongogetap:stickyheaders:0.5.1'
-
-    // Crashlytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.github.javierugarte:searchtoolbar:1.0.2' // https://github.com/javierugarte/SearchToolbar
+    implementation 'br.com.simplepass:loading-button-android:2.1.5' // https://github.com/leandroBorgesFerreira/LoadingButtonAndroid
+    implementation 'com.github.wrdlbrnft:sorted-list-adapter:0.3.0.27' // https://github.com/Wrdlbrnft/SortedListAdapter
+    implementation 'com.brandongogetap:stickyheaders:0.5.1' // https://github.com/bgogetap/StickyHeaders
 
 }
 

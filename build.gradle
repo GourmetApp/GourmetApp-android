@@ -17,17 +17,17 @@ buildscript {
             // App dependencies
             'androidx'   : '1.0.0',
             'firebase'   : '10.2.4',
-            'rxandroid'  : '2.0.1',
-            'rxjava'     : '2.1.5',
+            'rxandroid'  : '2.1.1',
+            'rxjava'     : '2.2.6',
             'butterknife': '10.1.0',
-            'okhttp'     : '3.10.0',
-            'gson'       : '2.8.2',
+            'okhttp'     : '4.1.0',
+            'gson'       : '2.8.5',
             'dagger'     : '2.8',
 
             //Test dependencies
             'junit'      : '4.12',
             'mockito'    : '2.7.21',
-            'json'       : '20160810'
+            'json'       : '20190722'
     ]
 
     repositories {
