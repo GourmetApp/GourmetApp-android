@@ -7,14 +7,15 @@ repositories {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.appCode
+        versionName versions.appVersion
     }
 
     buildTypes {
@@ -32,29 +33,32 @@ android {
 }
 
 dependencies {
-    def supportLibVersion = '28.0.0'
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:support-v4:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
 
-    def firebaseVersion = '10.2.4'
-    implementation "com.google.firebase:firebase-core:$firebaseVersion"
-    implementation "com.google.firebase:firebase-crash:$firebaseVersion"
-    implementation "com.google.firebase:firebase-database:$firebaseVersion"
-    implementation "com.google.firebase:firebase-auth:$firebaseVersion"
+    // Support
+    implementation "com.android.support:appcompat-v7:$versions.support"
+    implementation "com.android.support:support-v4:$versions.support"
+    implementation "com.android.support:design:$versions.support"
 
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation "com.google.code.gson:gson:2.8.2"
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-crash:$versions.firebase"
+    implementation "com.google.firebase:firebase-database:$versions.firebase"
+    implementation "com.google.firebase:firebase-auth:$versions.firebase"
 
     // RX
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
-    implementation "io.reactivex.rxjava2:rxjava:2.1.5"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
 
-    def dagger2Version = '2.8'
-    implementation "com.google.dagger:dagger:$dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+    // Ok HTTP
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation "com.google.code.gson:gson:$versions.gson"
 
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.mockito:mockito-core:2.7.21"
-    testImplementation "org.json:json:20160810"
+    // Dagger
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    // Test
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.json:json:$versions.json"
 }

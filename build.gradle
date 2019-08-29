@@ -1,20 +1,48 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
+    ext.versions = [
+
+        // App version
+        'appVersion'    : '2.0.2' ,
+        'appCode'       : 15 ,
+
+        // Sdk and tools
+        'minSdk'        : 16 ,
+        'targetSdk'     : 28 ,
+        'compileSdk'    : 28 ,
+        'buildTools'    : '28.0.3' ,
+
+        // App dependencies
+        'support'       : '28.0.0' ,
+        'butterknife'   : '8.6.0' ,
+        'firebase'      : '10.2.4' ,
+        'okhttp'        : '3.10.0' ,
+        'gson'          : '2.8.2' ,
+        'rxandroid'     : '2.0.1' ,
+        'rxjava'        : '2.1.5' ,
+        'dagger'        : '2.8' ,
+
+        //Test dependencies
+        'junit'         : '4.12' ,
+        'mockito'       : '2.7.21' ,
+        'json'          : '20160810'
+    ]
+
+
     repositories {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.29.0'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

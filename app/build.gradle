@@ -6,6 +6,21 @@ repositories {
 }
 
 android {
+
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.jugarte.gourmet"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.appCode
+        versionName versions.appVersion
+
+        vectorDrawables.useSupportLibrary = true
+
+    }
+
     signingConfigs {
         releaseConfig {
             if (rootProject.file('keystore.properties').exists()) {
@@ -25,24 +40,13 @@ android {
         }
     }
 
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
-    defaultConfig {
-        applicationId "com.jugarte.gourmet"
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 15
-        versionName "2.0.2"
-
-        vectorDrawables.useSupportLibrary = true
-
-    }
-
     buildTypes {
+
         debug {
             debuggable true
             applicationIdSuffix ".debug"
         }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -64,38 +68,44 @@ android {
 }
 
 dependencies {
+
+    // Gourmet module
     api project(':gourmet')
 
-    def supportLibVersion = '28.0.0'
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:support-v4:$supportLibVersion"
-    implementation "com.android.support:cardview-v7:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
-    implementation "com.android.support:percent:$supportLibVersion"
+    // Support
+    implementation "com.android.support:appcompat-v7:$versions.support"
+    implementation "com.android.support:support-v4:$versions.support"
+    implementation "com.android.support:cardview-v7:$versions.support"
+    implementation "com.android.support:design:$versions.support"
+    implementation "com.android.support:percent:$versions.support"
 
+    // Firebase
+    implementation "com.google.firebase:firebase-database:$versions.firebase"
+
+    // RX
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    // Butter knife
+    implementation "com.jakewharton:butterknife:$versions.butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
+
+    // Third Party
     implementation 'com.github.javierugarte:searchtoolbar:1.0.2'
-
-    implementation 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     implementation 'br.com.simplepass:loading-button-android:1.7.1'
-
     implementation 'com.github.wrdlbrnft:sorted-list-adapter:0.2.0.19'
-
-    def dagger2Version = '2.8'
-    implementation "com.google.dagger:dagger:$dagger2Version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
-
     implementation 'com.brandongogetap:stickyheaders:0.5.1'
 
+    // Crashlytics
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
 
-    // RX
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
-    implementation "io.reactivex.rxjava2:rxjava:2.1.5"
 
-    implementation 'com.google.firebase:firebase-database:10.2.4'
 
 }
 
