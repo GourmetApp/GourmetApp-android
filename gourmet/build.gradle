@@ -35,9 +35,9 @@ android {
 dependencies {
 
     // Support
-    implementation "com.android.support:appcompat-v7:$versions.support"
-    implementation "com.android.support:support-v4:$versions.support"
-    implementation "com.android.support:design:$versions.support"
+    implementation "androidx.appcompat:appcompat:$versions.androidx"
+    implementation "androidx.legacy:legacy-support-v4:$versions.androidx"
+    implementation "com.google.android.material:material:$versions.androidx"
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$versions.firebase"

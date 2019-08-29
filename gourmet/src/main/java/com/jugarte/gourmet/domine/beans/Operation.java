@@ -2,7 +2,7 @@ package com.jugarte.gourmet.domine.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 

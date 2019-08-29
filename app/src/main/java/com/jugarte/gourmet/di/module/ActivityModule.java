@@ -1,7 +1,7 @@
 package com.jugarte.gourmet.di.module;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.jugarte.gourmet.ThreadManager;
 import com.jugarte.gourmet.ThreadManagerImpl;

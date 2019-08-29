@@ -1,6 +1,6 @@
 package com.jugarte.gourmet.data.chequegourmet;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.jugarte.gourmet.domine.beans.Operation;
 import com.jugarte.gourmet.exceptions.ConnectionException;

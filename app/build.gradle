@@ -73,11 +73,11 @@ dependencies {
     api project(':gourmet')
 
     // Support
-    implementation "com.android.support:appcompat-v7:$versions.support"
-    implementation "com.android.support:support-v4:$versions.support"
-    implementation "com.android.support:cardview-v7:$versions.support"
-    implementation "com.android.support:design:$versions.support"
-    implementation "com.android.support:percent:$versions.support"
+    implementation "androidx.appcompat:appcompat:$versions.androidx"
+    implementation "androidx.legacy:legacy-support-v4:$versions.androidx"
+    implementation "androidx.cardview:cardview:$versions.androidx"
+    implementation "androidx.percentlayout:percentlayout:$versions.androidx"
+    implementation "com.google.android.material:material:$versions.androidx"
 
     // Firebase
     implementation "com.google.firebase:firebase-database:$versions.firebase"

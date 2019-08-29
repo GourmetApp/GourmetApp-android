@@ -1,14 +1,13 @@
 package com.jugarte.gourmet.ui.search;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import com.jugarte.gourmet.R;
-import com.jugarte.gourmet.ui.balance.model.OperationVM;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
