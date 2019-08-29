@@ -1,7 +1,5 @@
 package com.jugarte.gourmet.helpers;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +9,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.jugarte.gourmet.domine.beans.LastVersion;
 import com.jugarte.gourmet.lib.R;
@@ -39,7 +40,7 @@ public class LastVersionHelper {
         return (localVersionTagName.equalsIgnoreCase(serverVersionTagName));
     }
 
-    public static void showDialog(final Activity activity, final LastVersion lastVersion) {
+    public static void showDialog(final AppCompatActivity activity, final LastVersion lastVersion) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         String message;

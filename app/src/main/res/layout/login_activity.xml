@@ -13,7 +13,7 @@
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="30dp"
-        android:src="@drawable/login_image"
+        app:srcCompat="@drawable/login_image"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.textfield.TextInputLayout
