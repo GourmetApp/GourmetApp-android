@@ -30,7 +30,6 @@ buildscript {
             'json'       : '20160810'
     ]
 
-
     repositories {
         google()
         jcenter()
@@ -39,7 +38,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.29.0'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
