@@ -63,11 +63,18 @@ public class ChequeGourmetBuilder {
             throw new EmptyException();
         }
 
-        JSONObject json = new JSONObject(response);
+        JSONObject json;
+        try {
+            json = new JSONObject(response);
+        } catch (JSONException e) {
+            throw new NotFoundException();
+        }
 
         ArrayList<Operation> operationArrayList = new ArrayList<>();
 
-        JSONArray array = json.getJSONArray("payments").getJSONArray(0);
+        JSONArray array = json.getJSONArray("payments").optJSONArray(0);
+        if (array == null) { throw new EmptyException(); }
+
         for (int i = 0; i < array.length(); i++) {
             JSONObject payment = array.getJSONObject(i);
 
