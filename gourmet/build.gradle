@@ -30,9 +30,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
 }
 
 dependencies {
+
+    // Kotlin
+    implementation "androidx.core:core-ktx:$versions.kotlin_core"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     // Support
     implementation "androidx.appcompat:appcompat:$versions.androidx"
