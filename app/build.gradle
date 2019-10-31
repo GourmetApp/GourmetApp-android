@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
 repositories {
@@ -33,6 +33,7 @@ android {
                 storePassword = props['storePassword']
                 keyAlias = props['keyAlias']
                 keyPassword = props['keyPassword']
+                println keyAlias
             } else {
                 storeFile = file(System.getenv('TRAVIS_STORE_FILE'))
                 storePassword = System.getenv('TRAVIS_STORE_PASSWORD')

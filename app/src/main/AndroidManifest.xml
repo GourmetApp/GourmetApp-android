@@ -35,15 +35,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".services.NotificationService" />
+        <activity
+            android:name=".ui.search.SearchActivityKt"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver
-            android:name=".services.BootReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c15957853e81d15876bf5b3453e50c11b0049798" />
+
         <receiver
             android:name=".services.NotificationServiceReceiver"
             android:enabled="true">
@@ -52,10 +52,15 @@
                 <action android:name="${applicationId}.NOTIFICATION_SERVICE_STOP" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".services.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="c15957853e81d15876bf5b3453e50c11b0049798" />
+        <service android:name=".services.NotificationService" />
     </application>
 
 </manifest>
