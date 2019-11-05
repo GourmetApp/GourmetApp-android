@@ -1,5 +1,5 @@
 package com.jugarte.gourmet
 
-fun printHello() {
+fun printAppHello() {
     print("Hola")
 }

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
 
@@ -33,7 +35,6 @@ android {
 dependencies {
 
     // Kotlin
-    implementation "androidx.core:core-ktx:$versions.kotlin_core"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     // Support

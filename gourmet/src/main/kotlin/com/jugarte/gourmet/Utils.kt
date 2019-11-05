@@ -3,7 +3,7 @@ package com.jugarte.gourmet
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 
-fun printHello() {
+fun printLibHello() {
     print("Hola")
 }
 

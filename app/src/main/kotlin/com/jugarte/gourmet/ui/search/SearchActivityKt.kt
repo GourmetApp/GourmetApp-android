@@ -14,6 +14,7 @@ class SearchActivityKt : AppCompatActivity(), SearchToolbarListener {
     companion object {
         private const val EXTRA_GOURMET = "extraGourmet"
 
+        @JvmStatic
         fun newStartIntent(context: Context, gourmet: Gourmet): Intent {
             val intent = Intent(context, SearchActivityKt::class.java)
             intent.putExtra(EXTRA_GOURMET, gourmet)
@@ -25,11 +26,11 @@ class SearchActivityKt : AppCompatActivity(), SearchToolbarListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_activity)
 
-        searchToolbar.apply {
-            setSupportActionBar(this)
-            setSearchToolbarListener(this@SearchActivityKt)
-            setHint(R.string.search_hint)
-        }
+//        searchToolbar.apply {
+//            setSupportActionBar(this)
+//            setSearchToolbarListener(this@SearchActivityKt)
+//            setHint(R.string.search_hint)
+//        }
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
