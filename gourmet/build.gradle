@@ -1,11 +1,5 @@
 apply plugin: 'com.android.library'
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 android {
 
     compileSdkVersion versions.compileSdk
@@ -60,6 +54,12 @@ dependencies {
     // Ok HTTP
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
     implementation "com.google.code.gson:gson:$versions.gson"
+
+    // Fuel
+    implementation "com.github.kittinunf.fuel:fuel:$versions.fuel"
+    implementation "com.github.kittinunf.fuel:fuel-rxjava:$versions.fuel"
+    implementation "com.github.kittinunf.fuel:fuel-gson:$versions.fuel"
+
 
     // Dagger
     implementation "com.google.dagger:dagger:$versions.dagger"
